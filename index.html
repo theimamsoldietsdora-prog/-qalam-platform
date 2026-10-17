@@ -6,15 +6,15 @@
     <title>منصة المنهج القويم - Qaim Platform | منصة التعليم والبث المباشر</title>
     
     <!-- تحسينات محركات البحث SEO & Google indexing -->
-    <meta name="description" content="منصة المنهج القويم التعليمية - بث مباشر، مكتبة كتب PDF تفاعلية، مقالات، ونظام التعليق والمشاركة والحذف. متوافقة مع أندرويد وآيفون.">
-    <meta name="keywords" content="منصة المنهج القويم, بث مباشر, كتب PDF, تحميل كتب, التعليم الهادف, مقالات">
+    <meta name="description" content="منصة المنهج القويم التعليمية - بث مباشر، نشر فيديوهات وصور، مكتبة كتب PDF تفاعلية، مقالات، ونظام التعليق والمشاركة والحذف. متوافقة مع أندرويد وآيفون.">
+    <meta name="keywords" content="منصة المنهج القويم, بث مباشر, نشر فيديو, نشر صور, كتب PDF, تحميل كتب, التعليم الهادف, مقالات">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://theimamsoldietsdora-prog.github.io/-qalam-platform/">
     <meta property="og:title" content="منصة المنهج القويم التعليمية">
-    <meta property="og:description" content="انضم إلى منصة المنهج القويم لمتابعة البث المباشر، رفع وتحميل كتب الـ PDF، وإدارة المحتوى بكل بساطة.">
+    <meta property="og:description" content="انضم إلى منصة المنهج القويم لمتابعة البث المباشر، رفع الفيديوهات والصور، قراءة كتب الـ PDF، وإدارة المحتوى بكل بساطة.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80">
 
     <!-- PWA Meta Tags للأندرويد والآيفون -->
@@ -32,8 +32,9 @@
 
         /* الشاشة الرئيسية */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 10%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); }
+        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; overflow: hidden; }
+        .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 10%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
         .card-content { position: relative; z-index: 2; margin-bottom: 70px; }
 
         /* أزرار التفاعل الجانبية */
@@ -50,6 +51,10 @@
         /* شريط التثبيت العلوي */
         .install-banner { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         .install-btn { background: #38bdf8; color: #0b1120; border: none; padding: 8px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+        /* نافذة النشر المنبثقة Modal */
+        #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
 
         /* غرفة البث المباشر */
         .live-container { height: 100vh; display: flex; flex-direction: column; background: #070a13; }
@@ -97,11 +102,14 @@
         .camera-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-top: 15px; text-align: center; }
         .preview-media { width: 100%; max-height: 200px; border-radius: 12px; object-fit: cover; margin-top: 10px; display: none; }
 
-        /* الشريط السفلي للتنقل */
+        /* الشريط السفلي للتنقل وزر النشر السريع */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 20%; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 18%; cursor: pointer; }
         .nav-item.active { color: #38bdf8; }
         .nav-icon { font-size: 20px; }
+
+        /* زر النشر السريع المميز (+) */
+        .plus-btn-item { position: relative; top: -15px; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; color: #0b1120; font-weight: bold; border: 3px solid #0b1120; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); cursor: pointer; }
 
         .grid-container { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
     </style>
@@ -117,9 +125,30 @@
         <iframe id="pdfIframe"></iframe>
     </div>
 
-    <!-- 1. الرئيسية -->
+    <!-- نافذة نشر صورة أو فيديو جديد في الشاشة الرئيسية (Modal) -->
+    <div id="uploadModal">
+        <div class="upload-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 16px; color: #38bdf8;">🎬 نشر فيديو أو صورة جديدة</h3>
+                <button onclick="closeUploadModal()" style="background: none; border: none; color: #ef4444; font-size: 18px; font-weight: bold; cursor: pointer;">✕</button>
+            </div>
+            <input type="text" id="feedTitleInput" class="form-input" placeholder="عنوان المنشور...">
+            <textarea id="feedDescInput" class="form-textarea" placeholder="وصف المنشور..."></textarea>
+            
+            <div>
+                <label style="font-size: 11px; color: #94a3b8;">اختر فيديو أو صورة من هاتفك:</label>
+                <input type="file" id="feedMediaInput" accept="image/*,video/*" class="form-input" style="padding: 6px;">
+            </div>
+
+            <button class="primary-btn" onclick="publishFeedMedia()">نشر الآن على الشاشة الرئيسية 🚀</button>
+        </div>
+    </div>
+
+    <!-- 1. الرئيسية (شاشة الفيديوهات والصور المتتابعة) -->
     <div id="page-home" class="page active">
-        <div class="feed">
+        <div class="feed" id="mainFeedContainer">
+            
+            <!-- منشور نموذجي أول -->
             <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
                 <div class="card-overlay"></div>
                 <div class="install-banner">
@@ -127,7 +156,6 @@
                     <button class="install-btn" onclick="handleInstallPrompt()">تثبيت الآن</button>
                 </div>
                 
-                <!-- أزرار التفاعل الجانبية -->
                 <div class="side-actions">
                     <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
                     <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
@@ -135,7 +163,6 @@
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                 </div>
 
-                <!-- صندوق التعليقات المنبثق للبطاقة الرئيسية -->
                 <div class="card-comments-box">
                     <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
                     <div class="card-comments-list">
@@ -153,6 +180,7 @@
                     <p style="font-size: 12px; color: #cbd5e1;">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران بشرح تحليلي حديث.</p>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -254,7 +282,7 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- شريط التنقل السفلي مع زر (+) للنشر -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)">
             <span class="nav-icon">🏠</span>
@@ -264,13 +292,13 @@
             <span class="nav-icon">🔴</span>
             <span>البث</span>
         </button>
+        
+        <!-- زر النشر السريع (+) -->
+        <div class="plus-btn-item" onclick="openUploadModal()">+</div>
+
         <button class="nav-item" onclick="switchPage('library', this)">
             <span class="nav-icon">📚</span>
             <span>المكتبة</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('explore', this)">
-            <span class="nav-icon">✨</span>
-            <span>اكتشف</span>
         </button>
         <button class="nav-item" onclick="switchPage('profile', this)">
             <span class="nav-icon">👤</span>
@@ -283,11 +311,88 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
         }
 
         function openLive() {
             switchPage('live', document.querySelectorAll('.nav-item')[1]);
+        }
+
+        /* نافذة رفع ونشر فيديو أو صورة في الشاشة الرئيسية */
+        function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'flex';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
+        function publishFeedMedia() {
+            const title = document.getElementById('feedTitleInput').value.trim();
+            const desc = document.getElementById('feedDescInput').value.trim();
+            const mediaFile = document.getElementById('feedMediaInput').files[0];
+
+            if (title === "") {
+                alert('يرجى كتابة عنوان للمنشور.');
+                return;
+            }
+
+            const feedContainer = document.getElementById('mainFeedContainer');
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+
+            let mediaHTML = '';
+            if (mediaFile) {
+                const mediaUrl = URL.createObjectURL(mediaFile);
+                if (mediaFile.type.startsWith('video/')) {
+                    mediaHTML = `<video class="card-media" src="${mediaUrl}" autoplay loop muted playsinline></video>`;
+                } else {
+                    cardDiv.style.backgroundImage = `url('${mediaUrl}')`;
+                }
+            } else {
+                cardDiv.style.backgroundImage = `url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80')`;
+            }
+
+            cardDiv.innerHTML = `
+                ${mediaHTML}
+                <div class="card-overlay"></div>
+                <div class="side-actions">
+                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">0</span></button>
+                    <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
+                    <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
+                    <button class="action-btn" style="background: rgba(239, 68, 68, 0.4);" onclick="deleteFeedCard(this)">🗑️<span class="action-text">حذف</span></button>
+                </div>
+                <div class="card-comments-box">
+                    <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
+                    <div class="card-comments-list"></div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
+                        <button class="send-btn" style="padding: 0 10px; font-size: 11px;" onclick="addCardCommentBtn(this)">إرسال</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ المنهج القويم</span>
+                    <h2 style="font-size: 22px; margin: 8px 0;">${title}</h2>
+                    <p style="font-size: 12px; color: #cbd5e1;">${desc}</p>
+                </div>
+            `;
+
+            feedContainer.prepend(cardDiv);
+
+            // إعادة ضبط الإدخال وإغلاق النافذة
+            document.getElementById('feedTitleInput').value = "";
+            document.getElementById('feedDescInput').value = "";
+            document.getElementById('feedMediaInput').value = "";
+            closeUploadModal();
+            switchPage('home', document.querySelectorAll('.nav-item')[0]);
+            alert('تم نشر المحتوى بنجاح على الشاشة الرئيسية!');
+        }
+
+        function deleteFeedCard(btn) {
+            if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) {
+                const card = btn.closest('.card');
+                card.remove();
+            }
         }
 
         // تشغيل البث المباشر
@@ -410,7 +515,7 @@
             document.getElementById('pdfIframe').src = '';
         }
 
-        // نظام رفع وإضافة الكتب والمنشورات الجديدة
+        // نظام رفع وإضافة الكتب والمنشورات الجديدة في المكتبة
         function saveNewBookOrPost() {
             const title = document.getElementById('postTitleInput').value.trim();
             const desc = document.getElementById('postDescInput').value.trim();
@@ -457,7 +562,6 @@
             alert('تمت إضافة ونشر الكتاب بنجاح!');
         }
 
-        // ميزة حذف المنشور أو الكتاب
         function deletePostCard(btn) {
             if (confirm('هل أنت متأكد من رغبتك في حذف هذا المحتوى؟')) {
                 const card = btn.closest('.section-card');
@@ -465,14 +569,12 @@
             }
         }
 
-        // فتح وإغلاق التعليقات في المكتبة
         function toggleComments(btn) {
             const card = btn.closest('.section-card');
             const commentsSec = card.querySelector('.comments-section');
             commentsSec.style.display = commentsSec.style.display === 'block' ? 'none' : 'block';
         }
 
-        // إضافة تعليق في المكتبة
         function addPostComment(input) {
             const text = input.value.trim();
             if (text !== "") {
@@ -485,7 +587,6 @@
             }
         }
 
-        // تعليقات البث المباشر
         function sendComment() {
             const input = document.getElementById('chatInput');
             const msgText = input.value.trim();
@@ -500,7 +601,6 @@
             }
         }
 
-        // معاينة السيلفي
         function previewMedia(event) {
             const file = event.target.files[0];
             if (file) {
