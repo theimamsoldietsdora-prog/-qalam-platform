@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة القلم - Qalam Platform | منصة التعليم والـبث المباشر</title>
+    <title>منصة القلم - Qalam Platform | منصة التعليم والبث المباشر</title>
     
     <!-- تحسينات محركات البحث SEO & Google indexing -->
-    <meta name="description" content="منصة القلم التعليمية المتقدمة - بث مباشر من الكاميرا، محتوى فكري، ومعاصر.">
-    <meta name="keywords" content="منصة القلم, بث مباشر, التعليم الهادف, كتب, بودكاست">
+    <meta name="description" content="منصة القلم التعليمية - بث مباشر، مكتبة كتب PDF تفاعلية، مقالات، ونظام التعليق والمشاركة. متوافقة مع أندرويد وآيفون.">
+    <meta name="keywords" content="منصة القلم, بث مباشر, كتب PDF, تحميل كتب, التعليم الهادف, بودكاست, مقالات">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://theimamsoldietsdora-prog.github.io/-qalam-platform/">
     <meta property="og:title" content="منصة القلم التعليمية - Qalam Platform">
-    <meta property="og:description" content="انضم إلى منصة القلم لمتابعة البث المباشر الحقيقي والمكتبة التفاعلية.">
+    <meta property="og:description" content="انضم إلى منصة القلم لمتابعة البث المباشر، رفع وتحميل كتب الـ PDF، والتفاعل مع المحتوى بكل بساطة.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80">
 
-    <!-- PWA iOS -->
+    <!-- PWA Meta Tags للأندرويد والآيفون -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="منصة القلم">
@@ -43,9 +44,9 @@
 
         /* شريط التثبيت العلوي */
         .install-banner { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
-        .install-btn { background: #38bdf8; color: #0b1120; border: none; padding: 8px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; }
+        .install-btn { background: #38bdf8; color: #0b1120; border: none; padding: 8px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-        /* غرفة البث المباشر الحقيقي */
+        /* غرفة البث المباشر */
         .live-container { height: 100vh; display: flex; flex-direction: column; background: #070a13; }
         .live-video-box { height: 45%; background: #000; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .live-badge { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; z-index: 5; }
@@ -64,22 +65,51 @@
         .chat-input { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 10px 15px; color: white; font-size: 13px; outline: none; }
         .send-btn { background: #38bdf8; color: #0b1120; border: none; padding: 0 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
+        /* الأقسام، الكتب والمنشورات */
+        .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .form-input { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; outline: none; }
+        .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; height: 80px; outline: none; resize: none; }
+        .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        .section-card { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .section-header { display: flex; gap: 12px; align-items: flex-start; }
+        .section-thumb { width: 50px; height: 50px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #0b1120; font-weight: bold; flex-shrink: 0; }
+        
+        .post-actions-row { display: flex; gap: 8px; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+        .post-action-btn { background: rgba(255,255,255,0.08); border: none; color: #38bdf8; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; text-decoration: none; }
+        
+        .comments-section { margin-top: 10px; display: none; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
+        .comment-item { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 6px; margin-top: 5px; }
+
+        /* عارض ملفات PDF التفاعلي (Modal) */
+        #pdfViewerModal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; }
+        .pdf-modal-header { padding: 15px; background: #0b1120; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .close-pdf-btn { background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
+
         /* الكاميرا والسيلفي */
         .camera-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-top: 15px; text-align: center; }
         .preview-media { width: 100%; max-height: 200px; border-radius: 12px; object-fit: cover; margin-top: 10px; display: none; }
 
         /* الشريط السفلي للتنقل */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 20%; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 20%; cursor: pointer; }
         .nav-item.active { color: #38bdf8; }
         .nav-icon { font-size: 20px; }
 
-        .grid-container { padding: 20px; display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .section-card { background: #1e293b; border-radius: 16px; padding: 15px; display: flex; gap: 15px; align-items: center; }
-        .section-thumb { width: 60px; height: 60px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .grid-container { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
     </style>
 </head>
 <body>
+
+    <!-- نافذة عرض ملف الـ PDF المدمجة (تفتح وتغلق بسهولة) -->
+    <div id="pdfViewerModal">
+        <div class="pdf-modal-header">
+            <h3 id="pdfModalTitle" style="font-size: 16px; color: #38bdf8;">عارض الكتب</h3>
+            <button class="close-pdf-btn" onclick="closePdfViewer()">إغلاق الكتاب ✕</button>
+        </div>
+        <iframe id="pdfIframe"></iframe>
+    </div>
 
     <!-- 1. الرئيسية -->
     <div id="page-home" class="page active">
@@ -87,16 +117,16 @@
             <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
                 <div class="card-overlay"></div>
                 <div class="install-banner">
-                    <span style="font-size: 12px;">📱 تثبيت منصة القلم على الهاتف</span>
-                    <button class="install-btn" onclick="alert('اضغط زر المشاركة 📤 ثم اختر إضافة إلى الصفحة الرئيسية')">تثبيت الآن</button>
+                    <span style="font-size: 12px;">📱 تثبيت منصة القلم على هاتفك</span>
+                    <button class="install-btn" onclick="handleInstallPrompt()">تثبيت الآن</button>
                 </div>
                 <div class="side-actions">
-                    <button class="action-btn" onclick="likeCard(this)">❤️<span class="action-text">1.2k</span></button>
+                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
                     <button class="action-btn" onclick="openLive()">🔴<span class="action-text">مباشر</span></button>
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                 </div>
                 <div class="card-content">
-                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">📚 كتاب مفتاح</span>
+                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">✒️ شعار المنصة الأصيل</span>
                     <h2 style="font-size: 22px; margin: 8px 0;">مقدمة ابن خلدون</h2>
                     <p style="font-size: 12px; color: #cbd5e1;">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران بشرح تحليلي حديث.</p>
                 </div>
@@ -104,7 +134,7 @@
         </div>
     </div>
 
-    <!-- 2. غرفة البث المباشر الحقيقي من الكاميرا -->
+    <!-- 2. غرفة البث المباشر -->
     <div id="page-live" class="page">
         <div class="live-container">
             <div class="live-video-box">
@@ -118,7 +148,7 @@
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="chat-msg"><div class="chat-user">المنصة</div>أهلاً بكم في البث المباشر الحقيقي! اكتب تعليقك وسؤالك هنا.</div>
+                    <div class="chat-msg"><div class="chat-user">المنصة</div>أهلاً بكم في البث المباشر المتوافق مع أندرويد وآيفون!</div>
                 </div>
                 <div class="chat-input-box">
                     <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') sendComment()">
@@ -128,25 +158,48 @@
         </div>
     </div>
 
-    <!-- 3. المكتبة والبودكاست -->
+    <!-- 3. المكتبة والكتب (رفع وتحميل وقراءة PDF، تعديل، تعليق، ومشاركة) -->
     <div id="page-library" class="page">
         <div style="padding: 20px 20px 10px;">
-            <h2>📚 المكتبة والبودكاست</h2>
-            <p style="font-size: 12px; color: #94a3b8;">دروس صوتية ومقالات مكتوبة</p>
+            <h2>📚 مكتبة الكتب والمقالات</h2>
+            <p style="font-size: 12px; color: #94a3b8;">اررفع، اقرأ، وحمل كتب الـ PDF وتفاعل مع المقالات بكل سهولة</p>
         </div>
-        <div class="grid-container">
-            <div class="section-card">
-                <div class="section-thumb">🎧</div>
-                <div>
-                    <h4>بودكاست القلم الفكري</h4>
-                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">الحلقة 01: مدخل إلى الفلسفة والإصلاح</p>
+        
+        <div class="grid-container" style="padding-top: 5px;">
+            <!-- لوحة رفع كتاب PDF أو منشور جديد -->
+            <div class="content-box">
+                <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF أو منشور جديد</h4>
+                <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب أو المقال...">
+                <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز للمحتوى..."></textarea>
+                <div style="margin-top: 8px;">
+                    <label style="font-size: 11px; color: #94a3b8;">اختر ملف PDF (اختياري):</label>
+                    <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 6px;">
                 </div>
+                <button class="primary-btn" onclick="saveNewBookOrPost()">نشر وإضافة للمكتبة</button>
             </div>
-            <div class="section-card">
-                <div class="section-thumb">📖</div>
-                <div>
-                    <h4>ملخصات الكتب</h4>
-                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">تجميعية لأهم الكتب العلمية والتاريخية</p>
+
+            <!-- قائمة الكتب والمنشورات -->
+            <div id="postsListContainer">
+                <div class="section-card">
+                    <div class="section-header">
+                        <div class="section-thumb">📖</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 14px;">كتاب القواعد الفكرية الأساسية (PDF)</h4>
+                            <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي جاهز للقراءة المباشرة والتحميل والاحتفاظ.</p>
+                        </div>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
+                        <a class="post-action-btn" href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download="Qaidah_Book.pdf">📥 تحميل والاحتفاظ</a>
+                        <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
+                        <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
+                    </div>
+                    <div class="comments-section">
+                        <input type="text" class="form-input" placeholder="اكتب تعليقاً على الكتاب..." onkeypress="if(event.key==='Enter') addPostComment(this)">
+                        <div class="comments-list">
+                            <div class="comment-item"><b>حيدر:</b> كتاب ممتاز وتم حفظه بنجاح!</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,14 +209,14 @@
     <div id="page-explore" class="page">
         <div style="padding: 20px;">
             <h2>✨ اكتشف المحتوى</h2>
-            <input type="text" placeholder="🔍 بحث في المنصة..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
+            <input type="text" placeholder="🔍 بحث في الكتب والمقالات..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
         </div>
     </div>
 
     <!-- 5. حسابي والسيلفي -->
     <div id="page-profile" class="page">
         <div style="padding: 20px; text-align: center;">
-            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px;">✒️</div>
+            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #0b1120;">✒️</div>
             <h3>منصة القلم التعليمية</h3>
             <p style="font-size: 12px; color: #94a3b8;">محتوى فكري وعلمي أصيل</p>
             
@@ -214,7 +267,7 @@
             switchPage('live', document.querySelectorAll('.nav-item')[1]);
         }
 
-        // تشغيل البث المباشر مع دعم الصوت والصورة والتعامل مع قيود الآيفون
+        // تشغيل البث المباشر
         let liveStream = null;
         async function startLiveBroadcast() {
             try {
@@ -225,9 +278,9 @@
                 const videoElement = document.getElementById('realCameraFeed');
                 videoElement.srcObject = liveStream;
                 videoElement.muted = true;
-                alert('تم بدء البث المباشر الصوتي والمرئي بنجاح!');
+                alert('تم بدء البث المباشر بنجاح!');
             } catch (error) {
-                alert('تعذر فتح الكاميرا أو الميكروفون، يرجى السماح بالصلاحيات من إعدادات المتصفح.');
+                alert('تعذر فتح الكاميرا أو الميكروفون، يرجى السماح بالصلاحيات من المتصفح.');
                 console.error(error);
             }
         }
@@ -240,11 +293,12 @@
             }
         }
 
+        // مشاركة المنصة
         function sharePlatform() {
             if (navigator.share) {
                 navigator.share({
                     title: 'منصة القلم التعليمية',
-                    text: 'انضم إلينا في منصة القلم وتصفح المحتوى الفكري!',
+                    text: 'انضم إلينا في منصة القلم وتصفح الكتب والمنشورات!',
                     url: window.location.href,
                 }).catch(console.error);
             } else {
@@ -253,11 +307,122 @@
             }
         }
 
-        function likeCard(btn) {
-            btn.style.color = '#ef4444';
-            btn.querySelector('.action-text').innerText = '1.2k+';
+        // تثبيت التطبيق
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function handleInstallPrompt() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/android/i.test(userAgent)) {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        deferredPrompt = null;
+                    });
+                } else {
+                    alert('لتثبيت التطبيق على أندرويد: افتح قائمة المتصفح (⋮) ثم اختر "إضافة إلى الشاشة الرئيسية".');
+                }
+            } else {
+                alert('اضغط زر المشاركة 📤 في سفاري ثم اختر "إضافة إلى الصفحة الرئيسية".');
+            }
         }
 
+        // زر الإعجاب التبادلي
+        function toggleLike(btn) {
+            const textSpan = btn.querySelector('.action-text');
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                btn.style.color = 'white';
+                textSpan.innerText = '1.2k';
+            } else {
+                btn.classList.add('liked');
+                btn.style.color = '#ef4444';
+                textSpan.innerText = '1.2k+';
+            }
+        }
+
+        // عارض ملفات الـ PDF التفاعلي (فتح وإغلاق بسهولة)
+        function openPdfViewer(pdfUrl, title) {
+            document.getElementById('pdfModalTitle').innerText = title;
+            document.getElementById('pdfIframe').src = pdfUrl;
+            document.getElementById('pdfViewerModal').style.display = 'flex';
+        }
+
+        function closePdfViewer() {
+            document.getElementById('pdfViewerModal').style.display = 'none';
+            document.getElementById('pdfIframe').src = '';
+        }
+
+        // نظام رفع وإضافة الكتب والمنشورات الجديدة
+        function saveNewBookOrPost() {
+            const title = document.getElementById('postTitleInput').value.trim();
+            const desc = document.getElementById('postDescInput').value.trim();
+            const pdfFile = document.getElementById('pdfFileInput').files[0];
+            
+            if (title === "" || desc === "") {
+                alert('يرجى ملء عنوان ووصف المحتوى أولاً.');
+                return;
+            }
+
+            let pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+            if (pdfFile) {
+                pdfUrl = URL.createObjectURL(pdfFile);
+            }
+
+            const container = document.getElementById('postsListContainer');
+            const newCard = document.createElement('div');
+            newCard.className = 'section-card';
+            newCard.innerHTML = `
+                <div class="section-header">
+                    <div class="section-thumb">📚</div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 14px;">${title}</h4>
+                        <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">${desc}</p>
+                    </div>
+                </div>
+                <div class="post-actions-row">
+                    <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('${pdfUrl}', '${title}')">📖 قراءة الكتاب</button>
+                    <a class="post-action-btn" href="${pdfUrl}" download="${title}.pdf">📥 تحميل والاحتفاظ</a>
+                    <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
+                    <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
+                </div>
+                <div class="comments-section">
+                    <input type="text" class="form-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') addPostComment(this)">
+                    <div class="comments-list"></div>
+                </div>
+            `;
+            container.prepend(newCard);
+            
+            document.getElementById('postTitleInput').value = "";
+            document.getElementById('postDescInput').value = "";
+            document.getElementById('pdfFileInput').value = "";
+            alert('تمت إضافة ونشر الكتاب بنجاح!');
+        }
+
+        // فتح وإغلاق التعليقات
+        function toggleComments(btn) {
+            const card = btn.closest('.section-card');
+            const commentsSec = card.querySelector('.comments-section');
+            commentsSec.style.display = commentsSec.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // إضافة تعليق
+        function addPostComment(input) {
+            const text = input.value.trim();
+            if (text !== "") {
+                const list = input.closest('.comments-section').querySelector('.comments-list');
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment-item';
+                commentDiv.innerHTML = `<b>أنت:</b> ${text}`;
+                list.appendChild(commentDiv);
+                input.value = "";
+            }
+        }
+
+        // تعليقات البث المباشر
         function sendComment() {
             const input = document.getElementById('chatInput');
             const msgText = input.value.trim();
@@ -272,6 +437,7 @@
             }
         }
 
+        // معاينة السيلفي
         function previewMedia(event) {
             const file = event.target.files[0];
             if (file) {
