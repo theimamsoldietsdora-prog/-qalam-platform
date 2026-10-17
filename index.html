@@ -3,392 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة القلم - Qalam</title>
+    <title>منصة القلم - Qalam Platform | منصة التعليم والفكر المعاصر</title>
     
-    <!-- إعدادات تطبيق الويب للهواتف (PWA) -->
+    <!-- تحسينات محركات البحث SEO & Google indexing -->
+    <meta name="description" content="منصة القلم التعليمية المتقدمة - محتوى فكري، علمي، وبث مباشر تفاعلي مع مكتبة صوتية ومقالات تحليلية.">
+    <meta name="keywords" content="منصة القلم, القلم, بث مباشر, التعليم الهادف, كتب, بودكاست, ثقافة, علوم">
+    <meta name="author" content="منصة القلم">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://theimamsoldietsdora-prog.github.io/-qalam-platform/">
+    <meta property="og:title" content="منصة القلم التعليمية - Qalam Platform">
+    <meta property="og:description" content="انضم إلى منصة القلم لمتابعة البث المباشر والمكتبة التفاعلية والمحتوى الفكري المعاصر.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80">
+
+    <!-- إعدادات تطبيق الويب للهواتف (PWA) iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="منصة القلم">
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #fff; height: 100vh; overflow: hidden; }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0b1120; color: #ffffff; overflow: hidden; }
+
         /* شاشات التنقل */
-        .page { display: none; height: 100vh; width: 100vw; position: absolute; top: 0; left: 0; }
+        .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 90px; }
         .page.active { display: block; }
-        
+
         /* خلاصة المحتوى الرئيسي */
-        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
-        
-        /* بطاقات المحتوى */
-        .card { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; position: relative; background-size: cover; background-position: center; }
-        .card-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%); z-index: 1; }
-        
-        /* تفاصيل المحتوى */
-        .content { position: relative; z-index: 2; margin-bottom: 75px; max-width: 80%; }
-        .tag { display: inline-block; background: #38bdf8; color: #0f172a; font-weight: bold; font-size: 12px; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
-        .tag.live-badge { background: #ef4444; color: #fff; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 10%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); }
+        .card-content { position: relative; z-index: 2; margin-bottom: 70px; }
 
-        .title { font-size: 22px; font-weight: bold; margin-bottom: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .author { font-size: 14px; color: #cbd5e1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .follow-tag-btn { background: #38bdf8; color: #0f172a; border: none; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; cursor: pointer; }
-        .follow-tag-btn.following { background: rgba(255,255,255,0.2); color: #fff; }
-        .desc { font-size: 13px; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
         /* أزرار التفاعل الجانبية */
-        .actions { position: absolute; left: 15px; bottom: 95px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 18px; }
-        .action-btn { background: rgba(255,255,255,0.18); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+        .side-actions { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 18px; z-index: 3; align-items: center; }
+        .action-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: none; width: 50px; height: 50px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .action-btn:active { transform: scale(0.9); }
-        .action-btn.liked { background: #ef4444; color: #fff; }
-        .action-btn.saved { background: #eab308; color: #fff; }
-        .action-text { font-size: 11px; margin-top: 4px; color: #e2e8f0; text-align: center; }
+        .action-text { font-size: 10px; margin-top: 2px; }
 
-        /* شريط تثبيت التطبيق السفلي */
-        .install-banner { position: fixed; top: 15px; left: 15px; right: 15px; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border: 1px solid #38bdf8; border-radius: 16px; padding: 12px 16px; z-index: 99; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .install-text { font-size: 12px; color: #e2e8f0; }
-        .install-btn { background: #38bdf8; color: #0f172a; font-weight: bold; border: none; padding: 6px 12px; border-radius: 12px; font-size: 12px; cursor: pointer; }
+        /* شريط التثبيت العلوي */
+        .install-banner { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+        .install-btn { background: #38bdf8; color: #0b1120; border: none; padding: 8px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; }
 
-        /* صفحات الأقسام الأُخرى */
-        .section-container { padding: 30px 20px 80px 20px; height: 100vh; overflow-y: auto; background: #0f172a; }
-        .section-title { font-size: 24px; font-weight: bold; color: #38bdf8; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .grid-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .grid-item { background: #1e293b; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .grid-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
-        .grid-item h4 { font-size: 14px; margin-bottom: 4px; }
-        .grid-item p { font-size: 12px; color: #94a3b8; }
+        /* غرفة البث المباشر */
+        .live-container { height: 100vh; display: flex; flex-direction: column; background: #070a13; }
+        .live-video { height: 40%; background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
+        .live-badge { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .pulse { width: 8px; height: 8px; background: white; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .chat-container { height: 60%; display: flex; flex-direction: column; background: #0b1120; padding: 15px; }
+        .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px; }
+        .chat-msg { background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 85%; }
+        .chat-user { font-weight: bold; color: #38bdf8; font-size: 11px; margin-bottom: 2px; }
+        .chat-input-box { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .chat-input { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 10px 15px; color: white; font-size: 13px; outline: none; }
+        .send-btn { background: #38bdf8; color: #0b1120; border: none; padding: 0 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
-        /* قسم البث المباشر */
-        .live-container { display: flex; flex-direction: column; height: 100vh; padding: 20px 20px 80px 20px; background: #0f172a; }
-        .live-player { width: 100%; height: 220px; background: #000; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ef4444; }
-        .live-indicator { position: absolute; top: 12px; right: 12px; background: #ef4444; color: #fff; padding: 4px 10px; font-size: 11px; font-weight: bold; border-radius: 8px; }
-        .chat-box { flex: 1; background: #1e293b; border-radius: 16px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-msg { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px; font-size: 12px; }
-        .chat-msg span { color: #38bdf8; font-weight: bold; margin-left: 5px; }
-        .chat-input-area { display: flex; gap: 10px; }
-        .chat-input { flex: 1; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 20px; color: #fff; font-size: 13px; outline: none; }
-        .send-btn { background: #38bdf8; color: #0f172a; border: none; padding: 0 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        /* الكاميرا والسيلفي المباشر */
+        .camera-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-top: 15px; text-align: center; }
+        .preview-media { width: 100%; max-height: 200px; border-radius: 12px; object-fit: cover; margin-top: 10px; display: none; }
 
-        /* ملف المستخدم والمتابعة */
-        .profile-card { background: #1e293b; padding: 25px 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 12px auto; }
-        .profile-stats { display: flex; justify-content: space-around; margin: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0; }
-        .stat-item h3 { font-size: 16px; color: #38bdf8; }
-        .stat-item p { font-size: 11px; color: #94a3b8; }
-        .sub-btn { background: #38bdf8; color: #0f172a; font-weight: bold; border: none; padding: 10px 24px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 10px; }
-        .sub-btn.active { background: #334155; color: #fff; }
+        /* الشريط السفلي للتنقل */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 20%; }
+        .nav-item.active { color: #38bdf8; }
+        .nav-icon { font-size: 20px; }
 
-        /* النافذة المنبثقة للتثبيت */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
-        .modal.show { display: flex; }
-        .modal-body { background: #1e293b; border-radius: 20px; padding: 25px; text-align: center; max-width: 320px; border: 1px solid #38bdf8; }
-        .modal-body h3 { color: #38bdf8; margin-bottom: 10px; }
-        .modal-body p { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px; }
-
-        /* إشعارات المنبثقة */
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #38bdf8; color: #0f172a; font-weight: bold; padding: 12px 24px; border-radius: 25px; z-index: 100; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-
-        /* الشريط السفلي للتنقل (5 أقسام الآن) */
-        .navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
-        .nav-item { color: #64748b; text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border: none; background: none; width: 20%; }
-        .nav-item.active { color: #38bdf8; font-weight: bold; }
-        .nav-icon { font-size: 18px; }
+        /* بطاقات المكتبة والبودكاست */
+        .grid-container { padding: 20px; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        .section-card { background: #1e293b; border-radius: 16px; padding: 15px; display: flex; gap: 15px; align-items: center; }
+        .section-thumb { width: 60px; height: 60px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 24px; }
     </style>
 </head>
 <body>
 
-    <!-- شريط دعوة لتثبيت التطبيق -->
-    <div class="install-banner" id="installBanner">
-        <div class="install-text">
-            <strong>📲 تثبيت منصة القلم</strong><br>
-            حمل المنصة كـ تطبيق على هاتفك
-        </div>
-        <button class="install-btn" onclick="showInstallGuide()">تثبيت الآن</button>
-    </div>
-
-    <!-- نافذة شرح التثبيت -->
-    <div class="modal" id="installModal">
-        <div class="modal-body">
-            <h3>📲 طريقة التثبيت على الآيفون</h3>
-            <p>1. اضغط على زر <strong>المشاركة (Share 📤)</strong> أسفل الشاشة في متصفح Safari.<br><br>2. اختر <strong>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen ➕)</strong>.<br><br>سيظهر تطبيق المنصة فوراً على شاشتك الرئيسية!</p>
-            <button class="sub-btn" onclick="closeModal()">حسناً، فهمت</button>
-        </div>
-    </div>
-
-    <!-- التنبيه المنبثق -->
-    <div id="toast" class="toast">تمت العملية بنجاح!</div>
-
-    <!-- الصفحة الأولى: الرئيسية -->
+    <!-- 1. الرئيسية (Feed) -->
     <div id="page-home" class="page active">
         <div class="feed">
-            <!-- بطاقة البث المباشر الحية -->
-            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80');">
+            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
                 <div class="card-overlay"></div>
-                <div class="content">
-                    <span class="tag live-badge">🔴 بث مباشر الآن</span>
-                    <h2 class="title">شرح كتاب قواعد الفكر المعاصر</h2>
-                    <p class="author">
-                        منصة القلم - بث حي
-                        <button class="follow-tag-btn" onclick="toggleAuthorFollow(this)">+ متابعة</button>
-                    </p>
-                    <p class="desc">جلسة نقاشية مفتوحة حول أحدث النظريات الفكرية والمنهجية.</p>
+                <div class="install-banner">
+                    <span style="font-size: 12px;">📱 تثبيت منصة القلم على الهاتف</span>
+                    <button class="install-btn" onclick="alert('اضغط زر المشاركة 📤 ثم اختر إضافة إلى الصفحة الرئيسية')">تثبيت الآن</button>
                 </div>
-                <div class="actions">
-                    <div>
-                        <button class="action-btn" onclick="toggleLike(this, 'likeLive')">❤️</button>
-                        <p class="action-text" id="likeLive">340</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[1])" style="background: #ef4444;">📺</button>
-                        <p class="action-text">انضم للبث</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="shareContent('البث المباشر')">🚀</button>
-                        <p class="action-text">مشاركة</p>
-                    </div>
+                <div class="side-actions">
+                    <button class="action-btn" onclick="likeCard(this)">❤️<span class="action-text">1.2k</span></button>
+                    <button class="action-btn" onclick="openLive()">🔴<span class="action-text">مباشر</span></button>
+                    <!-- زر المشاركة المباشرة -->
+                    <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                 </div>
-            </div>
-
-            <!-- بطاقة 2 -->
-            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80');">
-                <div class="card-overlay"></div>
-                <div class="content">
-                    <span class="tag">📚 كتاب مفتاح</span>
-                    <h2 class="title">مقدمة ابن خلدون</h2>
-                    <p class="author">
-                        عبد الرحمن بن خلدون
-                        <button class="follow-tag-btn" onclick="toggleAuthorFollow(this)">+ متابعة</button>
-                    </p>
-                    <p class="desc">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران البشري بطرح تحليلي عميق.</p>
-                </div>
-                <div class="actions">
-                    <div>
-                        <button class="action-btn" onclick="toggleLike(this, 'like1')">❤️</button>
-                        <p class="action-text" id="like1">1200</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="toggleSave(this, 'مقدمة ابن خلدون')">🔖</button>
-                        <p class="action-text">حفظ</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="shareContent('مقدمة ابن خلدون')">🚀</button>
-                        <p class="action-text">مشاركة</p>
-                    </div>
+                <div class="card-content">
+                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">📚 كتاب مفتاح</span>
+                    <h2 style="font-size: 22px; margin: 8px 0;">مقدمة ابن خلدون</h2>
+                    <p style="font-size: 12px; color: #cbd5e1;">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران بشرح تحليلي حديث.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- الصفحة الثانية: البث المباشر (جديد) -->
+    <!-- 2. غرفة البث المباشر (Live) -->
     <div id="page-live" class="page">
         <div class="live-container">
-            <h2 class="section-title" style="margin-bottom: 10px;">📺 غرفة البث المباشر</h2>
-            <div class="live-player">
-                <div class="live-indicator">🔴 مباشر الآن</div>
-                <div style="text-align: center; color: #94a3b8;">
-                    <p style="font-size: 32px; margin-bottom: 5px;">📡</p>
-                    <p style="font-size: 14px; font-weight: bold; color: #fff;">جاري بث المحاضرة الحية...</p>
-                    <p style="font-size: 11px;">متصل: 485 مشاهد</p>
+            <div class="live-video">
+                <div class="live-badge"><div class="pulse"></div> بث مباشر الآن</div>
+                <span style="font-size: 40px;">🎙️</span>
+                <p style="position: absolute; bottom: 15px; font-size: 14px; font-weight: bold;">محاضرة: قواعد الفكر المعاصر</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-msg"><div class="chat-user">المدرب</div>أهلاً بكم في البث المباشر لمنصة القلم! يمكنكم مشاركة أسئلتكم هنا.</div>
                 </div>
-            </div>
-            
-            <div class="chat-box" id="chatBox">
-                <div class="chat-msg"><span>أحمد علي:</span> أهلاً بالمتابعين جميعاً من العراق</div>
-                <div class="chat-msg"><span>فاطمة حسن:</span> شكراً لهذه المبادرة الرائعة</div>
-                <div class="chat-msg"><span>محمد الباحث:</span> هل سيتم حفظ البث بعد انتهائه؟</div>
-            </div>
-
-            <div class="chat-input-area">
-                <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقك أو سؤالك...">
-                <button class="send-btn" onclick="sendChatMessage()">إرسال</button>
+                <div class="chat-input-box">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') sendComment()">
+                    <button class="send-btn" onclick="sendComment()">إرسال</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- الصفحة الثالثة: المكتبة -->
+    <!-- 3. المكتبة والبودكاست -->
     <div id="page-library" class="page">
-        <div class="section-container">
-            <h2 class="section-title">📚 المكتبة الشاملة</h2>
-            <div class="grid-list">
-                <div class="grid-item">
-                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" alt="كتاب">
-                    <h4>مقدمة ابن خلدون</h4>
-                    <p>التاريخ والتطور</p>
+        <div style="padding: 20px 20px 10px;">
+            <h2>📚 المكتبة والبودكاست</h2>
+            <p style="font-size: 12px; color: #94a3b8;">دروس صوتية ومقالات مكتوبة</p>
+        </div>
+        <div class="grid-container">
+            <div class="section-card">
+                <div class="section-thumb">🎧</div>
+                <div>
+                    <h4>بودكاست القلم الفكري</h4>
+                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">الحلقة 01: مدخل إلى الفلسفة والإصلاح</p>
                 </div>
-                <div class="grid-item">
-                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80" alt="كتاب">
-                    <h4>مناهج البحث</h4>
-                    <p>أصول العلم</p>
+            </div>
+            <div class="section-card">
+                <div class="section-thumb">📖</div>
+                <div>
+                    <h4>ملخصات الكتب</h4>
+                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">تجميعية لأهم الكتب العلمية والتاريخية</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- الصفحة الرابعة: اكتشف -->
+    <!-- 4. اكتشف -->
     <div id="page-explore" class="page">
-        <div class="section-container">
-            <h2 class="section-title">✨ استكشف المواضيع</h2>
-            <div class="grid-list">
-                <div class="grid-item" style="grid-column: span 2; background: #1e293b; text-align: right;">
-                    <h3 style="color:#38bdf8; margin-bottom:8px;">🔍 بحث سريع</h3>
-                    <p>استكشف الكتب والمحتوى العلمي والتاريخي حسب التصنيف.</p>
-                </div>
-            </div>
+        <div style="padding: 20px;">
+            <h2>✨ اكتشف المحتوى</h2>
+            <input type="text" placeholder="🔍 بحث في المنصة وقوقل..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
         </div>
     </div>
 
-    <!-- الصفحة الخامسة: حسابي -->
+    <!-- 5. حسابي + الكاميرا والسيلفي -->
     <div id="page-profile" class="page">
-        <div class="section-container">
-            <h2 class="section-title">👤 قناة منصة القلم</h2>
-            <div class="profile-card">
-                <div class="avatar">🖊️</div>
-                <h3>منصة القلم التعليمية</h3>
-                <p style="color:#94a3b8; font-size:13px; margin-top:4px;">محتوى فكري وعلمي أصيل</p>
-                
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <h3 id="followerCount">1,450</h3>
-                        <p>المتابعين</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>24</h3>
-                        <p>المنشورات</p>
-                    </div>
-                </div>
-
-                <button class="sub-btn" id="mainSubBtn" onclick="toggleMainSubscribe()">+ متابعة القناة</button>
-                <button class="sub-btn" style="background: rgba(255,255,255,0.1); color: #fff; margin-top: 10px;" onclick="showInstallGuide()">📲 تثبيت التطبيق على الهاتف</button>
+        <div style="padding: 20px; text-align: center;">
+            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px;">✒️</div>
+            <h3>منصة القلم التعليمية</h3>
+            <p style="font-size: 12px; color: #94a3b8;">محتوى فكري وعلمي أصيل</p>
+            
+            <!-- التقاط صورة/فيديو سيلفي -->
+            <div class="camera-box">
+                <h4>📸 التقاط صورة أو فيديو سيلفي</h4>
+                <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">أضف صورتك أو مقطعك الخاص</p>
+                <input type="file" id="mediaInput" accept="image/*,video/*" capture="user" style="display: none;" onchange="previewMedia(event)">
+                <button onclick="document.getElementById('mediaInput').click()" style="background: #38bdf8; color: #0b1120; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer;">فتح الكاميرا 📷</button>
+                <img id="imagePreview" class="preview-media" />
+                <video id="videoPreview" class="preview-media" controls></video>
             </div>
         </div>
     </div>
 
-    <!-- الشريط السفلي للتنقل (5 خيارات) -->
-    <nav class="navbar">
+    <!-- الشريط السفلي للتنقل (5 أقسام) -->
+    <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)">
-            <span class="nav-icon">🏠</span>الرئيسية
+            <span class="nav-icon">🏠</span>
+            <span>الرئيسية</span>
         </button>
         <button class="nav-item" onclick="switchPage('live', this)">
-            <span class="nav-icon">🔴</span>البث
+            <span class="nav-icon">🔴</span>
+            <span>البث</span>
         </button>
         <button class="nav-item" onclick="switchPage('library', this)">
-            <span class="nav-icon">📚</span>المكتبة
+            <span class="nav-icon">📚</span>
+            <span>المكتبة</span>
         </button>
         <button class="nav-item" onclick="switchPage('explore', this)">
-            <span class="nav-icon">✨</span>اكتشف
+            <span class="nav-icon">✨</span>
+            <span>اكتشف</span>
         </button>
         <button class="nav-item" onclick="switchPage('profile', this)">
-            <span class="nav-icon">👤</span>حسابي
+            <span class="nav-icon">👤</span>
+            <span>حسابي</span>
         </button>
     </nav>
 
     <script>
-        function switchPage(pageName, btn) {
+        // التنقل بين الشاشات
+        function switchPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById('page-' + pageName).classList.add('active');
-            if (btn) btn.classList.add('active');
+            document.getElementById('page-' + pageId).classList.add('active');
+            btn.classList.add('active');
         }
 
-        function toggleLike(btn, countId) {
-            const countEl = document.getElementById(countId);
-            let count = parseInt(countEl.innerText);
-            
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                countEl.innerText = count - 1;
-                showToast("تم إلغاء الإعجاب");
-            } else {
-                btn.classList.add('liked');
-                countEl.innerText = count + 1;
-                showToast("شكراً على إعجابك! ❤️");
-            }
+        function openLive() {
+            switchPage('live', document.querySelectorAll('.nav-item')[1]);
         }
 
-        function toggleSave(btn, title) {
-            if (btn.classList.contains('saved')) {
-                btn.classList.remove('saved');
-                showToast("تم إزالة المحتوى من المحفوظات");
-            } else {
-                btn.classList.add('saved');
-                showToast("تم حفظ " + title + " في مكتبتك! 🔖");
-            }
-        }
-
-        function toggleAuthorFollow(btn) {
-            if (btn.classList.contains('following')) {
-                btn.classList.remove('following');
-                btn.innerText = "+ متابعة";
-                showToast("تم إلغاء المتابعة");
-            } else {
-                btn.classList.add('following');
-                btn.innerText = "تمت المتابعة ✓";
-                showToast("شكراً لمتابعتك الكاتب! ✨");
-            }
-        }
-
-        function toggleMainSubscribe() {
-            const btn = document.getElementById('mainSubBtn');
-            const followerEl = document.getElementById('followerCount');
-            
-            if (btn.classList.contains('active')) {
-                btn.classList.remove('active');
-                btn.innerText = "+ متابعة القناة";
-                followerEl.innerText = "1,450";
-                showToast("تم إلغاء متابعة القناة");
-            } else {
-                btn.classList.add('active');
-                btn.innerText = "مُتابع ✓";
-                followerEl.innerText = "1,451";
-                showToast("أهلاً بك! أصبحت الآن من متابعي منصة القلم 🎉");
-            }
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const chatBox = document.getElementById('chatBox');
-            
-            if (input.value.trim() !== "") {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = 'chat-msg';
-                msgDiv.innerHTML = `<span>أنت:</span> ${input.value}`;
-                chatBox.appendChild(msgDiv);
-                input.value = "";
-                chatBox.scrollTop = chatBox.scrollHeight;
-                showToast("تم إرسال تعليقك في البث! 💬");
-            }
-        }
-
-        function showInstallGuide() {
-            document.getElementById('installModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('installModal').classList.remove('show');
-        }
-
-        function shareContent(title) {
+        // تفعيل زر المشاركة الأصلي للهاتف
+        function sharePlatform() {
             if (navigator.share) {
                 navigator.share({
-                    title: 'منصة القلم',
-                    text: 'تصفح ' + title + ' على منصة القلم',
+                    title: 'منصة القلم التعليمية',
+                    text: 'انضم إلينا في منصة القلم المباشرة وتصفح المحتوى الفكري والتفاعلي!',
                     url: window.location.href,
-                });
+                }).catch(console.error);
             } else {
-                showToast("تم نسخ رابط المشاركة! 🚀");
+                navigator.clipboard.writeText(window.location.href);
+                alert('تم نسخ رابط المنصة بنجاح!');
             }
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
+        // تفاعلات الإعجاب
+        function likeCard(btn) {
+            btn.style.color = '#ef4444';
+            btn.querySelector('.action-text').innerText = '1.2k+';
+        }
+
+        // إرسال التعليقات في البث المباشر
+        function sendComment() {
+            const input = document.getElementById('chatInput');
+            const msgText = input.value.trim();
+            if (msgText !== "") {
+                const chatBox = document.getElementById('chatMessages');
+                const newMsg = document.createElement('div');
+                newMsg.className = 'chat-msg';
+                newMsg.innerHTML = `<div class="chat-user">أنت</div>${msgText}`;
+                chatBox.appendChild(newMsg);
+                input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // معاينة الصورة أو الفيديو السيلفي
+        function previewMedia(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const img = document.getElementById('imagePreview');
+                const video = document.getElementById('videoPreview');
+                img.style.display = 'none';
+                video.style.display = 'none';
+
+                if (file.type.startsWith('image/')) {
+                    img.src = URL.createObjectURL(file);
+                    img.style.display = 'block';
+                } else if (file.type.startsWith('video/')) {
+                    video.src = URL.createObjectURL(file);
+                    video.style.display = 'block';
+                }
+            }
         }
     </script>
 </body>
