@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة القلم - Qalam</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #000; color: #fff; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #fff; height: 100vh; overflow: hidden; }
         
-        /* حاوية التصفح الرأسي */
+        /* شاشات التنقل */
+        .page { display: none; height: 100vh; width: 100vw; position: absolute; top: 0; left: 0; }
+        .page.active { display: block; }
+        
+        /* خلاصة المحتوى الرئيسي */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
         
         /* بطاقات المحتوى */
@@ -16,68 +20,218 @@
         .card-overlay { position: absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%); z-index: 1; }
         
         /* تفاصيل المحتوى */
-        .content { position: relative; z-index: 2; margin-bottom: 70px; max-width: 85%; }
-        .tag { display: inline-block; background: #38bdf8; color: #000; font-weight: bold; font-size: 12px; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
+        .content { position: relative; z-index: 2; margin-bottom: 75px; max-width: 80%; }
+        .tag { display: inline-block; background: #38bdf8; color: #0f172a; font-weight: bold; font-size: 12px; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
         .title { font-size: 22px; font-weight: bold; margin-bottom: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .author { font-size: 14px; color: #cbd5e1; margin-bottom: 10px; }
         .desc { font-size: 13px; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* شريط التفاعل الجانبي */
-        .actions { position: absolute; left: 15px; bottom: 90px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .action-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; cursor: pointer; }
-        .action-text { font-size: 11px; margin-top: 4px; color: #e2e8f0; }
+        /* أزرار التفاعل الجانبية */
+        .actions { position: absolute; left: 15px; bottom: 95px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+        .action-btn { background: rgba(255,255,255,0.18); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+        .action-btn:active { transform: scale(0.9); }
+        .action-btn.liked { background: #ef4444; color: #fff; }
+        .action-btn.saved { background: #eab308; color: #fff; }
+        .action-text { font-size: 11px; margin-top: 4px; color: #e2e8f0; text-align: center; }
 
-        /* الشريط السفلي */
-        .navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
-        .nav-item { color: #64748b; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        /* صفحات الأقسام الأُخرى */
+        .section-container { padding: 30px 20px 80px 20px; height: 100vh; overflow-y: auto; background: #0f172a; }
+        .section-title { font-size: 24px; font-weight: bold; color: #38bdf8; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .grid-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .grid-item { background: #1e293b; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .grid-item img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .grid-item h4 { font-size: 14px; margin-bottom: 4px; }
+        .grid-item p { font-size: 12px; color: #94a3b8; }
+
+        /* ملف المستخدم */
+        .profile-card { background: #1e293b; padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 12px auto; }
+        
+        /* إشعارات المنبثقة */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #38bdf8; color: #0f172a; font-weight: bold; padding: 12px 24px; border-radius: 25px; z-index: 100; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* الشريط السفلي للتنقل */
+        .navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
+        .nav-item { color: #64748b; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; border: none; background: none; width: 25%; }
         .nav-item.active { color: #38bdf8; font-weight: bold; }
-        .nav-icon { font-size: 18px; }
+        .nav-icon { font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="feed">
-        <!-- بطاقة 1: كتاب -->
-        <div class="card" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80');">
-            <div class="card-overlay"></div>
-            <div class="content">
-                <span class="tag">📚 كتاب مفتاح</span>
-                <h2 class="title">مقدمة ابن خلدون</h2>
-                <p class="author">عبد الرحمن بن خلدون</p>
-                <p class="desc">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران البشري بطرح تحليلي عميق.</p>
+    <!-- التنبيه المنبثق -->
+    <div id="toast" class="toast">تمت العملية بنجاح!</div>
+
+    <!-- الصفحة الأولى: الرئيسية -->
+    <div id="page-home" class="page active">
+        <div class="feed">
+            <!-- بطاقة 1 -->
+            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80');">
+                <div class="card-overlay"></div>
+                <div class="content">
+                    <span class="tag">📚 كتاب مفتاح</span>
+                    <h2 class="title">مقدمة ابن خلدون</h2>
+                    <p class="author">عبد الرحمن بن خلدون</p>
+                    <p class="desc">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران البشري بطرح تحليلي عميق.</p>
+                </div>
+                <div class="actions">
+                    <div>
+                        <button class="action-btn" onclick="toggleLike(this, 'like1')">❤️</button>
+                        <p class="action-text" id="like1">1200</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="toggleSave(this, 'مقدمة ابن خلدون')">🔖</button>
+                        <p class="action-text">حفظ</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="shareContent('مقدمة ابن خلدون')">🚀</button>
+                        <p class="action-text">مشاركة</p>
+                    </div>
+                </div>
             </div>
-            <div class="actions">
-                <div><button class="action-btn">❤️</button><p class="action-text">1.2k</p></div>
-                <div><button class="action-btn">🔖</button><p class="action-text">حفظ</p></div>
-                <div><button class="action-btn">🚀</button><p class="action-text">مشاركة</p></div>
+
+            <!-- بطاقة 2 -->
+            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80');">
+                <div class="card-overlay"></div>
+                <div class="content">
+                    <span class="tag">🎧 بودكاست / صوت</span>
+                    <h2 class="title">رحلة العلم والتفكير</h2>
+                    <p class="author">منصة القلم - صوتيات</p>
+                    <p class="desc">حلقة مقتضبة تتناول مناهج البحث العلمي وأثرها في بناء المعرفة الإنسانية.</p>
+                </div>
+                <div class="actions">
+                    <div>
+                        <button class="action-btn" onclick="toggleLike(this, 'like2')">❤️</button>
+                        <p class="action-text" id="like2">850</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="toggleSave(this, 'رحلة العلم والتفكير')">🔖</button>
+                        <p class="action-text">حفظ</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="shareContent('رحلة العلم والتفكير')">🚀</button>
+                        <p class="action-text">مشاركة</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- بطاقة 2: محتوى صوتي -->
-        <div class="card" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80');">
-            <div class="card-overlay"></div>
-            <div class="content">
-                <span class="tag">🎧 بودكاست / صوت</span>
-                <h2 class="title">رحلة العلم والتفكير</h2>
-                <p class="author">منصة القلم - صوتيات</p>
-                <p class="desc">حلقة مقتضبة تتناول مناهج البحث العلمي وأثرها في بناء المعرفة الإنسانية.</p>
+    <!-- الصفحة الثانية: المكتبة -->
+    <div id="page-library" class="page">
+        <div class="section-container">
+            <h2 class="section-title">📚 المكتبة الشاملة</h2>
+            <div class="grid-list">
+                <div class="grid-item">
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" alt="كتاب">
+                    <h4>مقدمة ابن خلدون</h4>
+                    <p>التاريخ والتطور</p>
+                </div>
+                <div class="grid-item">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80" alt="كتاب">
+                    <h4>مناهج البحث</h4>
+                    <p>أصول العلم</p>
+                </div>
             </div>
-            <div class="actions">
-                <div><button class="action-btn">❤️</button><p class="action-text">850</p></div>
-                <div><button class="action-btn">🔖</button><p class="action-text">حفظ</p></div>
-                <div><button class="action-btn">🚀</button><p class="action-text">مشاركة</p></div>
+        </div>
+    </div>
+
+    <!-- الصفحة الثالثة: اكتشف -->
+    <div id="page-explore" class="page">
+        <div class="section-container">
+            <h2 class="section-title">✨ استكشف المواضيع</h2>
+            <div class="grid-list">
+                <div class="grid-item" style="grid-column: span 2; background: #1e293b; text-align: right;">
+                    <h3 style="color:#38bdf8; margin-bottom:8px;">🔍 بحث سريع</h3>
+                    <p>استكشف الكتب والمحتوى العلمي والتاريخي حسب التصنيف.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الصفحة الرابعة: حسابي -->
+    <div id="page-profile" class="page">
+        <div class="section-container">
+            <h2 class="section-title">👤 الملف الشخصي</h2>
+            <div class="profile-card">
+                <div class="avatar">🖊️</div>
+                <h3>باحث في القلم</h3>
+                <p style="color:#94a3b8; font-size:13px; margin-top:4px;">عضو مسجل في المنصة</p>
             </div>
         </div>
     </div>
 
     <!-- الشريط السفلي للتنقل -->
     <nav class="navbar">
-        <a href="#" class="nav-item active"><span class="nav-icon">🏠</span>الرئيسية</a>
-        <a href="#" class="nav-item"><span class="nav-icon">📚</span>المكتبة</a>
-        <a href="#" class="nav-item"><span class="nav-icon">✨</span>اكتشف</a>
-        <a href="#" class="nav-item"><span class="nav-icon">👤</span>حسابي</a>
+        <button class="nav-item active" onclick="switchPage('home', this)">
+            <span class="nav-icon">🏠</span>الرئيسية
+        </button>
+        <button class="nav-item" onclick="switchPage('library', this)">
+            <span class="nav-icon">📚</span>المكتبة
+        </button>
+        <button class="nav-item" onclick="switchPage('explore', this)">
+            <span class="nav-icon">✨</span>اكتشف
+        </button>
+        <button class="nav-item" onclick="switchPage('profile', this)">
+            <span class="nav-icon">👤</span>حسابي
+        </button>
     </nav>
 
+    <script>
+        function switchPage(pageName, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('page-' + pageName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function toggleLike(btn, countId) {
+            const countEl = document.getElementById(countId);
+            let count = parseInt(countEl.innerText);
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                countEl.innerText = count - 1;
+                showToast("تم إلغاء الإعجاب");
+            } else {
+                btn.classList.add('liked');
+                countEl.innerText = count + 1;
+                showToast("شكراً على إعجابك! ❤️");
+            }
+        }
+
+        function toggleSave(btn, title) {
+            if (btn.classList.contains('saved')) {
+                btn.classList.remove('saved');
+                showToast("تم إزالة المحتوى من المحفوظات");
+            } else {
+                btn.classList.add('saved');
+                showToast("تم حفظ " + title + " في مكتبتك! 🔖");
+            }
+        }
+
+        function shareContent(title) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'منصة القلم',
+                    text: 'تصفح ' + title + ' على منصة القلم',
+                    url: window.location.href,
+                });
+            } else {
+                showToast("تم نسخ رابط المشاركة! 🚀");
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
 </body>
 </html>
-
