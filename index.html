@@ -6,7 +6,7 @@
     <title>منصة القلم - Qalam Platform | منصة التعليم والبث المباشر</title>
     
     <!-- تحسينات محركات البحث SEO & Google indexing -->
-    <meta name="description" content="منصة القلم التعليمية - بث مباشر، مكتبة كتب PDF تفاعلية، مقالات، ونظام التعليق والمشاركة. متوافقة مع أندرويد وآيفون.">
+    <meta name="description" content="منصة القلم التعليمية - بث مباشر، مكتبة كتب PDF تفاعلية، مقالات، ونظام التعليق والمشاركة والحذف. متوافقة مع أندرويد وآيفون.">
     <meta name="keywords" content="منصة القلم, بث مباشر, كتب PDF, تحميل كتب, التعليم الهادف, بودكاست, مقالات">
     <meta name="robots" content="index, follow">
     
@@ -14,7 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://theimamsoldietsdora-prog.github.io/-qalam-platform/">
     <meta property="og:title" content="منصة القلم التعليمية - Qalam Platform">
-    <meta property="og:description" content="انضم إلى منصة القلم لمتابعة البث المباشر، رفع وتحميل كتب الـ PDF، والتفاعل مع المحتوى بكل بساطة.">
+    <meta property="og:description" content="انضم إلى منصة القلم لمتابعة البث المباشر، رفع وتحميل كتب الـ PDF، وإدارة المحتوى بكل بساطة.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80">
 
     <!-- PWA Meta Tags للأندرويد والآيفون -->
@@ -36,11 +36,16 @@
         .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 10%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); }
         .card-content { position: relative; z-index: 2; margin-bottom: 70px; }
 
-        /* أزرار التفاعل */
-        .side-actions { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 18px; z-index: 3; align-items: center; }
-        .action-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: none; width: 50px; height: 50px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        /* أزرار التفاعل الجانبية */
+        .side-actions { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 15px; z-index: 3; align-items: center; }
+        .action-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; transition: 0.2s; }
         .action-btn:active { transform: scale(0.9); }
         .action-text { font-size: 10px; margin-top: 2px; }
+
+        /* صندوق التعليقات المنبثق للبطاقات الرئيسية */
+        .card-comments-box { position: absolute; bottom: 70px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 200px; }
+        .card-comments-list { flex: 1; overflow-y: auto; max-height: 120px; display: flex; flex-direction: column; gap: 6px; }
+        .card-comment-item { font-size: 11px; background: rgba(255,255,255,0.06); padding: 5px 8px; border-radius: 6px; color: #cbd5e1; }
 
         /* شريط التثبيت العلوي */
         .install-banner { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -75,9 +80,10 @@
         .section-header { display: flex; gap: 12px; align-items: flex-start; }
         .section-thumb { width: 50px; height: 50px; border-radius: 12px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #0b1120; font-weight: bold; flex-shrink: 0; }
         
-        .post-actions-row { display: flex; gap: 8px; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+        .post-actions-row { display: flex; gap: 8px; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; align-items: center; }
         .post-action-btn { background: rgba(255,255,255,0.08); border: none; color: #38bdf8; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; text-decoration: none; }
-        
+        .delete-btn { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
         .comments-section { margin-top: 10px; display: none; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
         .comment-item { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 6px; margin-top: 5px; }
 
@@ -102,7 +108,7 @@
 </head>
 <body>
 
-    <!-- نافذة عرض ملف الـ PDF المدمجة (تفتح وتغلق بسهولة) -->
+    <!-- نافذة عرض ملف الـ PDF المدمجة -->
     <div id="pdfViewerModal">
         <div class="pdf-modal-header">
             <h3 id="pdfModalTitle" style="font-size: 16px; color: #38bdf8;">عارض الكتب</h3>
@@ -120,11 +126,27 @@
                     <span style="font-size: 12px;">📱 تثبيت منصة القلم على هاتفك</span>
                     <button class="install-btn" onclick="handleInstallPrompt()">تثبيت الآن</button>
                 </div>
+                
+                <!-- أزرار التفاعل الجانبية -->
                 <div class="side-actions">
                     <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
+                    <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
                     <button class="action-btn" onclick="openLive()">🔴<span class="action-text">مباشر</span></button>
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                 </div>
+
+                <!-- صندوق التعليقات المنبثق للبطاقة الرئيسية -->
+                <div class="card-comments-box">
+                    <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
+                    <div class="card-comments-list">
+                        <div class="card-comment-item"><b>محمد:</b> مقدمة ممتازة وجهود مباركة.</div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
+                        <button class="send-btn" style="padding: 0 10px; font-size: 11px;" onclick="addCardCommentBtn(this)">إرسال</button>
+                    </div>
+                </div>
+
                 <div class="card-content">
                     <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">✒️ شعار المنصة الأصيل</span>
                     <h2 style="font-size: 22px; margin: 8px 0;">مقدمة ابن خلدون</h2>
@@ -158,11 +180,11 @@
         </div>
     </div>
 
-    <!-- 3. المكتبة والكتب (رفع وتحميل وقراءة PDF، تعديل، تعليق، ومشاركة) -->
+    <!-- 3. المكتبة والكتب -->
     <div id="page-library" class="page">
         <div style="padding: 20px 20px 10px;">
             <h2>📚 مكتبة الكتب والمقالات</h2>
-            <p style="font-size: 12px; color: #94a3b8;">اررفع، اقرأ، وحمل كتب الـ PDF وتفاعل مع المقالات بكل سهولة</p>
+            <p style="font-size: 12px; color: #94a3b8;">ارفع، اقرأ، حمل، واحذف الكتب والمقالات بكل سهولة</p>
         </div>
         
         <div class="grid-container" style="padding-top: 5px;">
@@ -190,9 +212,10 @@
                     </div>
                     <div class="post-actions-row">
                         <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
-                        <a class="post-action-btn" href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download="Qaidah_Book.pdf">📥 تحميل والاحتفاظ</a>
+                        <a class="post-action-btn" href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download="Qaidah_Book.pdf">📥 تحميل</a>
                         <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
                         <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
+                        <button class="post-action-btn delete-btn" onclick="deletePostCard(this)">🗑️ حذف</button>
                     </div>
                     <div class="comments-section">
                         <input type="text" class="form-input" placeholder="اكتب تعليقاً على الكتاب..." onkeypress="if(event.key==='Enter') addPostComment(this)">
@@ -344,7 +367,38 @@
             }
         }
 
-        // عارض ملفات الـ PDF التفاعلي (فتح وإغلاق بسهولة)
+        // فتح وإغلاق صندوق التعليقات في الشاشة الرئيسية
+        function toggleCardComments(btn) {
+            const card = btn.closest('.card');
+            const box = card.querySelector('.card-comments-box');
+            box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function addCardComment(input) {
+            if (event.key === 'Enter') {
+                processCommentInput(input);
+            }
+        }
+
+        function addCardCommentBtn(btn) {
+            const input = btn.previousElementSibling;
+            processCommentInput(input);
+        }
+
+        function processCommentInput(input) {
+            const text = input.value.trim();
+            if (text !== "") {
+                const list = input.closest('.card-comments-box').querySelector('.card-comments-list');
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'card-comment-item';
+                commentDiv.innerHTML = `<b>أنت:</b> ${text}`;
+                list.appendChild(commentDiv);
+                input.value = "";
+                list.scrollTop = list.scrollHeight;
+            }
+        }
+
+        // عارض ملفات الـ PDF التفاعلي
         function openPdfViewer(pdfUrl, title) {
             document.getElementById('pdfModalTitle').innerText = title;
             document.getElementById('pdfIframe').src = pdfUrl;
@@ -385,9 +439,10 @@
                 </div>
                 <div class="post-actions-row">
                     <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('${pdfUrl}', '${title}')">📖 قراءة الكتاب</button>
-                    <a class="post-action-btn" href="${pdfUrl}" download="${title}.pdf">📥 تحميل والاحتفاظ</a>
+                    <a class="post-action-btn" href="${pdfUrl}" download="${title}.pdf">📥 تحميل</a>
                     <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
                     <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
+                    <button class="post-action-btn delete-btn" onclick="deletePostCard(this)">🗑️ حذف</button>
                 </div>
                 <div class="comments-section">
                     <input type="text" class="form-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') addPostComment(this)">
@@ -402,14 +457,22 @@
             alert('تمت إضافة ونشر الكتاب بنجاح!');
         }
 
-        // فتح وإغلاق التعليقات
+        // ميزة حذف المنشور أو الكتاب
+        function deletePostCard(btn) {
+            if (confirm('هل أنت متأكد من رغبتك في حذف هذا المحتوى؟')) {
+                const card = btn.closest('.section-card');
+                card.remove();
+            }
+        }
+
+        // فتح وإغلاق التعليقات في المكتبة
         function toggleComments(btn) {
             const card = btn.closest('.section-card');
             const commentsSec = card.querySelector('.comments-section');
             commentsSec.style.display = commentsSec.style.display === 'block' ? 'none' : 'block';
         }
 
-        // إضافة تعليق
+        // إضافة تعليق في المكتبة
         function addPostComment(input) {
             const text = input.value.trim();
             if (text !== "") {
