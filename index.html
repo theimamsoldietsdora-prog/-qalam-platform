@@ -28,6 +28,9 @@
         /* تفاصيل المحتوى */
         .content { position: relative; z-index: 2; margin-bottom: 75px; max-width: 80%; }
         .tag { display: inline-block; background: #38bdf8; color: #0f172a; font-weight: bold; font-size: 12px; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
+        .tag.live-badge { background: #ef4444; color: #fff; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
         .title { font-size: 22px; font-weight: bold; margin-bottom: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .author { font-size: 14px; color: #cbd5e1; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .follow-tag-btn { background: #38bdf8; color: #0f172a; border: none; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 10px; cursor: pointer; }
@@ -56,6 +59,17 @@
         .grid-item h4 { font-size: 14px; margin-bottom: 4px; }
         .grid-item p { font-size: 12px; color: #94a3b8; }
 
+        /* قسم البث المباشر */
+        .live-container { display: flex; flex-direction: column; height: 100vh; padding: 20px 20px 80px 20px; background: #0f172a; }
+        .live-player { width: 100%; height: 220px; background: #000; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 15px; border: 1px solid #ef4444; }
+        .live-indicator { position: absolute; top: 12px; right: 12px; background: #ef4444; color: #fff; padding: 4px 10px; font-size: 11px; font-weight: bold; border-radius: 8px; }
+        .chat-box { flex: 1; background: #1e293b; border-radius: 16px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px; font-size: 12px; }
+        .chat-msg span { color: #38bdf8; font-weight: bold; margin-left: 5px; }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input { flex: 1; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 20px; color: #fff; font-size: 13px; outline: none; }
+        .send-btn { background: #38bdf8; color: #0f172a; border: none; padding: 0 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+
         /* ملف المستخدم والمتابعة */
         .profile-card { background: #1e293b; padding: 25px 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
         .avatar { width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 12px auto; }
@@ -76,11 +90,11 @@
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #38bdf8; color: #0f172a; font-weight: bold; padding: 12px 24px; border-radius: 25px; z-index: 100; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* الشريط السفلي للتنقل */
+        /* الشريط السفلي للتنقل (5 أقسام الآن) */
         .navbar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; z-index: 10; }
-        .nav-item { color: #64748b; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; border: none; background: none; width: 25%; }
+        .nav-item { color: #64748b; text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border: none; background: none; width: 20%; }
         .nav-item.active { color: #38bdf8; font-weight: bold; }
-        .nav-icon { font-size: 20px; }
+        .nav-icon { font-size: 18px; }
     </style>
 </head>
 <body>
@@ -109,7 +123,35 @@
     <!-- الصفحة الأولى: الرئيسية -->
     <div id="page-home" class="page active">
         <div class="feed">
-            <!-- بطاقة 1 -->
+            <!-- بطاقة البث المباشر الحية -->
+            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80');">
+                <div class="card-overlay"></div>
+                <div class="content">
+                    <span class="tag live-badge">🔴 بث مباشر الآن</span>
+                    <h2 class="title">شرح كتاب قواعد الفكر المعاصر</h2>
+                    <p class="author">
+                        منصة القلم - بث حي
+                        <button class="follow-tag-btn" onclick="toggleAuthorFollow(this)">+ متابعة</button>
+                    </p>
+                    <p class="desc">جلسة نقاشية مفتوحة حول أحدث النظريات الفكرية والمنهجية.</p>
+                </div>
+                <div class="actions">
+                    <div>
+                        <button class="action-btn" onclick="toggleLike(this, 'likeLive')">❤️</button>
+                        <p class="action-text" id="likeLive">340</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[1])" style="background: #ef4444;">📺</button>
+                        <p class="action-text">انضم للبث</p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="shareContent('البث المباشر')">🚀</button>
+                        <p class="action-text">مشاركة</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقة 2 -->
             <div class="card" style="background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80');">
                 <div class="card-overlay"></div>
                 <div class="content">
@@ -136,38 +178,36 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- بطاقة 2 -->
-            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80');">
-                <div class="card-overlay"></div>
-                <div class="content">
-                    <span class="tag">🎧 بودكاست / صوت</span>
-                    <h2 class="title">رحلة العلم والتفكير</h2>
-                    <p class="author">
-                        منصة القلم - صوتيات
-                        <button class="follow-tag-btn" onclick="toggleAuthorFollow(this)">+ متابعة</button>
-                    </p>
-                    <p class="desc">حلقة مقتضبة تتناول مناهج البحث العلمي وأثرها في بناء المعرفة الإنسانية.</p>
+    <!-- الصفحة الثانية: البث المباشر (جديد) -->
+    <div id="page-live" class="page">
+        <div class="live-container">
+            <h2 class="section-title" style="margin-bottom: 10px;">📺 غرفة البث المباشر</h2>
+            <div class="live-player">
+                <div class="live-indicator">🔴 مباشر الآن</div>
+                <div style="text-align: center; color: #94a3b8;">
+                    <p style="font-size: 32px; margin-bottom: 5px;">📡</p>
+                    <p style="font-size: 14px; font-weight: bold; color: #fff;">جاري بث المحاضرة الحية...</p>
+                    <p style="font-size: 11px;">متصل: 485 مشاهد</p>
                 </div>
-                <div class="actions">
-                    <div>
-                        <button class="action-btn" onclick="toggleLike(this, 'like2')">❤️</button>
-                        <p class="action-text" id="like2">850</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="toggleSave(this, 'رحلة العلم والتفكير')">🔖</button>
-                        <p class="action-text">حفظ</p>
-                    </div>
-                    <div>
-                        <button class="action-btn" onclick="shareContent('رحلة العلم والتفكير')">🚀</button>
-                        <p class="action-text">مشاركة</p>
-                    </div>
-                </div>
+            </div>
+            
+            <div class="chat-box" id="chatBox">
+                <div class="chat-msg"><span>أحمد علي:</span> أهلاً بالمتابعين جميعاً من العراق</div>
+                <div class="chat-msg"><span>فاطمة حسن:</span> شكراً لهذه المبادرة الرائعة</div>
+                <div class="chat-msg"><span>محمد الباحث:</span> هل سيتم حفظ البث بعد انتهائه؟</div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقك أو سؤالك...">
+                <button class="send-btn" onclick="sendChatMessage()">إرسال</button>
             </div>
         </div>
     </div>
 
-    <!-- الصفحة الثانية: المكتبة -->
+    <!-- الصفحة الثالثة: المكتبة -->
     <div id="page-library" class="page">
         <div class="section-container">
             <h2 class="section-title">📚 المكتبة الشاملة</h2>
@@ -186,7 +226,7 @@
         </div>
     </div>
 
-    <!-- الصفحة الثالثة: اكتشف -->
+    <!-- الصفحة الرابعة: اكتشف -->
     <div id="page-explore" class="page">
         <div class="section-container">
             <h2 class="section-title">✨ استكشف المواضيع</h2>
@@ -199,7 +239,7 @@
         </div>
     </div>
 
-    <!-- الصفحة الرابعة: حسابي -->
+    <!-- الصفحة الخامسة: حسابي -->
     <div id="page-profile" class="page">
         <div class="section-container">
             <h2 class="section-title">👤 قناة منصة القلم</h2>
@@ -225,10 +265,13 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي للتنقل -->
+    <!-- الشريط السفلي للتنقل (5 خيارات) -->
     <nav class="navbar">
         <button class="nav-item active" onclick="switchPage('home', this)">
             <span class="nav-icon">🏠</span>الرئيسية
+        </button>
+        <button class="nav-item" onclick="switchPage('live', this)">
+            <span class="nav-icon">🔴</span>البث
         </button>
         <button class="nav-item" onclick="switchPage('library', this)">
             <span class="nav-icon">📚</span>المكتبة
@@ -247,7 +290,7 @@
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             
             document.getElementById('page-' + pageName).classList.add('active');
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
         }
 
         function toggleLike(btn, countId) {
@@ -301,6 +344,21 @@
                 btn.innerText = "مُتابع ✓";
                 followerEl.innerText = "1,451";
                 showToast("أهلاً بك! أصبحت الآن من متابعي منصة القلم 🎉");
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            
+            if (input.value.trim() !== "") {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'chat-msg';
+                msgDiv.innerHTML = `<span>أنت:</span> ${input.value}`;
+                chatBox.appendChild(msgDiv);
+                input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+                showToast("تم إرسال تعليقك في البث! 💬");
             }
         }
 
