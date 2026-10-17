@@ -23,6 +23,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="المنهج القويم">
 
+    <!-- مكتبات Firebase السحابية الحية -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0b1120; color: #ffffff; overflow: hidden; }
@@ -140,47 +145,14 @@
                 <input type="file" id="feedMediaInput" accept="image/*,video/*" class="form-input" style="padding: 6px;">
             </div>
 
-            <button class="primary-btn" onclick="publishFeedMedia()">نشر الآن على الشاشة الرئيسية 🚀</button>
+            <button class="primary-btn" onclick="publishFeedMedia()">نشر الآن على السحاب 🚀</button>
         </div>
     </div>
 
-    <!-- 1. الرئيسية (شاشة الفيديوهات والصور المتتابعة) -->
+    <!-- 1. الرئيسية -->
     <div id="page-home" class="page active">
         <div class="feed" id="mainFeedContainer">
-            
-            <!-- منشور نموذجي أول -->
-            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
-                <div class="card-overlay"></div>
-                <div class="install-banner">
-                    <span style="font-size: 12px;">📱 تثبيت منصة المنهج القويم</span>
-                    <button class="install-btn" onclick="handleInstallPrompt()">تثبيت الآن</button>
-                </div>
-                
-                <div class="side-actions">
-                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
-                    <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
-                    <button class="action-btn" onclick="openLive()">🔴<span class="action-text">مباشر</span></button>
-                    <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
-                </div>
-
-                <div class="card-comments-box">
-                    <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
-                    <div class="card-comments-list">
-                        <div class="card-comment-item"><b>محمد:</b> منصة مباركة وخطوة رائدة.</div>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
-                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
-                        <button class="send-btn" style="padding: 0 10px; font-size: 11px;" onclick="addCardCommentBtn(this)">إرسال</button>
-                    </div>
-                </div>
-
-                <div class="card-content">
-                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ المنهج القويم</span>
-                    <h2 style="font-size: 22px; margin: 8px 0;">مقدمة ابن خلدون</h2>
-                    <p style="font-size: 12px; color: #cbd5e1;">تأسيس علم الاجتماع وفهم فلسفة التاريخ والعمران بشرح تحليلي حديث.</p>
-                </div>
-            </div>
-
+            <!-- المنشورات تُحمل حياً ومباشرة من قاعدة البيانات السحابية -->
         </div>
     </div>
 
@@ -212,11 +184,10 @@
     <div id="page-library" class="page">
         <div style="padding: 20px 20px 10px;">
             <h2>📚 مكتبة الكتب والمقالات</h2>
-            <p style="font-size: 12px; color: #94a3b8;">ارفع، اقرأ، حمل، واحذف الكتب والمقالات بكل سهولة</p>
+            <p style="font-size: 12px; color: #94a3b8;">ارفع، اقرأ، حمل، واحذف الكتب والمقالات بكل سهولة عبر السحاب</p>
         </div>
         
         <div class="grid-container" style="padding-top: 5px;">
-            <!-- لوحة رفع كتاب PDF أو منشور جديد -->
             <div class="content-box">
                 <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF أو منشور جديد</h4>
                 <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب أو المقال...">
@@ -225,33 +196,11 @@
                     <label style="font-size: 11px; color: #94a3b8;">اختر ملف PDF (اختياري):</label>
                     <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 6px;">
                 </div>
-                <button class="primary-btn" onclick="saveNewBookOrPost()">نشر وإضافة للمكتبة</button>
+                <button class="primary-btn" onclick="saveNewBookOrPost()">نشر وإضافة للمكتبة السحابية</button>
             </div>
 
-            <!-- قائمة الكتب والمنشورات -->
             <div id="postsListContainer">
-                <div class="section-card">
-                    <div class="section-header">
-                        <div class="section-thumb">📖</div>
-                        <div style="flex: 1;">
-                            <h4 style="font-size: 14px;">كتاب القواعد الفكرية الأساسية (PDF)</h4>
-                            <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي جاهز للقراءة المباشرة والتحميل والاحتفاظ.</p>
-                        </div>
-                    </div>
-                    <div class="post-actions-row">
-                        <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
-                        <a class="post-action-btn" href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download="Qaidah_Book.pdf">📥 تحميل</a>
-                        <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
-                        <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
-                        <button class="post-action-btn delete-btn" onclick="deletePostCard(this)">🗑️ حذف</button>
-                    </div>
-                    <div class="comments-section">
-                        <input type="text" class="form-input" placeholder="اكتب تعليقاً على الكتاب..." onkeypress="if(event.key==='Enter') addPostComment(this)">
-                        <div class="comments-list">
-                            <div class="comment-item"><b>حيدر:</b> كتاب ممتاز وتم حفظه بنجاح!</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- الكتب والمنشورات السحابية تظهر هنا -->
             </div>
         </div>
     </div>
@@ -282,7 +231,7 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي مع زر (+) للنشر -->
+    <!-- شريط التنقل السفلي -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)">
             <span class="nav-icon">🏠</span>
@@ -293,7 +242,6 @@
             <span>البث</span>
         </button>
         
-        <!-- زر النشر السريع (+) -->
         <div class="plus-btn-item" onclick="openUploadModal()">+</div>
 
         <button class="nav-item" onclick="switchPage('library', this)">
@@ -307,6 +255,40 @@
     </nav>
 
     <script>
+        // --- إعدادات إعدادات مشروع Firebase (استبدل القيم بمفاتيح مشروعك الخاص) ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // تهيئة السحاب في حال وجود مفاتيح حقيقية
+        let db = null;
+        let storage = null;
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                storage = firebase.storage();
+                console.log("Firebase Connected Successfully");
+            }
+        } catch (e) {
+            console.warn("Firebase not configured yet, running in hybrid mode.", e);
+        }
+
+        // دالة تنظيف وتشفير النصوص الحساسة لمنع هجمات XSS
+        function sanitizeText(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+
         function switchPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -318,7 +300,6 @@
             switchPage('live', document.querySelectorAll('.nav-item')[1]);
         }
 
-        /* نافذة رفع ونشر فيديو أو صورة في الشاشة الرئيسية */
         function openUploadModal() {
             document.getElementById('uploadModal').style.display = 'flex';
         }
@@ -327,72 +308,119 @@
             document.getElementById('uploadModal').style.display = 'none';
         }
 
-        function publishFeedMedia() {
-            const title = document.getElementById('feedTitleInput').value.trim();
-            const desc = document.getElementById('feedDescInput').value.trim();
+        // نشر فيديو أو صورة سحابياً
+        async function publishFeedMedia() {
+            const rawTitle = document.getElementById('feedTitleInput').value.trim();
+            const rawDesc = document.getElementById('feedDescInput').value.trim();
             const mediaFile = document.getElementById('feedMediaInput').files[0];
 
-            if (title === "") {
+            if (rawTitle === "") {
                 alert('يرجى كتابة عنوان للمنشور.');
                 return;
             }
 
+            const title = sanitizeText(rawTitle);
+            const desc = sanitizeText(rawDesc);
+            let mediaUrl = 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80';
+            let isVideo = false;
+
+            if (mediaFile) {
+                if (mediaFile.size > 50 * 1024 * 1024) { // حد أقصى 50 ميجابايت للحماية
+                    alert('حجم الملف كبير جداً، الحد الأقصى المسموح هو 50 ميجابايت.');
+                    return;
+                }
+                isVideo = mediaFile.type.startsWith('video/');
+                if (storage) {
+                    const storageRef = storage.ref('feed/' + Date.now() + '_' + mediaFile.name);
+                    const snapshot = await storageRef.put(mediaFile);
+                    mediaUrl = await snapshot.ref.getDownloadURL();
+                } else {
+                    mediaUrl = URL.createObjectURL(mediaFile);
+                }
+            }
+
+            const postData = {
+                title: title,
+                desc: desc,
+                mediaUrl: mediaUrl,
+                isVideo: isVideo,
+                likes: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            if (db) {
+                await db.collection('feed').add(postData);
+            } else {
+                renderFeedCard(postData);
+            }
+
+            document.getElementById('feedTitleInput').value = "";
+            document.getElementById('feedDescInput').value = "";
+            document.getElementById('feedMediaInput').value = "";
+            closeUploadModal();
+            switchPage('home', document.querySelectorAll('.nav-item')[0]);
+            alert('تم نشر المحتوى بنجاح!');
+        }
+
+        function renderFeedCard(data, docId = null) {
             const feedContainer = document.getElementById('mainFeedContainer');
             const cardDiv = document.createElement('div');
             cardDiv.className = 'card';
 
             let mediaHTML = '';
-            if (mediaFile) {
-                const mediaUrl = URL.createObjectURL(mediaFile);
-                if (mediaFile.type.startsWith('video/')) {
-                    mediaHTML = `<video class="card-media" src="${mediaUrl}" autoplay loop muted playsinline></video>`;
+            if (data.mediaUrl) {
+                if (data.isVideo) {
+                    mediaHTML = `<video class="card-media" src="${data.mediaUrl}" autoplay loop muted playsinline></video>`;
                 } else {
-                    cardDiv.style.backgroundImage = `url('${mediaUrl}')`;
+                    cardDiv.style.backgroundImage = `url('${data.mediaUrl}')`;
                 }
-            } else {
-                cardDiv.style.backgroundImage = `url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80')`;
             }
 
             cardDiv.innerHTML = `
                 ${mediaHTML}
                 <div class="card-overlay"></div>
                 <div class="side-actions">
-                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">0</span></button>
+                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${data.likes || 0}</span></button>
                     <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
-                    <button class="action-btn" style="background: rgba(239, 68, 68, 0.4);" onclick="deleteFeedCard(this)">🗑️<span class="action-text">حذف</span></button>
+                    <button class="action-btn" style="background: rgba(239, 68, 68, 0.4);" onclick="deleteFeedCard(this, '${docId}')">🗑️<span class="action-text">حذف</span></button>
                 </div>
                 <div class="card-comments-box">
                     <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
                     <div class="card-comments-list"></div>
                     <div style="display: flex; gap: 6px;">
-                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
-                        <button class="send-btn" style="padding: 0 10px; font-size: 11px;" onclick="addCardCommentBtn(this)">إرسال</button>
+                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this, '${docId}')">
+                        <button class="send-btn" style="padding: 0 10px; font-size: 11px;" onclick="addCardCommentBtn(this, '${docId}')">إرسال</button>
                     </div>
                 </div>
                 <div class="card-content">
                     <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ المنهج القويم</span>
-                    <h2 style="font-size: 22px; margin: 8px 0;">${title}</h2>
-                    <p style="font-size: 12px; color: #cbd5e1;">${desc}</p>
+                    <h2 style="font-size: 22px; margin: 8px 0;">${data.title}</h2>
+                    <p style="font-size: 12px; color: #cbd5e1;">${data.desc}</p>
                 </div>
             `;
 
             feedContainer.prepend(cardDiv);
-
-            // إعادة ضبط الإدخال وإغلاق النافذة
-            document.getElementById('feedTitleInput').value = "";
-            document.getElementById('feedDescInput').value = "";
-            document.getElementById('feedMediaInput').value = "";
-            closeUploadModal();
-            switchPage('home', document.querySelectorAll('.nav-item')[0]);
-            alert('تم نشر المحتوى بنجاح على الشاشة الرئيسية!');
         }
 
-        function deleteFeedCard(btn) {
+        async function deleteFeedCard(btn, docId) {
             if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) {
+                if (db && docId && docId !== 'null') {
+                    await db.collection('feed').doc(docId).delete();
+                }
                 const card = btn.closest('.card');
                 card.remove();
             }
+        }
+
+        // الاستماع الفوري للحفظ السحابي Live Listeners
+        if (db) {
+            db.collection('feed').orderBy('createdAt', 'asc').onSnapshot(snapshot => {
+                document.getElementById('mainFeedContainer').innerHTML = '';
+                snapshot.forEach(doc => {
+                    renderFeedCard(doc.data(), doc.id);
+                });
+            });
         }
 
         // تشغيل البث المباشر
@@ -421,7 +449,6 @@
             }
         }
 
-        // مشاركة المنصة
         function sharePlatform() {
             if (navigator.share) {
                 navigator.share({
@@ -435,7 +462,6 @@
             }
         }
 
-        // تثبيت التطبيق
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -458,7 +484,6 @@
             }
         }
 
-        // زر الإعجاب التبادلي
         function toggleLike(btn) {
             const textSpan = btn.querySelector('.action-text');
             if (btn.classList.contains('liked')) {
@@ -472,27 +497,27 @@
             }
         }
 
-        // فتح وإغلاق صندوق التعليقات في الشاشة الرئيسية
         function toggleCardComments(btn) {
             const card = btn.closest('.card');
             const box = card.querySelector('.card-comments-box');
             box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function addCardComment(input) {
+        function addCardComment(input, docId) {
             if (event.key === 'Enter') {
-                processCommentInput(input);
+                processCommentInput(input, docId);
             }
         }
 
-        function addCardCommentBtn(btn) {
+        function addCardCommentBtn(btn, docId) {
             const input = btn.previousElementSibling;
-            processCommentInput(input);
+            processCommentInput(input, docId);
         }
 
-        function processCommentInput(input) {
-            const text = input.value.trim();
-            if (text !== "") {
+        function processCommentInput(input, docId) {
+            const rawText = input.value.trim();
+            if (rawText !== "") {
+                const text = sanitizeText(rawText);
                 const list = input.closest('.card-comments-box').querySelector('.card-comments-list');
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'card-comment-item';
@@ -503,7 +528,6 @@
             }
         }
 
-        // عارض ملفات الـ PDF التفاعلي
         function openPdfViewer(pdfUrl, title) {
             document.getElementById('pdfModalTitle').innerText = title;
             document.getElementById('pdfIframe').src = pdfUrl;
@@ -515,20 +539,28 @@
             document.getElementById('pdfIframe').src = '';
         }
 
-        // نظام رفع وإضافة الكتب والمنشورات الجديدة في المكتبة
-        function saveNewBookOrPost() {
-            const title = document.getElementById('postTitleInput').value.trim();
-            const desc = document.getElementById('postDescInput').value.trim();
+        async function saveNewBookOrPost() {
+            const rawTitle = document.getElementById('postTitleInput').value.trim();
+            const rawDesc = document.getElementById('postDescInput').value.trim();
             const pdfFile = document.getElementById('pdfFileInput').files[0];
             
-            if (title === "" || desc === "") {
+            if (rawTitle === "" || rawDesc === "") {
                 alert('يرجى ملء عنوان ووصف المحتوى أولاً.');
                 return;
             }
 
+            const title = sanitizeText(rawTitle);
+            const desc = sanitizeText(rawDesc);
             let pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+
             if (pdfFile) {
-                pdfUrl = URL.createObjectURL(pdfFile);
+                if (storage) {
+                    const storageRef = storage.ref('books/' + Date.now() + '_' + pdfFile.name);
+                    const snapshot = await storageRef.put(pdfFile);
+                    pdfUrl = await snapshot.ref.getDownloadURL();
+                } else {
+                    pdfUrl = URL.createObjectURL(pdfFile);
+                }
             }
 
             const container = document.getElementById('postsListContainer');
@@ -576,8 +608,9 @@
         }
 
         function addPostComment(input) {
-            const text = input.value.trim();
-            if (text !== "") {
+            const rawText = input.value.trim();
+            if (rawText !== "") {
+                const text = sanitizeText(rawText);
                 const list = input.closest('.comments-section').querySelector('.comments-list');
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment-item';
@@ -589,8 +622,9 @@
 
         function sendComment() {
             const input = document.getElementById('chatInput');
-            const msgText = input.value.trim();
-            if (msgText !== "") {
+            const rawMsg = input.value.trim();
+            if (rawMsg !== "") {
+                const msgText = sanitizeText(rawMsg);
                 const chatBox = document.getElementById('chatMessages');
                 const newMsg = document.createElement('div');
                 newMsg.className = 'chat-msg';
