@@ -20,6 +20,11 @@
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
         .page.active { display: block; }
 
+        /* شاشة تسجيل الدخول والإنشاء */
+        #authScreen { position: fixed; inset: 0; background: #000000; z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { background: #121212; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 14px; }
+        .auth-title { font-size: 20px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 5px; }
+
         /* الشريط العلوي للرئيسية */
         .top-tiktok-header { position: absolute; top: 12px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 14px; }
         .top-left-actions, .top-right-actions { display: flex; align-items: center; gap: 8px; }
@@ -48,7 +53,6 @@
         .avatar-container { position: relative; margin-bottom: 6px; cursor: pointer; }
         .action-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ffffff; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; font-size: 18px; }
         .follow-plus-badge { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); background: #fe2c55; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; border: 2px solid #ffffff; transition: 0.3s; }
-        .follow-plus-badge.followed { background: #38bdf8; }
 
         .action-btn { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .action-btn:active { transform: scale(0.85); }
@@ -68,14 +72,15 @@
 
         .profile-info-section { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 5px; }
         .profile-avatar-wrapper { position: relative; width: 85px; height: 85px; margin-bottom: 8px; }
-        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; justify-content: center; align-items: center; font-size: 34px; }
+        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; justify-content: center; align-items: center; font-size: 34px; overflow: hidden; }
+        .profile-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
         .profile-story-plus { position: absolute; bottom: 0; right: 0; background: #38bdf8; color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 2px solid #000; font-size: 15px; cursor: pointer; }
 
         .profile-name { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 5px; color: #fff; }
         .profile-username { font-size: 12px; color: #94a3b8; margin-top: 2px; }
 
         .profile-stats-bar { display: flex; justify-content: center; align-items: center; gap: 28px; margin: 15px 0; }
-        .profile-stat-item { display: flex; flex-direction: column; align-items: center; }
+        .profile-stat-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .profile-stat-num { font-size: 16px; font-weight: 800; color: #ffffff; }
         .profile-stat-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
 
@@ -86,8 +91,7 @@
         .profile-bio { font-size: 12px; color: #cbd5e1; line-height: 1.5; max-width: 320px; margin: 0 auto 15px; text-align: center; }
 
         .profile-tabs-nav { display: flex; justify-content: space-around; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-top: 5px; }
-        .profile-tab-btn { background: none; border: none; color: #64748b; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
-        .profile-tab-btn.active { color: #ffffff; }
+        .profile-tab-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
         .profile-tab-btn.active::after { content: ''; position: absolute; bottom: -9px; left: 15%; right: 15%; height: 2px; background: #ffffff; }
 
         .profile-grid-posts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 5px; }
@@ -96,34 +100,29 @@
         .profile-grid-views { position: absolute; bottom: 6px; right: 6px; font-size: 10px; font-weight: bold; color: white; display: flex; align-items: center; gap: 3px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
         .pinned-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: white; font-size: 8px; font-weight: bold; padding: 1px 4px; border-radius: 3px; }
 
-        /* قائمة تيك توك الجانبية المنبثقة للأدوات */
-        #menuDrawerModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
-        .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 35px; display: flex; flex-direction: column; gap: 16px; max-height: 82vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
+        /* القوائم واللوحات والإنشاء */
+        #menuDrawerModal, #settingsModal, #editProfileModal, #cameraRecordModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
+        .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 35px; display: flex; flex-direction: column; gap: 16px; max-height: 85vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
         
         .menu-section-title { font-size: 11px; color: #71717a; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px; }
         .menu-item-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .menu-item-left { display: flex; align-items: center; gap: 12px; }
         .menu-item-icon { font-size: 18px; width: 24px; text-align: center; }
 
-        /* قسم الإكسبلور */
+        /* نافذة الإعدادات الشاملة (المطابقة لصورك تماماً) */
+        .settings-content { background: #000; position: absolute; inset: 0; z-index: 4500; display: none; flex-direction: column; overflow-y: auto; padding: 15px; }
+        .settings-header { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid #1f2937; margin-bottom: 15px; font-size: 17px; font-weight: bold; }
+
+        /* عناصر عامة */
         .explore-container { padding: 15px; }
         .explore-search-box { background: #1e293b; border-radius: 20px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 15px; }
         .explore-search-box input { background: none; border: none; outline: none; color: white; font-size: 13px; width: 100%; }
 
-        .explore-tags-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
-        .explore-tag-item { background: rgba(255,255,255,0.08); border-radius: 20px; padding: 6px 14px; font-size: 11px; white-space: nowrap; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.2); cursor: pointer; }
-
-        .explore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .explore-card-item { background: #1e293b; border-radius: 12px; overflow: hidden; position: relative; height: 180px; cursor: pointer; }
-        .explore-card-item img { width: 100%; height: 100%; object-fit: cover; }
-
         .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .form-input, .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
         .form-textarea { height: 75px; resize: none; margin-top: 6px; }
         .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
         .delete-btn { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
-
-        .badge-chip { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 4px; }
 
         .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
         .inbox-avatar { width: 42px; height: 42px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
@@ -147,8 +146,30 @@
 </head>
 <body>
 
-    <!-- 1. الشاشة الرئيسية -->
-    <div id="page-home" class="page active">
+    <!-- 1. شاشة تسجيل الدخول والإنشاء لكل مشترك جديد -->
+    <div id="authScreen">
+        <div class="auth-card">
+            <div class="auth-title">منصة QAIM العالمية ⚔️</div>
+            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">إنشاء حساب أو تسجيل الدخول بالرمز السري</p>
+            
+            <input type="text" id="regName" class="form-input" placeholder="الاسم الظاهر...">
+            <input type="text" id="regUsername" class="form-input" placeholder="المعرف الفرعي (مثال: @user)...">
+            <input type="date" id="regDob" class="form-input">
+            <input type="text" id="regCountry" class="form-input" placeholder="الدولة...">
+            <select id="regGender" class="form-select">
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+            <input type="text" id="regEmailOrPhone" class="form-input" placeholder="البريد الإلكتروني أو رقم الهاتف...">
+            <input type="password" id="regPassword" class="form-input" placeholder="كلمة المرور السرية...">
+
+            <button class="primary-btn" onclick="submitRegistration()">تسجيل حساب جديد وتوليد رمز OTP 🚀</button>
+            <button class="primary-btn" style="background:#1e293b; color:#38bdf8;" onclick="submitLogin()">تسجيل الدخول بالحساب الحالي 🔑</button>
+        </div>
+    </div>
+
+    <!-- 2. الشاشة الرئيسية -->
+    <div id="page-home" class="page">
         <div class="top-tiktok-header">
             <div class="top-right-actions">
                 <button class="live-tv-btn" onclick="switchPage('live')">
@@ -174,7 +195,7 @@
         <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)"></div>
     </div>
 
-    <!-- 2. قسم الإكسبلور -->
+    <!-- 3. قسم الإكسبلور -->
     <div id="page-explore" class="page">
         <div class="explore-container">
             <div class="explore-search-box">
@@ -182,7 +203,7 @@
                 <input type="text" id="exploreSearchInput" placeholder="بحث عن الصوتيات، القراء، والقصائد..." onkeyup="filterExploreContent(this.value)">
             </div>
 
-            <div class="explore-tags-scroll">
+            <div class="explore-tags-scroll" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:15px;">
                 <span class="explore-tag-item" onclick="filterExploreTag('#تلاوات_القرآن')">#تلاوات_القرآن 📖</span>
                 <span class="explore-tag-item" onclick="filterExploreTag('#قصائد_حسينية')">#قصائد_حسينية 🏴</span>
                 <span class="explore-tag-item" onclick="filterExploreTag('#المنهج_القويم')">#المنهج_القويم 🔥</span>
@@ -201,11 +222,11 @@
             </div>
 
             <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المقاطع الأكثر مشاهدة:</h4>
-            <div class="explore-grid" id="exploreGridContainer"></div>
+            <div class="explore-grid" id="exploreGridContainer" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
         </div>
     </div>
 
-    <!-- 3. غرفة البث المباشر -->
+    <!-- 4. غرفة البث المباشر -->
     <div id="page-live" class="page">
         <div style="height: 100vh; display: flex; flex-direction: column; background: #000;">
             <div style="height: 50%; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
@@ -223,7 +244,7 @@
         </div>
     </div>
 
-    <!-- 4. البريد الوارد -->
+    <!-- 5. البريد الوارد -->
     <div id="page-inbox" class="page">
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 صندوق الوارد والرسائل</h2>
@@ -237,7 +258,7 @@
         </div>
     </div>
 
-    <!-- 5. المكتبة والقارئ الصوتي الشجي -->
+    <!-- 6. المكتبة وقارئ النصوص -->
     <div id="page-library" class="page">
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي الشجي</h2>
@@ -281,126 +302,192 @@
         </div>
     </div>
 
-    <!-- 6. الأصدقاء -->
+    <!-- 7. صفحة العثور على أصدقاء (Find Friends) -->
     <div id="page-friends" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">👥 قائمة الأصدقاء والمتابعين</h2>
-            <div id="friendsContainer">
-                <div class="inbox-item">
-                    <div class="inbox-avatar">م</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h2 style="font-size: 18px; color: #38bdf8;">👥 العثور على أصدقاء</h2>
+                <button onclick="switchPage('home')" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
+            </div>
+
+            <div class="explore-search-box" style="margin-bottom:15px;">
+                <span>🔍</span>
+                <input type="text" placeholder="البحث بالاسم أو اسم المستخدم...">
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+                <div class="inbox-item" onclick="alert('جارِ البحث عن أصدقاء بالقرب منك...')">
+                    <div class="inbox-avatar" style="background:#8b5cf6;">📡</div>
                     <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">مشترك نشط</div>
-                        <div style="font-size:11px; color:#94a3b8;">متواجد الآن لنشر المعارف</div>
+                        <div style="font-size:13px; font-weight:bold;">تواصل الآن</div>
+                        <div style="font-size:11px; color:#94a3b8;">اعثر على الأصدقاء بالقرب منك.</div>
                     </div>
-                    <button class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px; margin-top:0;" onclick="alert('تمت متابعة الصديق بنجاح!')">متابعة</button>
+                    <span>‹</span>
                 </div>
+                <div class="inbox-item" onclick="alert('تم إظهار رمز QR الخاص بك للمسح الضوئي.')">
+                    <div class="inbox-avatar" style="background:#f97316;">🔲</div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:bold;">استخدام رمز QR</div>
+                        <div style="font-size:11px; color:#94a3b8;">إظهار رموز QR الخاصة ببعضكم.</div>
+                    </div>
+                    <span>‹</span>
+                </div>
+                <div class="inbox-item" onclick="sharePlatform()">
+                    <div class="inbox-avatar" style="background:#eab308;">📤</div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:bold;">دعوة الأصدقاء</div>
+                        <div style="font-size:11px; color:#94a3b8;">شارك ملفك الشخصي للتواصل.</div>
+                    </div>
+                    <span>‹</span>
+                </div>
+                <div class="inbox-item" onclick="alert('تمت مزامنة جهات الاتصال بنجاح.')">
+                    <div class="inbox-avatar" style="background:#22c55e;">📞</div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:bold;">العثور على جهات الاتصال</div>
+                        <div style="font-size:11px; color:#94a3b8;">مزامنة جهات الاتصال أو العثور عليها.</div>
+                    </div>
+                    <span>‹</span>
+                </div>
+            </div>
+
+            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">حسابات مقترحة:</h4>
+            <div class="inbox-item">
+                <div class="inbox-avatar" style="background:#ec4899;">س</div>
+                <div style="flex:1;">
+                    <div style="font-size:13px; font-weight:bold;">سُويْبةـ🌸ـ</div>
+                    <div style="font-size:11px; color:#94a3b8;">@mase6_18 (يتابعك)</div>
+                </div>
+                <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تم رد المتابعة بنجاح!')">رد المتابعة</button>
             </div>
         </div>
     </div>
 
-    <!-- 7. الملف الشخصي الشامل (Profile Page) مع تفعيل جميع الأزرار بمهامها -->
+    <!-- 8. الملف الشخصي الشامل للمشترك مع التبويبات الأربعة الملونة بدقة -->
     <div id="page-profile" class="page">
         <div class="profile-container">
             <div class="profile-top-header">
-                <button class="profile-header-icon" onclick="openMenuDrawer()" title="القائمة والأدوات">☰</button>
+                <button class="profile-header-icon" onclick="openMenuDrawer()">☰</button>
                 <div style="display:flex; gap:16px; align-items:center;">
-                    <button class="profile-header-icon" onclick="switchPage('friends')" title="الأصدقاء">👤+</button>
-                    <button class="profile-header-icon" onclick="switchPage('live')" title="البث المباشر">📺</button>
+                    <button class="profile-header-icon" onclick="switchPage('friends')">👤+</button>
+                    <button class="profile-header-icon" onclick="switchPage('live')">📺</button>
                 </div>
             </div>
 
             <div class="profile-info-section">
                 <div class="profile-avatar-wrapper">
-                    <div class="profile-avatar-img">👤</div>
-                    <div class="profile-story-plus" onclick="openUploadModal()" title="نشر فيديو جديد">+</div>
+                    <div class="profile-avatar-img" id="profileAvatarDisplay">👤</div>
+                    <div class="profile-story-plus" onclick="triggerAvatarUpload()">+</div>
+                    <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(this)">
                 </div>
-                <div class="profile-name">
-                    مستخدِم المنصة 🛡️
-                </div>
-                <div class="profile-username">@qaim_member</div>
+                <div class="profile-name" id="profileNameDisplay">مستخدِم المنصة 🛡️</div>
+                <div class="profile-username" id="profileUsernameDisplay">@qaim_member</div>
 
                 <div class="profile-stats-bar">
-                    <div class="profile-stat-item" onclick="switchPage('friends')" style="cursor:pointer;">
+                    <div class="profile-stat-item" onclick="switchPage('friends')">
                         <span class="profile-stat-num">142</span>
                         <span class="profile-stat-label">أتابعه</span>
                     </div>
-                    <div class="profile-stat-item" onclick="switchPage('friends')" style="cursor:pointer;">
+                    <div class="profile-stat-item" onclick="switchPage('friends')">
                         <span class="profile-stat-num">1.2k</span>
                         <span class="profile-stat-label">متابعين</span>
                     </div>
-                    <div class="profile-stat-item" style="cursor:pointer;" onclick="alert('إجمالي الإعجابات التي حصلت عليها مقاطعك!')">
+                    <div class="profile-stat-item" onclick="alert('إجمالي الإعجابات الواردة.')">
                         <span class="profile-stat-num">15.8k</span>
                         <span class="profile-stat-label">الإعجابات</span>
                     </div>
                 </div>
 
                 <div class="profile-actions-row">
-                    <button class="profile-edit-btn" onclick="activateFounderMode()">تعديل الملف الشخصي</button>
+                    <button class="profile-edit-btn" onclick="openEditProfileModal()">تعديل الملف الشخصي</button>
                     <button class="profile-share-btn" onclick="sharePlatform()">مشاركة الملف</button>
                 </div>
 
-                <div class="profile-bio">
+                <div class="profile-bio" id="profileBioDisplay">
                     مشارك في منصة المنهج القويم (QAIM)<br>نشر العلوم والمعارف والفضيلة ✨
                 </div>
             </div>
 
-            <!-- تبويبات الملف الشخصي الفعالة -->
+            <!-- التبويبات الأربعة الملونة تماماً حسب طلبك -->
             <div class="profile-tabs-nav">
-                <button class="profile-tab-btn active" onclick="switchProfileGrid('posts', this)" title="منشوراتي">📊</button>
-                <button class="profile-tab-btn" onclick="switchProfileGrid('repost', this)" title="إعادة النشر">🔄</button>
-                <button class="profile-tab-btn" onclick="switchProfileGrid('saved', this)" title="المحفوظات">📑</button>
-                <button class="profile-tab-btn" onclick="switchProfileGrid('likes', this)" title="الإعجابات">❤️</button>
+                <!-- الأصفر: الفيديوهات المنشورة والمحفوظة بالحساب -->
+                <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)" title="فيديوهاتك المنشورة">📊</button>
+                <!-- الأحمر: حركات الإكسبلور وإعادة النشر -->
+                <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)" title="إكسبلور وإعادة نشر">🔄</button>
+                <!-- الأخضر: الأرشيف -->
+                <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)" title="الأرشيف">📑</button>
+                <!-- الأزرق: الإعجابات -->
+                <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)" title="الإعجابات">❤️</button>
             </div>
 
             <div class="profile-grid-posts" id="userProfilePostsGrid">
                 <div class="profile-grid-item" onclick="switchPage('home')">
                     <span class="pinned-badge">مثبت</span>
                     <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ 14.2 ألف</div>
-                </div>
-                <div class="profile-grid-item" onclick="switchPage('home')">
-                    <img src="https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ 890</div>
+                    <div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- قائمة تيك توك الجانبية المنبثقة للأدوات (تعمل بكامل مهامها) -->
+    <!-- 9. كاميرا تسجيل الفيديو والتقاط الصور للمشتركين -->
+    <div id="cameraRecordModal" style="position:fixed; inset:0; background:#000; z-index:5000; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <button onclick="closeCameraModal()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إغلاق</button>
+            <div style="color:#38bdf8; font-weight:bold; font-size:14px;">📷 كاميرا QAIM الاحترافية</div>
+            <div></div>
+        </div>
+        <div style="flex:1; display:flex; justify-content:center; align-items:center; position:relative; margin:15px 0; border-radius:20px; overflow:hidden; background:#111;">
+            <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover;"></video>
+            <canvas id="snapshotCanvas" style="display:none;"></canvas>
+        </div>
+        <div style="display:flex; justify-content:space-around; align-items:center; padding-bottom:10px;">
+            <button class="primary-btn" style="width:auto; background:#22c55e; color:white;" onclick="capturePhotoToPublish()">📸 التقاط صورة</button>
+            <button class="primary-btn" style="width:auto; background:#ef4444; color:white;" onclick="recordVideoToPublish()">🎥 تسجيل فيديو ونشر</button>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الملف الشخصي (الاسم مرة كل شهر، السيرة والصورة فوري) -->
+    <div id="editProfileModal" onclick="if(event.target===this) closeEditProfileModal()">
+        <div class="upload-card">
+            <button class="modal-close-btn" onclick="closeEditProfileModal()">✕</button>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">✏️ تعديل الملف الشخصي</h3>
+            
+            <label style="font-size:11px; color:#94a3b8;">الاسم الظاهر (يمكن تعديله مرة كل شهر):</label>
+            <input type="text" id="editNameInput" class="form-input">
+            
+            <label style="font-size:11px; color:#94a3b8;">المعرف الفرعي (ثابت لا يتغير):</label>
+            <input type="text" id="editUsernameInput" class="form-input" disabled style="opacity:0.6; cursor:not-allowed;">
+
+            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio - قابل للتعديل أو الحذف الفوري):</label>
+            <textarea id="editBioInput" class="form-textarea"></textarea>
+
+            <button class="primary-btn" onclick="saveProfileEdits()">حفظ التعديلات 💾</button>
+        </div>
+    </div>
+
+    <!-- القائمة الجانبية للأدوات -->
     <div id="menuDrawerModal" onclick="if(event.target===this) closeMenuDrawer()">
         <div class="menu-drawer-content">
             <div>
                 <div class="menu-section-title">الأصول</div>
                 <div class="menu-item-row" onclick="alert('رصيدك الحالي: 2,450 نقطة معرفية.')">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">💳</span>
-                        <span>رصيد</span>
-                    </div>
+                    <div class="menu-item-left"><span class="menu-item-icon">💳</span><span>رصيد</span></div>
                     <span>‹</span>
                 </div>
             </div>
 
             <div>
                 <div class="menu-section-title">الأدوات الشخصية</div>
-                <div class="menu-item-row" onclick="alert('مركز الأنشطة: سجل تفاعلاتك ومشاهداتك نشط.')">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">🕒</span>
-                        <span>مركز الأنشطة</span>
-                    </div>
+                <div class="menu-item-row" onclick="alert('مركز الأنشطة: سجل تفاعلاتك نشط.')">
+                    <div class="menu-item-left"><span class="menu-item-icon">🕒</span><span>مركز الأنشطة</span></div>
                     <span>‹</span>
                 </div>
-                <div class="menu-item-row" onclick="alert('تم تنزيل الفيديوهات المؤقتة للمشاهدة بدون إنترنت بنجاح.')">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">📥</span>
-                        <span>فيديوهات دون اتصال بالإنترنت</span>
-                    </div>
+                <div class="menu-item-row" onclick="alert('فيديوهات دون اتصال بالإنترنت.')">
+                    <div class="menu-item-left"><span class="menu-item-icon">📥</span><span>فيديوهات دون اتصال بالإنترنت</span></div>
                     <span>‹</span>
                 </div>
-                <div class="menu-item-row" onclick="alert('رمز QR لحسابك جاهز للمشاركة!')">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">🔲</span>
-                        <span>رمز QR لديك</span>
-                    </div>
+                <div class="menu-item-row" onclick="alert('رمز QR لحسابك جاهز.')">
+                    <div class="menu-item-left"><span class="menu-item-icon">🔲</span><span>رمز QR لديك</span></div>
                     <span>‹</span>
                 </div>
             </div>
@@ -408,31 +495,79 @@
             <div>
                 <div class="menu-section-title">أدوات الإبداع والأعمال</div>
                 <div class="menu-item-row" onclick="closeMenuDrawer(); activateFounderMode();">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">🌟</span>
-                        <span>QAIM Studio (لوحة المؤسس والقارئ)</span>
-                    </div>
+                    <div class="menu-item-left"><span class="menu-item-icon">🌟</span><span>QAIM Studio (لوحة المؤسس والقارئ)</span></div>
                     <span>‹</span>
                 </div>
-                <div class="menu-item-row" onclick="alert('أداة الترويج مدعومة لنشر محتواك العلمي.')">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">🚀</span>
-                        <span>الترويج</span>
-                    </div>
+                <div class="menu-item-row" onclick="alert('ترويج المحتوى نشط.')">
+                    <div class="menu-item-left"><span class="menu-item-icon">🚀</span><span>الترويج</span></div>
                     <span>‹</span>
                 </div>
-                <div class="menu-item-row" onclick="closeMenuDrawer(); activateFounderMode();">
-                    <div class="menu-item-left">
-                        <span class="menu-item-icon">⚙️</span>
-                        <span>الإعدادات والخصوصية</span>
-                    </div>
+                <div class="menu-item-row" onclick="closeMenuDrawer(); openSettingsPage();">
+                    <div class="menu-item-left"><span class="menu-item-icon">⚙️</span><span>الإعدادات والخصوصية</span></div>
                     <span>‹</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- نافذة عرض الـ PDF -->
+    <!-- نافذة إعدادات والخصوصية الشاملة المطابقة لصورتك تماماً -->
+    <div id="settingsModal" class="settings-content">
+        <div class="settings-header">
+            <button onclick="closeSettingsPage()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">←</button>
+            <span>الإعدادات والخصوصية</span>
+        </div>
+
+        <div style="font-size:11px; color:#71717a; margin-bottom:6px;">النشاط</div>
+        <div class="menu-item-row" onclick="alert('إدارة التعليقات والردود.')"><div class="menu-item-left"><span class="menu-item-icon">💬</span><span>تعليقات</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إدارة الإشارات والذكر (@).')"><div class="menu-item-left"><span class="menu-item-icon">@</span><span>الذّكر</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إعدادات الرسائل الخاصة.')"><div class="menu-item-left"><span class="menu-item-icon">✈️</span><span>الرسائل الخاصة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إعادة استخدام المحتوى.')"><div class="menu-item-left"><span class="menu-item-icon">🔄</span><span>إعادة استخدام المحتوى</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('عرض الملف الشخصي عند مشاركة الروابط.')"><div class="menu-item-left"><span class="menu-item-icon">🔗</span><span>عرض الملف الشخصي عند مشاركة الروابط</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
+        <div class="menu-item-row" onclick="alert('التنزيلات وإعداداتها.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>التنزيلات</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
+        <div class="menu-item-row" onclick="alert('قائمة المتابعة الخاصة بك.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>قائمة المتابعة</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
+        <div class="menu-item-row" onclick="alert('الفيديوهات التي أعجبتك.')"><div class="menu-item-left"><span class="menu-item-icon">❤️</span><span>فيديوهات أعجبتك</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
+        <div class="menu-item-row" onclick="alert('المشاهدون وسجل المشاهدة.')"><div class="menu-item-left"><span class="menu-item-icon">👣</span><span>المشاهدون</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
+
+        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">التفضيلات</div>
+        <div class="menu-item-row" onclick="alert('موسيقى وصوتيات المنصة.')"><div class="menu-item-left"><span class="menu-item-icon">🎵</span><span>موسيقى</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('صندوق الوارد والمراسلة.')"><div class="menu-item-left"><span class="menu-item-icon">📬</span><span>صندوق الوارد والمراسلة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('مركز الأنشطة.')"><div class="menu-item-left"><span class="menu-item-icon">🕒</span><span>مركز الأنشطة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('التحكم في الجمهور.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>التحكم في الجمهور</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إدارة الإعلانات.')"><div class="menu-item-left"><span class="menu-item-icon">📢</span><span>الإعلانات</span></div><span>‹</span></div>
+
+        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">النظام والعرض</div>
+        <div class="menu-item-row" onclick="alert('إعدادات اللغة.')"><div class="menu-item-left"><span class="menu-item-icon">🌐</span><span>اللغة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إعدادات العرض (الوضع الليلي).')"><div class="menu-item-left"><span class="menu-item-icon">🌙</span><span>العرض</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="toggleAccessibilityMode()"><div class="menu-item-left"><span class="menu-item-icon">♿</span><span>صلاحية الوصول</span></div><span style="color:#ef4444; font-size:16px;">•</span></div>
+
+        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">ذاكرة التخزين المؤقت والبيانات</div>
+        <div class="menu-item-row" onclick="alert('فيديوهات دون اتصال بالإنترنت.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>فيديوهات دون اتصال بالإنترنت</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('تم تفريغ مساحة التخزين المؤقت بنجاح.')"><div class="menu-item-left"><span class="menu-item-icon">🗑️</span><span>تحرير المساحة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('تفعيل توفير البيانات.')"><div class="menu-item-left"><span class="menu-item-icon">📶</span><span>توفير البيانات</span></div><span>‹</span></div>
+
+        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">الظهور والخصوصية والأمان</div>
+        <div class="menu-item-row" onclick="toggleAccountPrivacy()">
+            <div class="menu-item-left"><span class="menu-item-icon">🔒</span><span>حساب خاص / عام</span></div>
+            <span id="privacyStatusBadge" style="font-size:11px; color:#38bdf8; font-weight:bold;">عام (Public)</span>
+        </div>
+        <div class="menu-item-row" onclick="openBlockedAccountsModal()">
+            <div class="menu-item-left"><span class="menu-item-icon">🚫</span><span>الحسابات المحظورة وطلب رفع الحظر للإدارة</span></div>
+            <span>‹</span>
+        </div>
+    </div>
+
+    <!-- نافذة النشر واختيار التصوير (فيديو أو صورة) -->
+    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
+        <div class="upload-card">
+            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى جديد في منصة QAIM</h3>
+            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">🎥 فتح الكاميرا (تصوير فيديو أو صورة)</button>
+            <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور أو المقال...">
+            <button class="primary-btn" onclick="publishNewPost()">نشر وتحفظ في حسابي 🚀</button>
+        </div>
+    </div>
+
+    <!-- عارض PDF -->
     <div id="pdfViewerModal" onclick="if(event.target===this) closePdfViewer()">
         <div style="width: 100%; height: 100%; display: flex; flex-direction: column; position:relative;">
             <div style="padding: 10px; background: #0b1120; display: flex; justify-content: space-between; align-items: center;">
@@ -440,16 +575,6 @@
                 <button onclick="closePdfViewer()" style="background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-weight:bold;">رجوع ✕</button>
             </div>
             <iframe id="pdfIframe"></iframe>
-        </div>
-    </div>
-
-    <!-- نافذة النشر المنبثقة -->
-    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
-        <div class="upload-card">
-            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر فيديو أو مقطع جديد</h3>
-            <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور...">
-            <button class="primary-btn" onclick="publishNewPost()">نشر فوراً 🚀</button>
         </div>
     </div>
 
@@ -485,7 +610,8 @@
     </nav>
 
     <script>
-        let touchstartX = 0, touchendX = 0, liveStream = null, currentAudioElement = null;
+        let currentUser = null;
+        let touchstartX = 0, touchendX = 0, liveStream = null, mediaRecorder = null, recordedChunks = [], currentAudioElement = null;
 
         const allPostsData = {
             foryou: [
@@ -505,7 +631,236 @@
             { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
-        /* سحب الشاشة لليسار للانتقال الفوري للبث المباشر */
+        /* نظام التسجيل وحفظ الجلسة محلياً على الآيفون */
+        function submitRegistration() {
+            const name = document.getElementById('regName').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const pass = document.getElementById('regPassword').value.trim();
+            if(!name || !username || !pass) { alert('يرجى ملء الحقول الإجبارية!'); return; }
+
+            currentUser = { name, username, bio: "مشارك في منصة المنهج القويم (QAIM)", avatar: "", isPrivate: false, lastNamedChange: Date.now() - 40000000 };
+            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
+            
+            const otp = Math.floor(1000 + Math.random() * 9000);
+            alert('رمز التحقق السري الخاص بك (OTP): ' + otp + '\nتم التسجيل بنجاح!');
+            document.getElementById('authScreen').style.display = 'none';
+            updateProfileUI();
+        }
+
+        function submitLogin() {
+            const username = document.getElementById('regUsername').value.trim();
+            const pass = document.getElementById('regPassword').value.trim();
+            if(!username || !pass) { alert('يرجى إدخال المعرف وكلمة المرور!'); return; }
+
+            const saved = localStorage.getItem('qaim_user');
+            if(saved) {
+                currentUser = JSON.parse(saved);
+            } else {
+                currentUser = { name: "مستخدم المنصة", username: username, bio: "مشارك في منصة QAIM", avatar: "", isPrivate: false, lastNamedChange: 0 };
+            }
+            alert('تم تسجيل الدخول بنجاح!');
+            document.getElementById('authScreen').style.display = 'none';
+            updateProfileUI();
+        }
+
+        window.onload = function() {
+            const saved = localStorage.getItem('qaim_user');
+            if(saved) {
+                currentUser = JSON.parse(saved);
+                document.getElementById('authScreen').style.display = 'none';
+                updateProfileUI();
+            }
+            renderFeedByCategory('foryou');
+            renderExploreGrid();
+            checkFounderStatus();
+        };
+
+        function updateProfileUI() {
+            if(!currentUser) return;
+            document.getElementById('profileNameDisplay').innerText = currentUser.name;
+            document.getElementById('profileUsernameDisplay').innerText = currentUser.username;
+            document.getElementById('profileBioDisplay').innerHTML = currentUser.bio;
+            if(currentUser.avatar) {
+                document.getElementById('profileAvatarDisplay').innerHTML = `<img src="${currentUser.avatar}">`;
+            }
+        }
+
+        /* تعديل الملف الشخصي (الاسم مرة كل شهر، السيرة والصورة فوري) */
+        function openEditProfileModal() {
+            document.getElementById('editNameInput').value = currentUser.name;
+            document.getElementById('editUsernameInput').value = currentUser.username;
+            document.getElementById('editBioInput').value = currentUser.bio;
+            document.getElementById('editProfileModal').style.display = 'flex';
+        }
+        function closeEditProfileModal() { document.getElementById('editProfileModal').style.display = 'none'; }
+
+        function saveProfileEdits() {
+            const newName = document.getElementById('editNameInput').value.trim();
+            const newBio = document.getElementById('editBioInput').value.trim();
+            
+            const now = Date.now();
+            const monthMs = 30 * 24 * 60 * 60 * 1000;
+            if(newName !== currentUser.name) {
+                if(currentUser.lastNamedChange && (now - currentUser.lastNamedChange < monthMs)) {
+                    alert('عذراً، لا يمكنك تغيير الاسم إلا مرة واحدة كل شهر!');
+                    return;
+                }
+                currentUser.name = newName;
+                currentUser.lastNamedChange = now;
+            }
+            currentUser.bio = newBio;
+            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
+            updateProfileUI();
+            closeEditProfileModal();
+            alert('تم حفظ التعديلات بنجاح!');
+        }
+
+        /* رفع الصورة الشخصية ومسحها */
+        function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
+        function handleAvatarUpload(input) {
+            if(input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    localStorage.setItem('qaim_user', JSON.stringify(currentUser));
+                    updateProfileUI();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        /* نظام تشغيل الكاميرا للتصوير ونشر الفيديوهات والصور */
+        async function openCameraModal() {
+            closeUploadModal();
+            document.getElementById('cameraRecordModal').style.display = 'flex';
+            try {
+                liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('liveCameraPreview').srcObject = liveStream;
+            } catch(e) {
+                alert('تعذر الوصول للكاميرا، يرجى السماح بالصلاحيات.');
+            }
+        }
+        function closeCameraModal() {
+            if(liveStream) { liveStream.getTracks().forEach(t => t.stop()); }
+            document.getElementById('cameraRecordModal').style.display = 'none';
+        }
+
+        function capturePhotoToPublish() {
+            const video = document.getElementById('liveCameraPreview');
+            const canvas = document.getElementById('snapshotCanvas');
+            canvas.width = video.videoWidth || 300;
+            canvas.height = video.videoHeight || 400;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/png');
+
+            addPostToMyProfileCustom("صورة التقطت بالكاميرا 📷", dataUrl);
+            closeCameraModal();
+            switchPage('profile');
+            alert('تم التقاط الصورة ونشرها في حسابك بنجاح!');
+        }
+
+        function recordVideoToPublish() {
+            recordedChunks = [];
+            try {
+                mediaRecorder = new MediaRecorder(liveStream, { mimeType: 'video/webm' });
+            } catch(err) {
+                mediaRecorder = new MediaRecorder(liveStream);
+            }
+            mediaRecorder.ondataavailable = e => { if(e.data.size > 0) recordedChunks.push(e.data); };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const videoUrl = URL.createObjectURL(blob);
+                addPostToMyProfileCustom("فيديو مصور من الكاميرا 🎥", "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80");
+                closeCameraModal();
+                switchPage('profile');
+                alert('تم تسجيل ونشر الفيديو في حسابك بنجاح!');
+            };
+            mediaRecorder.start();
+            alert('جارٍ تسجيل الفيديو... انقر مرة أخرى للإيقاف والنشر.');
+            // إيقاف التسجيل بعد 5 ثوانٍ تلقائياً أو عند النقر
+            setTimeout(() => {
+                if(mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+            }, 6000);
+        }
+
+        /* إدارة التبويبات الملونة في البروفايل */
+        function switchColoredTab(tabColor, btn) {
+            document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const grid = document.getElementById('userProfilePostsGrid');
+            
+            if(tabColor === 'yellow') {
+                grid.innerHTML = `
+                    <div class="profile-grid-item" onclick="switchPage('home')">
+                        <span class="pinned-badge">مثبت</span>
+                        <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
+                        <div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div>
+                    </div>
+                `;
+            } else if(tabColor === 'red') {
+                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#ef4444; font-size:12px;">🔄 حركات وإكسبلور تم إعادة نشرها للمشتركين.</div>`;
+            } else if(tabColor === 'green') {
+                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#22c55e; font-size:12px;">📑 الأرشيف الخاص بالحساب.</div>`;
+            } else if(tabColor === 'blue') {
+                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#38bdf8; font-size:12px;">❤️ الإعجابات التي أعطيتها للمنشورات.</div>`;
+            }
+        }
+
+        /* إعدادات الخصوصية والحساب الخاص والحظر */
+        function openSettingsPage() { document.getElementById('settingsModal').style.display = 'flex'; }
+        function closeSettingsPage() { document.getElementById('settingsModal').style.display = 'none'; }
+
+        function toggleAccountPrivacy() {
+            currentUser.isPrivate = !currentUser.isPrivate;
+            const badge = document.getElementById('privacyStatusBadge');
+            if(currentUser.isPrivate) {
+                badge.innerText = "خاص (Private)";
+                badge.style.color = "#ef4444";
+                alert('تم تحويل حسابك إلى وضع (حساب خاص).');
+            } else {
+                badge.innerText = "عام (Public)";
+                badge.style.color = "#38bdf8";
+                alert('تم تحويل حسابك إلى وضع (حساب عام).');
+            }
+            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
+        }
+
+        function openBlockedAccountsModal() {
+            let reason = prompt('الحسابات المحظورة:\nلتقديم طلب لإدارة المنصة لرفع الحظر واسترجاع الحساب، اكتب سبب الطلب هنا:');
+            if(reason) {
+                alert('تم إرسال طلبك إلى إدارة منصة QAIM بنجاح وسيتم مراجعته قريباً.');
+            }
+        }
+
+        /* زر إضافة المنشورات لصفحة المشترك من الرئيسية */
+        function addPostToMyProfile(title) {
+            addPostToMyProfileCustom(title, "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80");
+            alert('تمت إضافة المنشور إلى صفحتك الشخصية بنجاح!');
+        }
+
+        function addPostToMyProfileCustom(title, imgUrl) {
+            const grid = document.getElementById('userProfilePostsGrid');
+            const item = document.createElement('div');
+            item.className = 'profile-grid-item';
+            item.onclick = () => switchPage('home');
+            item.innerHTML = `
+                <img src="${imgUrl}">
+                <div class="profile-grid-views">⭐ ${title}</div>
+            `;
+            grid.prepend(item);
+        }
+
+        function publishNewPost() {
+            const title = document.getElementById('newPostTitle').value.trim();
+            if(!title) return;
+            addPostToMyProfile(title);
+            closeUploadModal();
+            document.getElementById('newPostTitle').value = '';
+            switchPage('profile');
+        }
+
+        /* سحب الشاشة لليسار للبث المباشر */
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
@@ -515,46 +870,6 @@
 
         function openMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'flex'; }
         function closeMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'none'; }
-
-        function publishNewPost() {
-            const title = document.getElementById('newPostTitle').value.trim();
-            if (!title) return;
-
-            const grid = document.getElementById('userProfilePostsGrid');
-            const item = document.createElement('div');
-            item.className = 'profile-grid-item';
-            item.onclick = () => switchPage('home');
-            item.innerHTML = `
-                <img src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=300&q=80">
-                <div class="profile-grid-views">▷ 1</div>
-            `;
-            grid.prepend(item);
-
-            closeUploadModal();
-            document.getElementById('newPostTitle').value = '';
-            switchPage('profile');
-        }
-
-        function switchProfileGrid(tabType, btn) {
-            document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // تبديل المحتوى التفاعلي بحسب التبويب المختار
-            const grid = document.getElementById('userProfilePostsGrid');
-            if(tabType === 'likes') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#94a3b8; font-size:12px;">❤️ المقاطع التي أعجبتك ستظهر هنا.</div>`;
-            } else if(tabType === 'saved') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#94a3b8; font-size:12px;">📑 المحفوظات والكتب المضافة ستظهر هنا.</div>`;
-            } else {
-                grid.innerHTML = `
-                    <div class="profile-grid-item" onclick="switchPage('home')">
-                        <span class="pinned-badge">مثبت</span>
-                        <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
-                        <div class="profile-grid-views">▷ 14.2 ألف</div>
-                    </div>
-                `;
-            }
-        }
 
         function switchTopTab(tabEl, tabCategory) {
             document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
@@ -584,11 +899,7 @@
                         <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">${post.comments}</span></button>
                         <button class="action-btn" onclick="toggleBookmark(this)">🔖<span class="action-text">${post.bookmarks}</span></button>
                         <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">${post.shares}</span></button>
-                    </div>
-
-                    <div class="card-comments-box" style="display:none; position:absolute; bottom:70px; left:12px; right:12px; background:rgba(15,23,42,0.95); padding:12px; border-radius:14px; z-index:10;">
-                        <div style="font-size: 11px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات الحية</div>
-                        <div style="font-size:11px; color:#cbd5e1; margin-top:4px;"><b>أبو حسن:</b> منصة مباركة وخطوة رائدة.</div>
+                        <button class="action-btn" onclick="addPostToMyProfile('${post.title}')" style="background:rgba(56,189,248,0.3); color:#38bdf8;" title="إضافة لصفحتي">➕<span class="action-text">إضافة</span></button>
                     </div>
 
                     <div class="card-content">
@@ -626,7 +937,7 @@
                 card.onclick = () => switchPage('home');
                 card.innerHTML = `
                     <img src="${item.img}">
-                    <div class="explore-card-overlay">
+                    <div class="explore-card-overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding:10px; display:flex; flex-direction:column; justify-content:flex-end;">
                         <span style="font-size: 11px; font-weight: bold; color: white;">${item.title}</span>
                         <span style="font-size: 9px; color: #38bdf8; margin-top:2px;">@${item.user}</span>
                     </div>
@@ -699,10 +1010,7 @@
 
         function toggleVideoPlay(video) { if (video.paused) video.play(); else video.pause(); }
         function toggleLike(btn) { btn.classList.toggle('liked'); }
-        function toggleCardComments(btn) {
-            const box = btn.closest('.card').querySelector('.card-comments-box');
-            box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
-        }
+        function toggleCardComments(btn) { alert('فتح التعليقات والمناقشات الحية.'); }
 
         function saveNewBookOrPost() {
             const title = document.getElementById('postTitleInput').value.trim();
@@ -728,16 +1036,10 @@
             } catch (err) {}
         }
         function stopLiveBroadcast() { if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; } }
-        function sharePlatform() { alert('تم نسخ رابط الملف الشخصي للمشترك بنجاح!'); }
+        function sharePlatform() { alert('تم نسخ رابط الحساب للمشاركة بنجاح!'); }
 
-        function filterExploreContent(val) { console.log('بحث إكسبلور: ' + val); }
-        function filterExploreTag(tag) { console.log('تصفية الهاشتاغ: ' + tag); }
-
-        window.onload = function() {
-            renderFeedByCategory('foryou');
-            renderExploreGrid();
-            checkFounderStatus();
-        };
+        function filterExploreContent(val) { console.log('بحث: ' + val); }
+        function filterExploreTag(tag) { console.log('هاشتاغ: ' + tag); }
     </script>
 </body>
 </html>
