@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QAIM - منصة المنهج القويم المتكاملة</title>
     
-    <!-- PWA & Mobile Optimization -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="QAIM">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -17,11 +15,17 @@
 
         /* شاشة البداية (Splash Screen) */
         #splashScreen { position: fixed; inset: 0; background: #0b1120; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
-        .splash-logo { font-size: 38px; font-weight: bold; color: #38bdf8; letter-spacing: 2px; animation: pulseLogo 1.5s infinite; }
+        .splash-logo { font-size: 40px; font-weight: bold; color: #38bdf8; letter-spacing: 2px; animation: pulseLogo 1.5s infinite; }
         @keyframes pulseLogo { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.95); } }
 
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 75px; }
         .page.active { display: block; }
+
+        /* الشريط العلوي الشفاف (Top Bar - تيك توك ستايل) */
+        .top-bar { position: absolute; top: 0; left: 0; right: 0; height: 60px; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); }
+        .top-tabs { display: flex; gap: 18px; font-size: 14px; font-weight: bold; color: #aaa; align-items: center; }
+        .top-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+        .top-icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
         /* الشاشة الرئيسية - TikTok Style Feed */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -29,28 +33,35 @@
         
         .card { height: 100vh; scroll-snap-align: start; scroll-snap-stop: always; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; background: #000; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.5) 100%); z-index: 1; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 20%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.4) 100%); z-index: 1; }
         .card-content { position: relative; z-index: 2; margin-bottom: 65px; }
 
-        /* أزرار التفاعل الجانبية (TikTok Style Sidebar) */
-        .side-actions { position: absolute; left: 15px; bottom: 95px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
-        .action-btn { background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: transform 0.1s ease; }
+        /* أزرار التفاعل الجانبية (مطابقة للصورة المرفقة رقم 6) */
+        .side-actions { position: absolute; right: 15px; bottom: 90px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
+        .action-btn { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; position: relative; }
         .action-btn:active { transform: scale(0.85); }
-        .action-btn.liked { color: #fe2c55; }
-        .action-btn.saved { color: #38bdf8; }
-        .action-text { font-size: 10px; margin-top: 3px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .action-text { font-size: 10px; margin-top: 2px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        /* القرص الدوار للصوت (TikTok Vinyl) */
+        /* ألوان أزرار التفاعل حسب الطلب */
+        .follow-badge-btn { position: absolute; bottom: -6px; background: #fe2c55; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #000; }
+        .follow-badge-btn.followed { background: #38bdf8; }
+
+        .heart-btn.green { color: #22c55e; }
+        .heart-btn.red { color: #fe2c55; }
+        .heart-btn.blue { color: #38bdf8; }
+
+        .save-btn.white { color: #ffffff; }
+        .save-btn.red { color: #fe2c55; }
+
+        /* القرص الدوار للصوت (Vinyl Disc) */
         .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); margin-top: 10px; width: fit-content; cursor: pointer; }
         .disc-icon { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #fe2c55); color: white; display: flex; justify-content: center; align-items: center; font-size: 10px; animation: spin 3s linear infinite; }
-        .disc-icon.paused { animation-play-state: paused; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* صندوق التعليقات السريع */
+        /* صندوق التعليقات */
         .card-comments-box { position: absolute; bottom: 65px; left: 0; right: 0; background: rgba(18, 20, 30, 0.96); backdrop-filter: blur(25px); border-radius: 20px 20px 0 0; padding: 15px; z-index: 10; display: none; flex-direction: column; gap: 10px; max-height: 300px; border-top: 1px solid rgba(255,255,255,0.1); }
         .card-comments-list { flex: 1; overflow-y: auto; max-height: 180px; display: flex; flex-direction: column; gap: 8px; }
-        .card-comment-item { font-size: 12px; background: rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 8px; color: #e2e8f0; }
-        .comment-user-name { font-weight: bold; color: #38bdf8; margin-left: 6px; }
+        .card-comment-item { font-size: 12px; background: rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 8px; color: #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
 
         /* النوافذ المودال (Modals) */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
@@ -60,23 +71,25 @@
         .form-textarea { width: 100%; padding: 12px 14px; background: #0b0f19; border: 1px solid #1e293b; border-radius: 12px; color: white; font-size: 13px; height: 80px; outline: none; resize: none; }
         .primary-btn { background: #fe2c55; color: white; border: none; padding: 12px; border-radius: 14px; font-weight: bold; font-size: 14px; cursor: pointer; width: 100%; }
 
-        /* الشريط السفلي لتيك توك */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        /* الشريط السفلي لتيك توك (مطابق للصورة رقم 7) */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; direction: rtl; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #717171; text-decoration: none; font-size: 10px; gap: 3px; border: none; background: none; width: 18%; cursor: pointer; transition: color 0.2s; }
         .nav-item.active { color: #ffffff; font-weight: bold; }
         .nav-icon { font-size: 20px; }
-        .tiktok-plus-btn { width: 44px; height: 28px; background: linear-gradient(90deg, #25f4ee, #fe2c55); border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; font-size: 22px; cursor: pointer; box-shadow: 0 0 12px rgba(254, 44, 85, 0.5); }
+        
+        /* زر الإضافة (+) المميز في المنتصف بتأثير النيون */
+        .tiktok-plus-btn { width: 48px; height: 30px; background: linear-gradient(90deg, #25f4ee, #fe2c55); border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; font-size: 22px; cursor: pointer; box-shadow: 0 0 12px rgba(254, 44, 85, 0.6); }
     </style>
 </head>
 <body>
 
-    <!-- شاشة البداية (Splash Screen) -->
+    <!-- شاشة البداية -->
     <div id="splashScreen">
         <div class="splash-logo">QAIM</div>
         <div style="font-size: 12px; color: #94a3b8; margin-top: 10px;">منصة المنهج القويم المتكاملة</div>
     </div>
 
-    <!-- نافذة تسجيل الدخول/الإنشاء المستقل -->
+    <!-- نافذة تسجيل الدخول المستقل -->
     <div id="authModal" class="modal-overlay">
         <div class="modal-card">
             <h3 style="color: #fe2c55; font-size: 18px; text-align: center;" id="authTitle">🔐 حساب QAIM المستقل</h3>
@@ -85,46 +98,37 @@
             <input type="password" id="authPassword" class="form-input" placeholder="كلمة المرور (Password)" style="text-align: center;">
             <button class="primary-btn" onclick="handleAuthSubmit()" id="authSubmitBtn">دخول الحساب 🚀</button>
             <button onclick="toggleAuthMode()" style="background: none; border: none; color: #38bdf8; font-size: 11px; cursor: pointer; text-align: center;" id="authSwitchToggle">ليس لديك حساب؟ إنشاء حساب جديد</button>
-            <button onclick="closeAuthModal()" style="background: none; border: none; color: #ef4444; font-size: 11px; cursor: pointer; text-align: center;">تخطي مؤقتاً كزائر</button>
         </div>
     </div>
 
-    <!-- نافذة النشر بالمرحلتين (Two-Step Upload Wizard) -->
+    <!-- نظام النشر بالمرحلتين (زر + في المنتصف) -->
     <div id="uploadModal" class="modal-overlay">
         <div class="modal-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 16px; color: #fe2c55;" id="uploadModalTitle">➕ نشر محتوى جديد (المرحلة 1)</h3>
+                <h3 style="font-size: 16px; color: #fe2c55;" id="uploadModalTitle">➕ نشر منشور جديد (المرحلة 1)</h3>
                 <button onclick="closeUploadModal()" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;">✕</button>
             </div>
             
-            <!-- مرحلة الإعداد -->
             <div id="uploadStep1" style="display: flex; flex-direction: column; gap: 12px;">
                 <input type="text" id="feedTitleInput" class="form-input" placeholder="عنوان المنشور أو الفكرة...">
                 <textarea id="feedDescInput" class="form-textarea" placeholder="الوصف والهاشتاغات (#المنهج_القويم)..."></textarea>
                 <div>
-                    <label style="font-size: 11px; color: #94a3b8;">اختر فيديو/صورة (مع الاحتفاظ بالصوت الأصلي):</label>
+                    <label style="font-size: 11px; color: #94a3b8;">اختر فيديو أو صورة من الاستوديو أو التصوير المباشر:</label>
                     <input type="file" id="feedMediaInput" accept="video/*,image/*" class="form-input" style="padding: 6px;">
                 </div>
                 <div>
-                    <label style="font-size: 11px; color: #94a3b8;">اختر الصوت المصاحب أو تلاوة:</label>
+                    <label style="font-size: 11px; color: #94a3b8;">مكتبة الصوتيات والقرآن الترند:</label>
                     <select id="qaimAudioPreset" class="form-select">
                         <option value="صوت الفيديو الأصلي">🔊 صوت الفيديو الأصلي</option>
-                        <option value="تلاوة سورة الفاتحة - الشيخ عبد الباسط">📖 تلاوة سورة الفاتحة - الشيخ عبد الباسط</option>
+                        <option value="تلاوة سورة الفاتحة - الشيخ عبد الباسط (ترند)">📖 تلاوة سورة الفاتحة - الشيخ عبد الباسط (ترند)</option>
                         <option value="سورة الرحمن - الشيخ ياسر الدوسري">📖 سورة الرحمن - الشيخ ياسر الدوسري</option>
+                        <option value="قصيدة حسينية ترند - أداء جماعي">🎵 قصيدة حسينية ترند - أداء جماعي</option>
                         <option value="نشيد المنهج القويم الرسمي">🎵 نشيد المنهج القويم الرسمي</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size: 11px; color: #94a3b8;">خصوصية الحساب/المنشور:</label>
-                    <select id="postPrivacy" class="form-select">
-                        <option value="عام (للجميع)">🌐 عام (للجميع في الاكسبلورر)</option>
-                        <option value="خاص (لمتابعي فقط)">🔒 خاص (لمتابعي فقط)</option>
                     </select>
                 </div>
                 <button class="primary-btn" onclick="goToUploadStep2()">التالي للمعاينة ➡️</button>
             </div>
 
-            <!-- مرحلة المعاينة النهائية والزر الحصري (نشر الآن) -->
             <div id="uploadStep2" style="display: none; flex-direction: column; gap: 12px; text-align: center;">
                 <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px;">
                     <h4 style="color: #38bdf8; font-size: 14px;" id="previewTitleDisplay">-</h4>
@@ -140,92 +144,102 @@
 
     <!-- 1. الشاشة الرئيسية (تيك توك فييد) -->
     <div id="page-home" class="page active">
+        <!-- الشريط العلوي (الصورة المرفقة رقم 5) -->
+        <div class="top-bar">
+            <button class="top-icon-btn" onclick="openSearchModal()">🔍</button>
+            <div class="top-tabs">
+                <span class="top-tab" onclick="switchFeedTab(this, 'following')">أتابعه</span>
+                <span class="top-tab" onclick="switchFeedTab(this, 'community')">المجتمع</span>
+                <span class="top-tab active" onclick="switchFeedTab(this, 'forYou')">لَكْ</span>
+            </div>
+            <button class="top-icon-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[0])" style="font-size: 14px; font-weight: bold; background: #fe2c55; padding: 4px 8px; border-radius: 6px;">LIVE</button>
+        </div>
+
         <div class="feed" id="mainFeedContainer"></div>
     </div>
 
-    <!-- 2. صفحة اكتشف والاكسبلورر -->
-    <div id="page-explore" class="page" style="padding: 20px;">
-        <h2 style="color: #38bdf8; margin-bottom: 12px;">🔍 اكتشف والاكسبلورر</h2>
-        <input type="text" placeholder="ابحث في المنشورات، الحسابات، والقرآن..." class="form-input">
-        <div style="margin-top: 15px;">
-            <h4 style="font-size: 13px; color: #94a3b8;">الوسوم الرائجة</h4>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
-                <span style="background: rgba(56,189,248,0.15); color: #38bdf8; padding: 6px 12px; border-radius: 20px; font-size: 11px;">#المنهج_القويم</span>
-                <span style="background: rgba(254,44,85,0.15); color: #fe2c55; padding: 6px 12px; border-radius: 20px; font-size: 11px;">#تلاوة_خاشعة</span>
-                <span style="background: rgba(56,189,248,0.15); color: #38bdf8; padding: 6px 12px; border-radius: 20px; font-size: 11px;">#بث_مباشر</span>
-            </div>
+    <!-- 2. صفحة الأصدقاء -->
+    <div id="page-friends" class="page" style="padding: 20px; padding-top: 70px;">
+        <h2 style="color: #38bdf8; margin-bottom: 12px;">👥 منشورات الأصدقاء والمتابعين</h2>
+        <div id="friendsFeedContainer" style="display: flex; flex-direction: column; gap: 12px;">
+            <p style="font-size: 12px; color: #94a3b8;">اسحب للأسفل لتحديث منشورات الأصدقاء والأشخاص الذين تتابعهم.</p>
         </div>
     </div>
 
-    <!-- 3. غرفة البث المباشر الحي (Live Studio مع مرحلة التهيئة) -->
+    <!-- 3. صندوق الوارد (المراسلة الخاصة) -->
+    <div id="page-inbox" class="page" style="padding: 20px; padding-top: 70px;">
+        <h2 style="color: #38bdf8; margin-bottom: 15px;">💬 صندوق الوارد والمراسلات الخاصة</h2>
+        <div style="background: rgba(56,189,248,0.1); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 12px; color: #38bdf8;">
+            ⭐ أولاً: الأصدقاء والمتابعون الذين يتابعونك يظهرون في الأعلى للمراسلة الفورية.
+        </div>
+        <div id="inboxUsersList" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- قائمة المتابعين -->
+        </div>
+    </div>
+
+    <!-- 4. غرفة البث المباشر الحي مع التهيئة والاحتفاظ بالتسجيل -->
     <div id="page-live" class="page" style="display: flex; flex-direction: column; height: 100vh; background: #070a13;">
         <div style="flex: 1; position: relative; background: #000; display: flex; align-items: center; justify-content: center;">
             <video id="realCameraFeed" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
             
-            <!-- نافذة التهيئة قبل البث -->
             <div id="livePrepBox" style="position: absolute; inset: 0; background: rgba(11,17,32,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; gap: 14px; z-index: 10;">
-                <h3 style="color: #fe2c55; font-size: 18px;">🔴 تهيئة البث المباشر الحقيقي</h3>
+                <h3 style="color: #fe2c55; font-size: 18px;">🔴 تهيئة البث المباشر الحي</h3>
                 <p style="font-size: 12px; color: #94a3b8; text-align: center;">أدخل عنوان البث واضبط إعدادات الكاميرا للبدء الحي:</p>
                 <input type="text" id="liveTitleInput" class="form-input" placeholder="عنوان البث المباشر..." style="text-align: center;">
                 <button class="primary-btn" onclick="startLivePreparationAndCamera()">تفعيل الكاميرا والتهيئة 🎥</button>
                 <button class="primary-btn" style="background: #fe2c55;" onclick="launchActualLiveBroadcast()">ابدأ البث الحي الآن 🔴</button>
             </div>
 
-            <!-- أزرار التحكم أثناء البث الحي -->
             <div id="liveActiveControls" style="position: absolute; bottom: 15px; display: none; gap: 10px; z-index: 5;">
                 <button class="primary-btn" style="background: #ef4444; width: auto; padding: 8px 16px;" onclick="promptEndLiveStream()">إنهاء البث 🛑</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. صفحة المحفوظات والإكسبلورر (مع ميزة التحديد والمسح الجماعي) -->
-    <div id="page-saved" class="page" style="padding: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h2 style="color: #38bdf8; font-size: 16px;">💾 المحفوظات والمنشورات</h2>
-            <div style="display: flex; gap: 8px;">
-                <button onclick="toggleSelectAllSaved()" style="background: #1e293b; border: none; color: #38bdf8; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer;">تحديد الكل</button>
-                <button onclick="deleteSelectedSavedItems()" style="background: rgba(239, 68, 68, 0.2); border: none; color: #ef4444; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer;">مسح المحدّد 🗑️</button>
-            </div>
-        </div>
-        <div id="savedItemsContainer" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- توليد ديناميكي للمحفوظات -->
-        </div>
-    </div>
-
     <!-- 5. الملف الشخصي والإعدادات الشاملة (Profile) -->
-    <div id="page-profile" class="page" style="padding: 20px; text-align: center;">
+    <div id="page-profile" class="page" style="padding: 20px; text-align: center; padding-top: 40px;">
         <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 10px;">
             <div id="profileAvatar" style="width: 90px; height: 90px; background: linear-gradient(135deg, #38bdf8, #fe2c55); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #000; font-weight: bold; border: 3px solid #38bdf8; overflow: hidden;">👤</div>
             <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="updateProfileAvatar(this)">
             <button onclick="document.getElementById('avatarFileInput').click()" style="position: absolute; bottom: 0; right: 0; background: #38bdf8; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 12px; cursor: pointer;">📷</button>
         </div>
         
-        <h3 id="displayProfileName" style="font-size: 18px; color: #38bdf8;">زائر غير مسجل</h3>
-        <p id="displayProfileBio" style="font-size: 12px; color: #94a3b8; margin-top: 2px;">حساب مستقل في منصة QAIM</p>
-        
-        <div style="margin-top: 12px;">
-            <span id="profilePrivacyBadge" style="background: rgba(56,189,248,0.2); color: #38bdf8; padding: 4px 10px; border-radius: 12px; font-size: 11px;">حساب عام 🌐</span>
+        <h3 id="displayProfileName" style="font-size: 18px; color: #38bdf8;" onclick="editProfileName()">زائر غير مسجل (اضغط للتعديل)</h3>
+        <p id="displayProfileUsername" style="font-size: 12px; color: #94a3b8; margin-top: 2px;">المعرف: @guest (ثابت)</p>
+        <p id="displayProfileBio" style="font-size: 12px; color: #cbd5e1; margin-top: 5px;" onclick="editProfileBio()">اضغط هنا لتعديل السيرة الذاتية (Bio)...</p>
+
+        <!-- قسم قصص قصيرة (Story) -->
+        <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; align-items: center;">
+            <input type="file" id="storyFileInput" accept="image/*,video/*" style="display: none;" onchange="publishStory(this)">
+            <button onclick="document.getElementById('storyFileInput').click()" class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #25f4ee; color: #000;">➕ نشر قصة سريعة (Story)</button>
         </div>
+        <div id="userStoriesContainer" style="display: flex; gap: 8px; justify-content: center; margin-top: 10px; overflow-x: auto;"></div>
 
         <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
             <button onclick="openAuthModal()" class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px;">تسجيل الدخول / إنشاء حساب</button>
             <button onclick="logoutUser()" class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px; background: rgba(239, 68, 68, 0.2); color: #ef4444;">تسجيل الخروج 🚪</button>
         </div>
 
-        <div style="display: flex; justify-content: space-around; margin-top: 25px; background: #121624; padding: 15px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
-            <div><h4 id="userLikesCount" style="color: #fe2c55; font-size: 16px;">0</h4><span style="font-size: 10px; color: #94a3b8;">الإعجابات</span></div>
-            <div><h4 id="userFollowersCount" style="color: #38bdf8; font-size: 16px;">142</h4><span style="font-size: 10px; color: #94a3b8;">المتابعون</span></div>
-            <div><h4 id="userFollowingCount" style="color: #38bdf8; font-size: 16px;">85</h4><span style="font-size: 10px; color: #94a3b8;">أتابعهم</span></div>
+        <!-- إدارة المحفوظات مع التحديد ومسح الكل أو البعض -->
+        <div style="margin-top: 25px; text-align: right; background: #121624; padding: 15px; border-radius: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="color: #38bdf8; font-size: 14px;">💾 المحفوظات والمنشورات المحفوظة</h4>
+                <div style="display: flex; gap: 6px;">
+                    <button onclick="toggleSelectAllSaved()" style="background: #1e293b; border: none; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">تحديد الكل</button>
+                    <button onclick="deleteSelectedSavedItems()" style="background: rgba(239, 68, 68, 0.2); border: none; color: #ef4444; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">مسح المحدد 🗑️</button>
+                </div>
+            </div>
+            <div id="savedItemsContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;"></div>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي المطابق لـ TikTok -->
+    <!-- شريط التنقل السفلي المطابق تماماً للصورة المرفقة رقم 7 -->
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="switchPage('explore', this)"><span class="nav-icon">🔍</span><span>اكتشف</span></button>
+        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الصفحة الرئيسية</span></button>
+        <button class="nav-item" onclick="switchPage('friends', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></button>
         <div class="tiktok-plus-btn" onclick="openUploadModal()">+</div>
-        <button class="nav-item" onclick="switchPage('saved', this)"><span class="nav-icon">💾</span><span>المحفوظات</span></button>
-        <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>صندوق الوارد</span></button>
+        <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>الملف الشخصي</span></button>
     </nav>
 
     <script>
@@ -238,24 +252,26 @@
 
         let isRegisterMode = false;
         let currentUsername = localStorage.getItem('qaim_logged_user') || '';
-        let currentUserBio = localStorage.getItem('qaim_bio_' + currentUsername) || 'عضو نشط في منصة QAIM';
+        let currentDisplayName = localStorage.getItem('qaim_display_name_' + currentUsername) || (currentUsername || 'زائر');
+        let currentUserBio = localStorage.getItem('qaim_bio_' + currentUsername) || 'اضغط لتعديل السيرة الذاتية...';
         
-        // قاعدة بيانات افتراضية للمنشورات والمحفوظات
         let mockFeedData = [
-            { id: 1, user: 'حيدر ال عگاب', title: 'البلاغ الأول لمنصة المنهج القويم', desc: 'منبر فكري وعلمي لنشر العلوم الحقة.', video: 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4', likes: 1240, liked: false, saved: false, audio: 'صوت الفيديو الأصلي' },
-            { id: 2, user: 'خادم القرآن', title: 'تلاوة خاشعة - سورة الرحمن', desc: '«فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»', video: 'https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4', likes: 890, liked: false, saved: true, audio: 'سورة الرحمن - الشيخ ياسر الدوسري' },
-            { id: 3, user: 'عضو QAIM', title: 'قبسات فكرية وأخلاقية', desc: 'نحو بناء مجتمع واعي وفاضل وسليم.', video: 'https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-book-42828-large.mp4', likes: 650, liked: false, saved: false, audio: 'نشيد المنهج القويم الرسمي' }
+            { id: 1, user: 'حيدر ال عگاب', title: 'البلاغ الأول لمنصة المنهج القويم', desc: 'منبر فكري وعلمي لنشر العلوم الحقة.', video: 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4', likes: 5637, heartState: 'green', followed: false, saved: false, shared: false, audio: 'صوت الفيديو الأصلي' },
+            { id: 2, user: 'خادم القرآن', title: 'تلاوة خاشعة - سورة الرحمن', desc: '«فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»', video: 'https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-2408-large.mp4', likes: 316, heartState: 'green', followed: true, saved: true, shared: false, audio: 'تلاوة سورة الفاتحة - الشيخ عبد الباسط (ترند)' },
+            { id: 3, user: 'عضو QAIM', title: 'قبسات فكرية وأخلاقية', desc: 'نحو بناء مجتمع واعي وفاضل وسليم.', video: 'https://assets.mixkit.co/videos/preview/mixkit-hands-holding-a-book-42828-large.mp4', likes: 211, heartState: 'green', followed: false, saved: false, shared: false, audio: 'نشيد المنهج القويم الرسمي' }
         ];
 
+        let userStories = [];
         let tempUploadData = {};
 
         window.onload = function() {
             loadFeed();
             loadSavedItems();
+            loadInboxUsers();
             updateProfileUI();
         };
 
-        // إدارة الحسابات والمصادقة المستقلة المشفرة
+        // إدارة المصادقة واستقلال الحسابات
         function toggleAuthMode() {
             isRegisterMode = !isRegisterMode;
             document.getElementById('authTitle').innerText = isRegisterMode ? "✨ إنشاء حساب جديد مشفر" : "🔐 حساب QAIM المستقل";
@@ -273,19 +289,23 @@
 
             if (isRegisterMode) {
                 if (localStorage.getItem('qaim_pass_' + user)) {
-                    alert('اسم المستخدم موجود مسبقاً، يجدر بك اختيار يوزر آخر أو تسجيل الدخول.');
+                    alert('اسم المستخدم موجود مسبقاً!');
                     return;
                 }
                 localStorage.setItem('qaim_pass_' + user, pass);
                 localStorage.setItem('qaim_logged_user', user);
-                localStorage.setItem('qaim_bio_' + user, 'عضو جديد في QAIM');
+                localStorage.setItem('qaim_display_name_' + user, user);
+                localStorage.setItem('qaim_bio_' + user, 'عضو نشط في منصة QAIM');
                 currentUsername = user;
+                currentDisplayName = user;
                 alert('تم إنشاء الحساب المستقل بنجاح!');
             } else {
                 const savedPass = localStorage.getItem('qaim_pass_' + user);
                 if (savedPass && savedPass === pass) {
                     localStorage.setItem('qaim_logged_user', user);
                     currentUsername = user;
+                    currentDisplayName = localStorage.getItem('qaim_display_name_' + user) || user;
+                    currentUserBio = localStorage.getItem('qaim_bio_' + user) || 'عضو نشط';
                     alert('مرحباً بك مجدداً بحسابك المستقل!');
                 } else {
                     alert('خطأ في اسم المستخدم أو كلمة المرور!');
@@ -294,12 +314,14 @@
             }
             closeAuthModal();
             updateProfileUI();
+            loadInboxUsers();
         }
 
         function logoutUser() {
             if (confirm('هل أنت متأكد من تسجيل الخروج من حسابك؟')) {
                 localStorage.removeItem('qaim_logged_user');
                 currentUsername = '';
+                currentDisplayName = 'زائر';
                 updateProfileUI();
                 alert('تم تسجيل الخروج.');
             }
@@ -307,13 +329,35 @@
 
         function updateProfileUI() {
             if (currentUsername) {
-                document.getElementById('displayProfileName').innerText = currentUsername;
-                document.getElementById('displayProfileBio').innerText = localStorage.getItem('qaim_bio_' + currentUsername) || 'عضو نشط';
+                document.getElementById('displayProfileName').innerText = currentDisplayName + " (اضغط للتعديل)";
+                document.getElementById('displayProfileUsername').innerText = "المعرف: @" + currentUsername + " (ثابت)";
+                document.getElementById('displayProfileBio').innerText = currentUserBio;
                 document.getElementById('profileAvatar').innerText = currentUsername.charAt(0).toUpperCase();
             } else {
                 document.getElementById('displayProfileName').innerText = 'زائر غير مسجل';
-                document.getElementById('displayProfileBio').innerText = 'حساب مستقل في منصة QAIM';
+                document.getElementById('displayProfileUsername').innerText = 'المعرف: @guest (ثابت)';
+                document.getElementById('displayProfileBio').innerText = 'اضغط لتعديل السيرة الذاتية...';
                 document.getElementById('profileAvatar').innerText = '👤';
+            }
+        }
+
+        function editProfileName() {
+            if (!currentUsername) { openAuthModal(); return; }
+            const newName = prompt('أدخل الاسم الظاهر الجديد:', currentDisplayName);
+            if (newName) {
+                currentDisplayName = newName;
+                localStorage.setItem('qaim_display_name_' + currentUsername, newName);
+                updateProfileUI();
+            }
+        }
+
+        function editProfileBio() {
+            if (!currentUsername) { openAuthModal(); return; }
+            const newBio = prompt('أدخل السيرة الذاتية الجديدة (Bio):', currentUserBio);
+            if (newBio) {
+                currentUserBio = newBio;
+                localStorage.setItem('qaim_bio_' + currentUsername, newBio);
+                updateProfileUI();
             }
         }
 
@@ -327,35 +371,88 @@
             }
         }
 
-        // خوارزمية عرض الفييد (Feed) مع الحذف التلقائي بتنسيق تيك توك
+        // قصص سريعة (Stories)
+        function publishStory(input) {
+            if (!currentUsername) { openAuthModal(); return; }
+            if (input.files && input.files[0]) {
+                const url = URL.createObjectURL(input.files[0]);
+                userStories.push({ id: Date.now(), url });
+                renderStories();
+                alert('تم نشر القصة السريعة (Story) بنجاح!');
+            }
+        }
+
+        function renderStories() {
+            const container = document.getElementById('userStoriesContainer');
+            container.innerHTML = '';
+            userStories.forEach((st, idx) => {
+                const div = document.createElement('div');
+                div.style.cssText = "position:relative; width:50px; height:50px; border-radius:50%; border:2px solid #38bdf8; overflow:hidden; cursor:pointer;";
+                div.innerHTML = `<img src="${st.url}" style="width:100%; height:100%; object-fit:cover;" onclick="deleteStory(${st.id})">`;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteStory(id) {
+            if (confirm('هل تريد حذف هذه القصة السريعة؟')) {
+                userStories = userStories.filter(s => s.id !== id);
+                renderStories();
+            }
+        }
+
+        // خوارزمية عرض الفييد مع الأزرار المطلوبة بدقة (صورة المتابعة، القلب بألوانه، الحفظ بألوانه، والمشاركة)
         function loadFeed() {
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
-            mockFeedData.forEach((item, index) => {
+            mockFeedData.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <video class="card-media" src="${item.video}" autoplay loop muted playsinline></video>
                     <div class="card-overlay"></div>
+                    
                     <div class="side-actions">
-                        <button class="action-btn ${item.liked ? 'liked' : ''}" onclick="toggleLike(${item.id}, this)">❤️<span class="action-text">${item.likes}</span></button>
+                        <!-- صورة الحساب مع علامة المتابعة (+) -->
+                        <div style="position: relative; margin-bottom: 8px; cursor: pointer;">
+                            <div style="width: 44px; height: 44px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; border: 2px solid #fff;">${item.user.charAt(0)}</div>
+                            <button class="follow-badge-btn ${item.followed ? 'followed' : ''}" onclick="toggleFollow('${item.user}', this)">${item.followed ? '✓' : '+'}</button>
+                        </div>
+
+                        <!-- علامة القلب (الإعجاب) بألوانها: أخضر قبل الإعجاب، أحمر عند الإعجاب، أزرق عند إلغائها -->
+                        <button class="action-btn heart-btn ${item.heartState}" onclick="toggleLike(${item.id}, this)">❤️<span class="action-text">${item.likes}</span></button>
+                        
+                        <!-- التعليق -->
                         <button class="action-btn" onclick="toggleComments(this)">💬<span class="action-text">تعليق</span></button>
-                        <button class="action-btn ${item.saved ? 'saved' : ''}" onclick="toggleSaveItem(${item.id}, this)">💾<span class="action-text">حفظ</span></button>
-                        <button class="action-btn" onclick="deleteFeedItem(${item.id}, this)" style="background: rgba(239,68,68,0.3); color: #ef4444;">🗑️<span class="action-text">حذف</span></button>
+                        
+                        <!-- الحفظ: أبيض قبل الحفظ، أحمر عند الحفظ -->
+                        <button class="action-btn save-btn ${item.saved ? 'red' : 'white'}" onclick="toggleSaveItem(${item.id}, this)">💾<span class="action-text">حفظ</span></button>
+                        
+                        <!-- المشاركة بالسهم المنحني -->
+                        <button class="action-btn" onclick="shareContent(${item.id}, this)">↗️<span class="action-text">${item.shared ? 'مشارَك' : 'مشاركة'}</span></button>
                     </div>
+
                     <div class="card-comments-box">
-                        <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #38bdf8; display: flex; justify-content: space-between;">
+                            <span>التعليقات والمناقشات</span>
+                            <span onclick="this.closest('.card-comments-box').style.display='none'" style="cursor:pointer; color:#ef4444;">✕</span>
+                        </div>
                         <div class="card-comments-list">
-                            <div class="card-comment-item"><span class="comment-user-name">كرار:</span> منشور مبارك وفقكم الله.</div>
+                            <div class="card-comment-item">
+                                <span><strong class="comment-user-name">كرار:</strong> منشور رائع ومبارك.</span>
+                                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">مسح</button>
+                            </div>
                         </div>
                         <div style="display: flex; gap: 6px; margin-top: 5px;">
                             <input type="text" class="form-input" style="margin-top:0; padding:8px; font-size:11px;" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') addComment(this)">
                         </div>
                     </div>
+
                     <div class="card-content">
                         <span style="font-weight: bold; font-size: 14px; color: #fff;">@${item.user}</span>
                         <h2 style="font-size: 16px; margin: 4px 0;">${item.title}</h2>
                         <p style="font-size: 12px; color: #cbd5e1;">${item.desc}</p>
+                        
+                        <!-- قرص الصوت الدوار والصوتيات الترند -->
                         <div class="audio-disc-badge">
                             <div class="disc-icon">🎵</div>
                             <span style="font-size: 11px; color: #e2e8f0;">${item.audio}</span>
@@ -366,12 +463,29 @@
             });
         }
 
+        function toggleFollow(user, btn) {
+            const item = mockFeedData.find(x => x.user === user);
+            if (item) {
+                item.followed = !item.followed;
+                btn.classList.toggle('followed', item.followed);
+                btn.innerText = item.followed ? '✓' : '+';
+                loadInboxUsers();
+            }
+        }
+
         function toggleLike(id, btn) {
             const item = mockFeedData.find(x => x.id === id);
             if (item) {
-                item.liked = !item.liked;
-                item.likes += item.liked ? 1 : -1;
-                btn.classList.toggle('liked', item.liked);
+                if (item.heartState === 'green') {
+                    item.heartState = 'red';
+                    item.likes += 1;
+                } else if (item.heartState === 'red') {
+                    item.heartState = 'blue';
+                    item.likes -= 1;
+                } else {
+                    item.heartState = 'green';
+                }
+                btn.className = `action-btn heart-btn ${item.heartState}`;
                 btn.querySelector('.action-text').innerText = item.likes;
             }
         }
@@ -380,21 +494,22 @@
             const item = mockFeedData.find(x => x.id === id);
             if (item) {
                 item.saved = !item.saved;
-                btn.classList.toggle('saved', item.saved);
+                btn.className = `action-btn save-btn ${item.saved ? 'red' : 'white'}`;
                 loadSavedItems();
-                alert(item.saved ? 'تم حفظ المنشور في المحفوظات والاكسبلورر!' : 'تمت الإزالة من المحفوظات.');
+                alert(item.saved ? 'تم حفظ المنشور في المحفوظات!' : 'تمت الإزالة من المحفوظات.');
             }
         }
 
-        function deleteFeedItem(id, btn) {
-            if (confirm('هل أنت متأكد من حذف هذا المنشور نهائياً؟')) {
-                mockFeedData = mockFeedData.filter(x => x.id !== id);
-                btn.closest('.card').remove();
-                loadSavedItems();
+        function shareContent(id, btn) {
+            const item = mockFeedData.find(x => x.id === id);
+            if (item) {
+                item.shared = !item.shared;
+                btn.querySelector('.action-text').innerText = item.shared ? 'مشارَك' : 'مشاركة';
+                alert(item.shared ? 'تمت مشاركة المنشور للعام بنجاح ويمكن لأي يوزر رؤيته!' : 'تم التراجع عن المشاركة.');
             }
         }
 
-        // نظام النشر بالمرحلتين (Two-Step Upload Wizard)
+        // نظام النشر بالمرحلتين (Two-Step Upload)
         function openUploadModal() {
             if (!currentUsername) { openAuthModal(); return; }
             document.getElementById('uploadModal').style.display = 'flex';
@@ -407,16 +522,15 @@
             if (!title) { alert('يرجى كتابة عنوان المنشور أولاً.'); return; }
 
             const audio = document.getElementById('qaimAudioPreset').value;
-            const privacy = document.getElementById('postPrivacy').value;
             const file = document.getElementById('feedMediaInput').files[0];
             let mediaUrl = 'https://assets.mixkit.co/videos/preview/mixkit-tree-branches-in-the-breeze-1188-large.mp4';
             if (file) { mediaUrl = URL.createObjectURL(file); }
 
-            tempUploadData = { title, desc, audio, privacy, video: mediaUrl };
+            tempUploadData = { title, desc, audio, video: mediaUrl };
 
             document.getElementById('previewTitleDisplay').innerText = title;
             document.getElementById('previewDescDisplay').innerText = desc;
-            document.getElementById('previewAudioDisplay').innerText = "🎵 الصوت: " + audio + " | " + privacy;
+            document.getElementById('previewAudioDisplay').innerText = "🎵 الصوت الترند: " + audio;
 
             document.getElementById('uploadStep1').style.display = 'none';
             document.getElementById('uploadStep2').style.display = 'flex';
@@ -426,7 +540,7 @@
         function backToUploadStep1() {
             document.getElementById('uploadStep1').style.display = 'flex';
             document.getElementById('uploadStep2').style.display = 'none';
-            document.getElementById('uploadModalTitle').innerText = "➕ نشر محتوى جديد (المرحلة 1)";
+            document.getElementById('uploadModalTitle').innerText = "➕ نشر منشور جديد (المرحلة 1)";
         }
 
         function executeFinalPublish() {
@@ -437,8 +551,10 @@
                 desc: tempUploadData.desc,
                 video: tempUploadData.video,
                 likes: 1,
-                liked: false,
+                heartState: 'green',
+                followed: false,
                 saved: false,
+                shared: false,
                 audio: tempUploadData.audio
             });
 
@@ -449,25 +565,25 @@
             document.getElementById('feedDescInput').value = '';
             document.getElementById('feedMediaInput').value = '';
             switchPage('home', document.querySelectorAll('.nav-item')[0]);
-            alert('تم نشر المنشور بنجاح وصظهر فوراً في الفييد للصوت والصورة!');
+            alert('تم نشر المنشور بنجاح وصظهر بالعامه!');
         }
 
-        // غرفة البث المباشر الحي مع التهيئة والاحتفاظ أو الحذف
+        // غرفة البث المباشر الحي مع التهيئة
         let liveStreamObj = null;
         async function startLivePreparationAndCamera() {
             try {
                 liveStreamObj = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
                 document.getElementById('realCameraFeed').srcObject = liveStreamObj;
-                alert('تم تهيئة الكاميرا وربطها بنجاح! يمكنك الآن بدء البث الحي.');
-            } catch (err) { alert('تعذر الوصول للكاميرا، يرجى السماح بالأذونات.'); }
+                alert('تم تهيئة البث المباشر والكاميرا بنجاح!');
+            } catch (err) { alert('تعذر الوصول للكاميرا.'); }
         }
 
         function launchActualLiveBroadcast() {
             const title = document.getElementById('liveTitleInput').value.trim();
-            if (!title) { alert('يرجى كتابة عنوان البث المباشر أولاً.'); return; }
+            if (!title) { alert('يرجى كتابة عنوان البث أولاً.'); return; }
             document.getElementById('livePrepBox').style.display = 'none';
             document.getElementById('liveActiveControls').style.display = 'flex';
-            alert('🔴 بدأ البث المباشر الحي الآن بنجاح على منصة QAIM!');
+            alert('🔴 بدأ البث المباشر الحي الآن!');
         }
 
         function promptEndLiveStream() {
@@ -477,34 +593,30 @@
                 document.getElementById('livePrepBox').style.display = 'flex';
                 document.getElementById('liveActiveControls').style.display = 'none';
 
-                if (confirm('هل ترغب في الاحتفاظ بتسجيل البث المباشر في ملفاتك الشخصية أم حذفه نهائياً؟')) {
-                    alert('تم حفظ تسجيل البث المباشر في سجلاتك بنجاح!');
+                if (confirm('هل ترغب في الاحتفاظ بتسجيل البث في ملفاتك أم حذفه نهائياً؟')) {
+                    alert('تم حفظ تسجيل البث المباشر بنجاح!');
                 } else {
-                    alert('تم حذف تسجيل البث المباشر نهائياً.');
+                    alert('تم حذف تسجيل البث نهائياً.');
                 }
             }
         }
 
-        // إدارة المحفوظات مع التحديد ومسح الكل أو البعض (تيك توك ستايل)
+        // إدارة المحفوظات مع التحديد ومسح الكل أو البعض
         function loadSavedItems() {
             const container = document.getElementById('savedItemsContainer');
             container.innerHTML = '';
             const savedList = mockFeedData.filter(x => x.saved);
             if (savedList.length === 0) {
-                container.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:20px;">لا توجد عناصر محفوظة حالياً.</p>';
+                container.innerHTML = '<p style="font-size:11px; color:#94a3b8; text-align:center;">لا توجد عناصر محفوظة.</p>';
                 return;
             }
             savedList.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'saved-item-row';
-                div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#121624; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);";
+                div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#0b0f19; padding:8px 12px; border-radius:8px;";
                 div.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <input type="checkbox" class="saved-checkbox" data-id="${item.id}" style="width:16px; height:16px; accent-color:#38bdf8;">
-                        <div>
-                            <div style="font-size:13px; font-weight:bold; color:#fff;">${item.title}</div>
-                            <div style="font-size:10px; color:#94a3b8;">بواسطة: @${item.user}</div>
-                        </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <input type="checkbox" class="saved-checkbox" data-id="${item.id}" style="width:14px; height:14px; accent-color:#38bdf8;">
+                        <span style="font-size:12px; color:#fff;">${item.title}</span>
                     </div>
                 `;
                 container.appendChild(div);
@@ -519,7 +631,7 @@
 
         function deleteSelectedSavedItems() {
             const checkboxes = document.querySelectorAll('.saved-checkbox:checked');
-            if (checkboxes.length === 0) { alert('يرجى تحديد عنصر واحد على الأقل للمسح.'); return; }
+            if (checkboxes.length === 0) { alert('يرجى تحديد عناصر للمسح.'); return; }
             if (confirm('هل أنت متأكد من مسح العناصر المحددة من المحفوظات؟')) {
                 checkboxes.forEach(cb => {
                     const id = parseInt(cb.getAttribute('data-id'));
@@ -528,8 +640,43 @@
                 });
                 loadSavedItems();
                 loadFeed();
-                alert('تم مسح العناصر المحددة بنجاح!');
+                alert('تم المسح بنجاح!');
             }
+        }
+
+        // صندوق الوارد وترتيب المتابعين أولاً
+        function loadInboxUsers() {
+            const container = document.getElementById('inboxUsersList');
+            container.innerHTML = '';
+            
+            // المتابعون يظهرون أولاً
+            const followedUsers = mockFeedData.filter(x => x.followed);
+            const otherUsers = mockFeedData.filter(x => !x.followed);
+            const allUsers = [...followedUsers, ...otherUsers];
+
+            allUsers.forEach(item => {
+                const div = document.createElement('div');
+                div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#121624; padding:12px 14px; border-radius:12px;";
+                div.innerHTML = `
+                    <div>
+                        <div style="font-size:13px; font-weight:bold; color:#fff;">@${item.user} ${item.followed ? '<span style="color:#38bdf8; font-size:10px;">(يتابعك / صديق)</span>' : ''}</div>
+                        <div style="font-size:10px; color:#94a3b8;">آخر منشور: ${item.title}</div>
+                    </div>
+                    <button onclick="alert('فتح نافذة المراسلة مع @${item.user}')" style="background:#38bdf8; color:#000; border:none; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:bold; cursor:pointer;">مراسلة 💬</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function switchFeedTab(tabEl, tabName) {
+            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+            tabEl.classList.add('active');
+            alert('تم الانتقال إلى تبويب: ' + tabEl.innerText);
+        }
+
+        function openSearchModal() {
+            const query = prompt('🔍 ابحث عن المتابعين، الأصدقاء، المنشورات، أو الأغاني:');
+            if (query) { alert('نتائج البحث عن: ' + query); }
         }
 
         function switchPage(pageId, btn) {
@@ -550,7 +697,7 @@
                 const list = input.closest('.card-comments-box').querySelector('.card-comments-list');
                 const div = document.createElement('div');
                 div.className = 'card-comment-item';
-                div.innerHTML = `<span class="comment-user-name">${currentUsername}:</span> ${input.value}`;
+                div.innerHTML = `<span><strong class="comment-user-name">${currentUsername}:</strong> ${input.value}</span><button onclick="this.parentElement.remove()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">مسح</button>`;
                 list.appendChild(div);
                 input.value = '';
                 list.scrollTop = list.scrollHeight;
