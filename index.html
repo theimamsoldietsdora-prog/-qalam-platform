@@ -6,7 +6,7 @@
     <title>QAIM Platform - منصة المنهج القويم</title>
     
     <!-- SEO & PWA Meta Tags -->
-    <meta name="description" content="QAIM Platform - منصة المنهج القويم التعليمية والفكرية - نشر العلوم والمعارف الحقة والبث المباشر.">
+    <meta name="description" content="QAIM Platform - منصة المنهج القويم التعليمية والفكرية - نشر العلوم والمعارف الحقة، التلاوات والصوتيات، والبث المباشر.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,8 +23,8 @@
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
         .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 10%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
-        .card-content { position: relative; z-index: 2; margin-bottom: 70px; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 15%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
+        .card-content { position: relative; z-index: 2; margin-bottom: 75px; }
 
         /* أزرار التفاعل الجانبية */
         .side-actions { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 15px; z-index: 3; align-items: center; }
@@ -32,6 +32,12 @@
         .action-btn:active { transform: scale(0.9); }
         .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.2); }
         .action-text { font-size: 10px; margin-top: 2px; }
+
+        /* الأقراص الصوتية الدوارة (TikTok Vinyl Audio Badge) */
+        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.4); margin-top: 8px; width: fit-content; cursor: pointer; }
+        .disc-icon { width: 22px; height: 22px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; justify-content: center; align-items: center; font-size: 11px; animation: spin 4s linear infinite; }
+        .disc-icon.paused { animation-play-state: paused; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* صندوق التعليقات المنبثق للبطاقات الرئيسية */
         .card-comments-box { position: absolute; bottom: 70px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 220px; }
@@ -43,12 +49,12 @@
         .install-banner { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         .install-btn { background: #38bdf8; color: #0b1120; border: none; padding: 8px 14px; border-radius: 12px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-        /* نافذة تسجيل الدخول وإنشاء الحساب بكلمة مرور (Modal) */
+        /* نافذة تسجيل الدخول (Modal) */
         #authModal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .auth-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; text-align: center; }
 
         /* نافذة النشر المنبثقة Modal */
-        #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
         .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
 
         /* غرفة البث المباشر */
@@ -72,8 +78,8 @@
 
         /* الأقسام، الكتب والمنشورات */
         .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .form-input { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; outline: none; }
-        .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; height: 80px; outline: none; resize: none; }
+        .form-input, .form-select { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; outline: none; }
+        .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; height: 70px; outline: none; resize: none; }
         .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
 
         .section-card { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); }
@@ -87,7 +93,7 @@
         .comments-section { margin-top: 10px; display: none; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
         .comment-item { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 6px; margin-top: 5px; }
 
-        /* عارض ملفات PDF التفاعلي (Modal) */
+        /* عارض ملفات PDF التفاعلي */
         #pdfViewerModal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; }
         .pdf-modal-header { padding: 15px; background: #0b1120; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
         .close-pdf-btn { background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -102,6 +108,9 @@
         .plus-btn-item { position: relative; top: -15px; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; color: #0b1120; font-weight: bold; border: 3px solid #0b1120; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); cursor: pointer; }
 
         .grid-container { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+        /* مشغل الصوتيات العام المدمج */
+        audio { width: 100%; height: 32px; border-radius: 8px; margin-top: 6px; }
     </style>
 </head>
 <body>
@@ -130,22 +139,45 @@
         <iframe id="pdfIframe"></iframe>
     </div>
 
-    <!-- نافذة نشر فيديو أو صورة جديدة -->
+    <!-- نافذة نشر محتوى فيديو/صورة وصوتية (Audio / Video / Image Modal) -->
     <div id="uploadModal">
         <div class="upload-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 16px; color: #38bdf8;">🎬 نشر محتوى - QAIM</h3>
+                <h3 style="font-size: 16px; color: #38bdf8;">🎬 نشر محتوى وتحديد الصوت - QAIM</h3>
                 <button onclick="closeUploadModal()" style="background: none; border: none; color: #ef4444; font-size: 18px; font-weight: bold; cursor: pointer;">✕</button>
             </div>
             <input type="text" id="feedTitleInput" class="form-input" placeholder="عنوان المنشور...">
             <textarea id="feedDescInput" class="form-textarea" placeholder="وصف المنشور..."></textarea>
             
             <div>
-                <label style="font-size: 11px; color: #94a3b8;">اختر فيديو أو صورة من هاتفك:</label>
+                <label style="font-size: 11px; color: #94a3b8;">1. اختر فيديو أو صورة للمنشور:</label>
                 <input type="file" id="feedMediaInput" accept="image/*,video/*" class="form-input" style="padding: 6px;">
             </div>
 
-            <button class="primary-btn" onclick="publishFeedMedia()">نشر الآن 🚀</button>
+            <div>
+                <label style="font-size: 11px; color: #94a3b8;">2. اختر مقطع صوتي (تلاوة قرآنية / قصيدة / أهزوجة ترند):</label>
+                <select id="qaimAudioPreset" class="form-select">
+                    <option value="">-- اختر من مكتبة الصوتيات --</option>
+                    <optgroup label="📖 القرآن الكريم (كبار القراء)">
+                        <option value="https://server8.mp3quran.net/basit/001.mp3">سورة الفاتحة - الشيخ عبد الباسط عبد الصمد</option>
+                        <option value="https://server11.mp3quran.net/yasser/055.mp3">سورة الرحمن - الشيخ ياسر الدوسري</option>
+                        <option value="https://server10.mp3quran.net/minsh/036.mp3">سورة يس - الشيخ محمد صديق المنشاوي</option>
+                        <option value="https://server6.mp3quran.net/qht/067.mp3">سورة الملك - الشيخ خالد الجليل</option>
+                        <option value="https://server8.mp3quran.net/afs/112.mp3">سورة الإخلاص - الشيخ مشاري العفاسي</option>
+                    </optgroup>
+                    <optgroup label="🎵 قصائد وأناشيد وأهازيج ترند">
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">نشيد المنهج القويم - أداء جماعي</option>
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">أهزوجة الثبات والاستقامة</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div>
+                <label style="font-size: 11px; color: #94a3b8;">أو رفع ملف صوتي خاص بك (MP3 / Audio):</label>
+                <input type="file" id="feedCustomAudioInput" accept="audio/*" class="form-input" style="padding: 6px;">
+            </div>
+
+            <button class="primary-btn" onclick="publishFeedMedia()">نشر المنشور فوراً 🚀</button>
         </div>
     </div>
 
@@ -183,6 +215,13 @@
                     <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ QAIM - البلاغ الأول</span>
                     <h2 style="font-size: 20px; margin: 8px 0;">إنطلاق منصة المنهج القويم (QAIM)</h2>
                     <p style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">منبر فكري وعلمي مستقل لنشر العلم الصحيح والمعارف الحقة وإحياء الخلق السامي والفضائل المطلوبة من العباد.</p>
+                    
+                    <!-- المقطع الصوتي التفاعلي للبطاقة الأولى -->
+                    <div class="audio-disc-badge" onclick="toggleAudioPlay(this)">
+                        <div class="disc-icon">🎵</div>
+                        <span style="font-size: 11px; color: #e2e8f0;">تلاوة سورة الفاتحة - الشيخ عبد الباسط</span>
+                        <audio src="https://server8.mp3quran.net/basit/001.mp3" loop></audio>
+                    </div>
                 </div>
             </div>
 
@@ -213,14 +252,29 @@
         </div>
     </div>
 
-    <!-- 3. المكتبة والكتب -->
+    <!-- 3. المكتبة والمكتبة الصوتية والكتب -->
     <div id="page-library" class="page">
         <div style="padding: 20px 20px 10px;">
-            <h2>📚 مكتبة QAIM للكتب والمقالات</h2>
-            <p style="font-size: 12px; color: #94a3b8;">تصفح واقرأ الكتب والبحوث المرفوعة حياً</p>
+            <h2>📚 مكتبة QAIM للكتب والصوتيات</h2>
+            <p style="font-size: 12px; color: #94a3b8;">تصفح واقرأ الكتب، واستمع للتلاوات والقصائد</p>
         </div>
         
         <div class="grid-container" style="padding-top: 5px;">
+            <!-- قسم المكتبة الصوتية -->
+            <div class="content-box">
+                <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 8px;">🎧 الصوتيات والقرآن الكريم وترند الأهازيج</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px;">
+                        <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">📖 سورة الرحمن - الشيخ ياسر الدوسري</span>
+                        <audio controls src="https://server11.mp3quran.net/yasser/055.mp3"></audio>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px;">
+                        <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">📖 سورة يس - الشيخ محمد صديق المنشاوي</span>
+                        <audio controls src="https://server10.mp3quran.net/minsh/036.mp3"></audio>
+                    </div>
+                </div>
+            </div>
+
             <div class="content-box">
                 <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF أو منشور جديد</h4>
                 <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب أو المقال...">
@@ -249,7 +303,7 @@
                         <button class="post-action-btn delete-btn" onclick="deletePostCard(this)">🗑️ حذف</button>
                     </div>
                     <div class="comments-section">
-                        <input type="text" class="form-input" placeholder="اكتب تعليقاً على الكتاب..." onkeypress="if(event.key==='Enter') addPostComment(this)">
+                        <input type="text" class="form-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') addPostComment(this)">
                         <div class="comments-list"></div>
                     </div>
                 </div>
@@ -260,8 +314,8 @@
     <!-- 4. اكتشف -->
     <div id="page-explore" class="page">
         <div style="padding: 20px;">
-            <h2>✨ اكتشف في QAIM</h2>
-            <input type="text" placeholder="🔍 بحث في الكتب والمنشورات..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
+            <h2>✨ اكتشف الصوتيات والمنشورات في QAIM</h2>
+            <input type="text" placeholder="🔍 بحث في القراء، القصائد، الأهازيج والكتب..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
         </div>
     </div>
 
@@ -426,10 +480,25 @@
             document.getElementById('uploadModal').style.display = 'none';
         }
 
+        function toggleAudioPlay(badgeEl) {
+            const audio = badgeEl.querySelector('audio');
+            const icon = badgeEl.querySelector('.disc-icon');
+            if (audio.paused) {
+                document.querySelectorAll('audio').forEach(a => a.pause());
+                audio.play();
+                icon.classList.remove('paused');
+            } else {
+                audio.pause();
+                icon.classList.add('paused');
+            }
+        }
+
         function publishFeedMedia() {
             const rawTitle = document.getElementById('feedTitleInput').value.trim();
             const rawDesc = document.getElementById('feedDescInput').value.trim();
             const mediaFile = document.getElementById('feedMediaInput').files[0];
+            const audioSelectUrl = document.getElementById('qaimAudioPreset').value;
+            const audioCustomFile = document.getElementById('feedCustomAudioInput').files[0];
 
             if (rawTitle === "") {
                 alert('يرجى كتابة عنوان للمنشور.');
@@ -452,6 +521,27 @@
                 }
             } else {
                 cardDiv.style.backgroundImage = `url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80')`;
+            }
+
+            let audioSrc = audioSelectUrl;
+            let audioTitleName = "صوت ترند - QAIM";
+            if (audioCustomFile) {
+                audioSrc = URL.createObjectURL(audioCustomFile);
+                audioTitleName = audioCustomFile.name;
+            } else if (audioSelectUrl) {
+                const selectElement = document.getElementById('qaimAudioPreset');
+                audioTitleName = selectElement.options[selectElement.selectedIndex].text;
+            }
+
+            let audioHTML = '';
+            if (audioSrc) {
+                audioHTML = `
+                    <div class="audio-disc-badge" onclick="toggleAudioPlay(this)">
+                        <div class="disc-icon">🎵</div>
+                        <span style="font-size: 11px; color: #e2e8f0;">${audioTitleName}</span>
+                        <audio src="${audioSrc}" loop></audio>
+                    </div>
+                `;
             }
 
             const publisherName = currentUsername || 'مشترك';
@@ -477,6 +567,7 @@
                     <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">👤 ${publisherName}</span>
                     <h2 style="font-size: 20px; margin: 8px 0;">${title}</h2>
                     <p style="font-size: 12px; color: #cbd5e1;">${desc}</p>
+                    ${audioHTML}
                 </div>
             `;
 
@@ -485,9 +576,11 @@
             document.getElementById('feedTitleInput').value = "";
             document.getElementById('feedDescInput').value = "";
             document.getElementById('feedMediaInput').value = "";
+            document.getElementById('qaimAudioPreset').value = "";
+            document.getElementById('feedCustomAudioInput').value = "";
             closeUploadModal();
             switchPage('home', document.querySelectorAll('.nav-item')[0]);
-            alert('تم نشر المحتوى بنجاح!');
+            alert('تم نشر المحتوى المرفق بالصوت بنجاح!');
         }
 
         function deleteFeedCard(btn) {
@@ -526,7 +619,7 @@
             if (navigator.share) {
                 navigator.share({
                     title: 'QAIM Platform - منصة المنهج القويم',
-                    text: 'انضم إلينا في منصة QAIM وتصفح الكتب والمنشورات!',
+                    text: 'انضم إلينا في منصة QAIM وتصفح الكتب والمنشورات والصوتيات!',
                     url: window.location.href,
                 }).catch(console.error);
             } else {
