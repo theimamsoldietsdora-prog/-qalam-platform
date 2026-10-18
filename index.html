@@ -61,30 +61,34 @@
         .disc-icon.paused { animation-play-state: paused; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* تصميم صفحة الملف الشخصي بالكامل المطابق للـ TikTok Profile */
-        .profile-container { padding: 12px 16px; background-color: #000; }
-        .profile-top-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
-        .profile-header-icon { font-size: 20px; background: none; border: none; color: white; cursor: pointer; }
+        /* تصميم صفحة الملف الشخصي المطابق تماماً لمعيار TikTok UI */
+        .profile-container { padding: 15px; background-color: #000; }
+        .profile-top-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+        .profile-header-icon { font-size: 22px; background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .profile-info-section { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 10px; }
-        .profile-avatar-wrapper { position: relative; width: 90px; height: 90px; margin-bottom: 10px; }
-        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; justify-content: center; align-items: center; font-size: 36px; }
-        .profile-story-plus { position: absolute; bottom: 2px; right: 2px; background: #38bdf8; color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 2px solid #000; font-size: 16px; }
+        .profile-info-section { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 5px; }
+        .profile-avatar-wrapper { position: relative; width: 85px; height: 85px; margin-bottom: 8px; }
+        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; justify-content: center; align-items: center; font-size: 34px; }
+        .profile-story-plus { position: absolute; bottom: 0; right: 0; background: #38bdf8; color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 2px solid #000; font-size: 15px; }
 
-        .profile-name { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
-        .profile-username { font-size: 12px; color: #a1a1aa; margin-top: 2px; }
+        .profile-name { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 5px; color: #fff; }
+        .profile-username { font-size: 12px; color: #94a3b8; margin-top: 2px; }
 
-        .profile-stats-bar { display: flex; justify-content: center; align-items: center; gap: 30px; margin: 18px 0; }
+        .profile-stats-bar { display: flex; justify-content: center; align-items: center; gap: 28px; margin: 15px 0; }
         .profile-stat-item { display: flex; flex-direction: column; align-items: center; }
-        .profile-stat-num { font-size: 17px; font-weight: 800; color: #ffffff; }
-        .profile-stat-label { font-size: 11px; color: #a1a1aa; margin-top: 2px; }
+        .profile-stat-num { font-size: 16px; font-weight: 800; color: #ffffff; }
+        .profile-stat-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
 
-        .profile-bio { font-size: 12px; color: #e2e8f0; line-height: 1.5; max-width: 320px; margin: 0 auto 15px; }
+        .profile-actions-row { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; max-width: 320px; }
+        .profile-edit-btn { flex: 1; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); color: white; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .profile-share-btn { background: #1e293b; border: 1px solid rgba(255,255,255,0.15); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
 
-        .profile-tabs-nav { display: flex; justify-content: space-around; border-bottom: 1px solid #18181b; padding-bottom: 8px; margin-top: 10px; }
-        .profile-tab-btn { background: none; border: none; color: #71717a; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
+        .profile-bio { font-size: 12px; color: #cbd5e1; line-height: 1.5; max-width: 320px; margin: 0 auto 15px; text-align: center; }
+
+        .profile-tabs-nav { display: flex; justify-content: space-around; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-top: 5px; }
+        .profile-tab-btn { background: none; border: none; color: #64748b; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
         .profile-tab-btn.active { color: #ffffff; }
-        .profile-tab-btn.active::after { content: ''; position: absolute; bottom: -9px; left: 20%; right: 20%; height: 2px; background: #ffffff; }
+        .profile-tab-btn.active::after { content: ''; position: absolute; bottom: -9px; left: 15%; right: 15%; height: 2px; background: #ffffff; }
 
         .profile-grid-posts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 5px; }
         .profile-grid-item { position: relative; height: 155px; background: #18181b; overflow: hidden; cursor: pointer; }
@@ -92,12 +96,12 @@
         .profile-grid-views { position: absolute; bottom: 6px; right: 6px; font-size: 10px; font-weight: bold; color: white; display: flex; align-items: center; gap: 3px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
         .pinned-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: white; font-size: 8px; font-weight: bold; padding: 1px 4px; border-radius: 3px; }
 
-        /* القائمة الجانبية المنبثقة من الأسفل (TikTok Side Sheet Menu) */
-        #menuDrawerModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
-        .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 30px; display: flex; flex-direction: column; gap: 18px; max-height: 80vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
+        /* قائمة تيك توك الجانبية الأصلية المنبثقة من الأسفل */
+        #menuDrawerModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
+        .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 35px; display: flex; flex-direction: column; gap: 16px; max-height: 82vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
         
-        .menu-section-title { font-size: 11px; color: #71717a; font-weight: bold; margin-bottom: 4px; }
-        .menu-item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .menu-section-title { font-size: 11px; color: #71717a; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .menu-item-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .menu-item-left { display: flex; align-items: center; gap: 12px; }
         .menu-item-icon { font-size: 18px; width: 24px; text-align: center; }
 
@@ -287,46 +291,49 @@
         </div>
     </div>
 
-    <!-- 7. الملف الشخصي الشامل (Profile Page) -->
+    <!-- 7. الملف الشخصي لأي مشترك (مع أزرار وقوائم TikTok الأصلية المناسبة والمنسقة) -->
     <div id="page-profile" class="page">
         <div class="profile-container">
             <div class="profile-top-header">
                 <button class="profile-header-icon" onclick="openMenuDrawer()">☰</button>
-                <div style="display:flex; gap:12px; align-items:center;">
+                <div style="display:flex; gap:16px; align-items:center;">
                     <button class="profile-header-icon" onclick="switchPage('friends')">👤+</button>
                     <button class="profile-header-icon" onclick="switchPage('live')">📺</button>
-                    <button class="profile-header-icon" onclick="activateFounderMode()">✏️</button>
                 </div>
             </div>
 
             <div class="profile-info-section">
                 <div class="profile-avatar-wrapper">
-                    <div class="profile-avatar-img">👑</div>
+                    <div class="profile-avatar-img">👤</div>
                     <div class="profile-story-plus" onclick="openUploadModal()">+</div>
                 </div>
                 <div class="profile-name">
-                    محمد (المؤسس العام) ⚔️
+                    مستخدم المنصة 🛡️
                 </div>
-                <div class="profile-username">@mohammed_founder</div>
+                <div class="profile-username">@qaim_member</div>
 
                 <div class="profile-stats-bar">
                     <div class="profile-stat-item">
-                        <span class="profile-stat-num">680</span>
+                        <span class="profile-stat-num">142</span>
                         <span class="profile-stat-label">أتابعه</span>
                     </div>
                     <div class="profile-stat-item">
-                        <span class="profile-stat-num">225</span>
+                        <span class="profile-stat-num">1.2k</span>
                         <span class="profile-stat-label">متابعين</span>
                     </div>
                     <div class="profile-stat-item">
-                        <span class="profile-stat-num">3643</span>
-                        <span class="profile-stat-label">تسجيلات الإعجاب</span>
+                        <span class="profile-stat-num">15.8k</span>
+                        <span class="profile-stat-label">الإعجابات</span>
                     </div>
                 </div>
 
+                <div class="profile-actions-row">
+                    <button class="profile-edit-btn" onclick="activateFounderMode()">تعديل الملف الشخصي</button>
+                    <button class="profile-share-btn" onclick="sharePlatform()">مشاركة الملف</button>
+                </div>
+
                 <div class="profile-bio">
-                    (اللهم أنا ندعوا إلى سبيلك بالحكمة والموعظة الحسنة🤲🤲)<br>
-                    واشرقت الارض بنور ربها✨
+                    مشارك في منصة المنهج القويم (QAIM)<br>نشر العلوم والمعارف والفضيلة ✨
                 </div>
             </div>
 
@@ -334,7 +341,6 @@
                 <button class="profile-tab-btn active" onclick="switchProfileGrid('posts', this)">📊</button>
                 <button class="profile-tab-btn" onclick="switchProfileGrid('repost', this)">🔄</button>
                 <button class="profile-tab-btn" onclick="switchProfileGrid('saved', this)">📑</button>
-                <button class="profile-tab-btn" onclick="switchProfileGrid('private', this)">🔒</button>
                 <button class="profile-tab-btn" onclick="switchProfileGrid('likes', this)">❤️</button>
             </div>
 
@@ -342,24 +348,19 @@
                 <div class="profile-grid-item" onclick="switchPage('home')">
                     <span class="pinned-badge">مثبت</span>
                     <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ 236.6 ألف</div>
+                    <div class="profile-grid-views">▷ 14.2 ألف</div>
                 </div>
                 <div class="profile-grid-item" onclick="switchPage('home')">
                     <img src="https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ 219</div>
-                </div>
-                <div class="profile-grid-item" onclick="switchPage('home')">
-                    <img src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ 378</div>
+                    <div class="profile-grid-views">▷ 890</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- نافذة القائمة الجانبية والأدوات السفلية المطابقة للصورة (TikTok Side Menu Sheet) -->
+    <!-- قائمة تيك توك الأصلية المنبثقة للأدوات (TikTok Side Menu Sheet) -->
     <div id="menuDrawerModal" onclick="if(event.target===this) closeMenuDrawer()">
         <div class="menu-drawer-content">
-            <!-- قسم الأصول -->
             <div>
                 <div class="menu-section-title">الأصول</div>
                 <div class="menu-item-row">
@@ -371,7 +372,6 @@
                 </div>
             </div>
 
-            <!-- قسم الأدوات الشخصية -->
             <div>
                 <div class="menu-section-title">الأدوات الشخصية</div>
                 <div class="menu-item-row">
@@ -397,13 +397,12 @@
                 </div>
             </div>
 
-            <!-- قسم أدوات الإبداع والأعمال -->
             <div>
                 <div class="menu-section-title">أدوات الإبداع والأعمال</div>
                 <div class="menu-item-row" onclick="closeMenuDrawer(); activateFounderMode();">
                     <div class="menu-item-left">
                         <span class="menu-item-icon">🌟</span>
-                        <span>QAIM Studio (لوحة المؤسس)</span>
+                        <span>QAIM Studio (لوحة المؤسس والقارئ)</span>
                     </div>
                     <span>‹</span>
                 </div>
@@ -486,7 +485,7 @@
                 { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "250.1k", comments: "32.8k", bookmarks: "41.6k", shares: "89.3k" }
             ],
             following: [
-                { user: "محمد (المؤسس العام)", title: "رؤية منصة QAIM المستقبلية", desc: "بناء مجتمع معرفي فكري رائد يعتمد على الفضيلة والحقيقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: "310.2k", comments: "45.1k", bookmarks: "52.3k", shares: "99.1k" }
+                { user: "مشترك نشط", title: "رؤية منصة QAIM المستقبلية", desc: "بناء مجتمع معرفي فكري رائد يعتمد على الفضيلة والحقيقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: "310.2k", comments: "45.1k", bookmarks: "52.3k", shares: "99.1k" }
             ],
             community: [
                 { user: "منتظر السلامي", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", likes: "98.3k", comments: "12.9k", bookmarks: "19.5k", shares: "31.2k" }
@@ -498,7 +497,7 @@
             { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
-        /* سحب الشاشة لليسار للانتقال الفوري لصفحة البث المباشر */
+        /* سحب الشاشة لليسار للانتقال الفوري للبث المباشر */
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
@@ -724,7 +723,7 @@
             } catch (err) {}
         }
         function stopLiveBroadcast() { if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; } }
-        function sharePlatform() {}
+        function sharePlatform() { alert('تم نسخ رابط الملف الشخصي للمشترك!'); }
 
         function filterExploreContent(val) { console.log('بحث إكسبلور: ' + val); }
         function filterExploreTag(tag) { console.log('تصفية الهاشتاغ: ' + tag); }
