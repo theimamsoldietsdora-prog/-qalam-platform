@@ -5,871 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QAIM Platform - المنصة العالمية الأولى</title>
 
-    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف والفضيلة.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; transition: 0.3s; }
-        
-        body.accessibility-mode { font-size: 18px !important; background-color: #0b132b !important; color: #ffff00 !important; }
-        body.accessibility-mode h3, body.accessibility-mode p { color: #ffffff !important; font-weight: 900 !important; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; }
 
-        .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
+        .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 60px; }
         .page.active { display: block; }
 
-        /* شاشة البداية (Splash Screen) مطابقة لتصميم تيك توك تماماً */
-        #splashScreen { position: fixed; inset: 0; background: #000000; z-index: 6000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
-        .tiktok-splash-logo { display: flex; flex-direction: column; align-items: center; gap: 15px; animation: pulseLogo 1.2s infinite alternate; }
-        .tiktok-splash-icon { font-size: 64px; filter: drop-shadow(0 0 15px rgba(37, 244, 238, 0.4)); }
-        .tiktok-splash-text { font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: 1px; font-family: sans-serif; }
-        @keyframes pulseLogo { 0% { transform: scale(0.95); opacity: 0.85; } 100% { transform: scale(1.05); opacity: 1; } }
+        /* شاشة البداية السريعة */
+        #splashScreen { position: fixed; inset: 0; background: #000000; z-index: 6000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease; }
+        .splash-logo { font-size: 50px; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
 
-        /* شاشة تسجيل الدخول والإنشاء */
-        #authScreen { position: fixed; inset: 0; background: #000000; z-index: 5000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .auth-card { background: #121212; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(56,189,248,0.15); }
-        .auth-title { font-size: 20px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 5px; }
+        /* الشريط العلوي */
+        .top-header { position: absolute; top: 10px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; }
+        .top-tabs { display: flex; gap: 15px; font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.6); cursor: pointer; }
+        .top-tabs span.active { color: #fff; font-size: 16px; border-bottom: 2px solid #fff; }
 
-        /* الشريط العلوي للرئيسية */
-        .top-tiktok-header { position: absolute; top: 12px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 14px; }
-        .top-left-actions, .top-right-actions { display: flex; align-items: center; gap: 8px; }
-        
-        .live-tv-btn { display: flex; align-items: center; gap: 4px; background: none; border: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; }
-        .live-tv-icon { border: 2px solid #ffffff; border-radius: 6px; padding: 1px 5px; font-size: 10px; font-weight: 900; background: #ef4444; }
-
-        .accessibility-header-btn { background: rgba(56, 189, 248, 0.25); border: 1px solid #38bdf8; color: #ffffff; border-radius: 8px; padding: 3px 8px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 3px; }
-
-        .top-nav-tabs { display: flex; align-items: center; gap: 16px; }
-        .top-tab { font-size: 15px; color: rgba(255, 255, 255, 0.6); font-weight: bold; cursor: pointer; position: relative; padding-bottom: 4px; transition: 0.2s; }
-        .top-tab.active { color: #ffffff; font-size: 16px; font-weight: 900; }
-        .top-tab.active::after { content: ''; position: absolute; bottom: 0; left: 15%; right: 15%; height: 3px; background-color: #ffffff; border-radius: 2px; }
-
-        .header-icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-
-        /* الخلاصة الرئيسية للفيديوهات */
-        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
-        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; overflow: hidden; }
+        /* الخلاصة الخفيفة */
+        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background: #000; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%); z-index: 1; }
-        .card-content { position: relative; z-index: 2; margin-bottom: 70px; padding-right: 5px; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 15%, transparent 50%); z-index: 1; }
+        .card-content { position: relative; z-index: 2; margin-bottom: 65px; }
 
-        /* أزرار التفاعل الجانبية */
-        .side-actions { position: absolute; left: 12px; bottom: 100px; display: flex; flex-direction: column; gap: 16px; z-index: 3; align-items: center; }
-        .avatar-container { position: relative; margin-bottom: 6px; cursor: pointer; }
-        .action-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ffffff; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; font-size: 18px; }
-        .follow-plus-badge { position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); background: #fe2c55; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; border: 2px solid #ffffff; transition: 0.3s; }
+        /* الأزرار الجانبية */
+        .side-actions { position: absolute; left: 12px; bottom: 90px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
+        .action-btn { background: rgba(255,255,255,0.15); border: none; width: 42px; height: 42px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; }
+        .action-text { font-size: 9px; margin-top: 2px; }
 
-        .action-btn { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
-        .action-btn:active { transform: scale(0.85); }
-        .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.25); }
-        .action-btn.bookmarked { color: #f59e0b; background: rgba(245, 158, 11, 0.25); }
-        .action-text { font-size: 10px; margin-top: 2px; color: #ffffff; font-weight: bold; }
+        /* الملف الشخصي */
+        .profile-container { padding: 15px; background: #000; }
+        .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 10px; }
+        .profile-grid-item { position: relative; height: 150px; background: #111; overflow: hidden; }
+        .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        .delete-post-btn { position: absolute; top: 6px; right: 6px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; cursor: pointer; z-index: 5; }
 
-        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 8px; width: fit-content; cursor: pointer; }
-        .disc-icon { width: 20px; height: 20px; border-radius: 50%; background: #38bdf8; color: #000; display: flex; justify-content: center; align-items: center; font-size: 10px; animation: spin 4s linear infinite; }
-        .disc-icon.paused { animation-play-state: paused; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        /* استوديو النشر */
+        #postEditorModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #121212; border: 1px solid #38bdf8; border-radius: 16px; padding: 20px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; }
+        .form-input { width: 100%; padding: 10px; background: #000; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 12px; outline: none; }
+        .primary-btn { background: #38bdf8; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
 
-        /* تصميم صفحة الملف الشخصي */
-        .profile-container { padding: 15px; background-color: #000; }
-        .profile-top-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
-        .profile-header-icon { font-size: 22px; background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-        .profile-info-section { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 5px; }
-        .profile-avatar-wrapper { position: relative; width: 85px; height: 85px; margin-bottom: 8px; }
-        .profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; background: #1e293b; border: 2px solid #334155; display: flex; justify-content: center; align-items: center; font-size: 34px; overflow: hidden; }
-        .profile-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-story-plus { position: absolute; bottom: 0; right: 0; background: #38bdf8; color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 2px solid #000; font-size: 15px; cursor: pointer; }
-
-        .profile-name { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 5px; color: #fff; }
-        .profile-username { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-
-        .profile-stats-bar { display: flex; justify-content: center; align-items: center; gap: 28px; margin: 15px 0; }
-        .profile-stat-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .profile-stat-num { font-size: 16px; font-weight: 800; color: #ffffff; }
-        .profile-stat-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-
-        .profile-actions-row { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; max-width: 320px; }
-        .profile-edit-btn { flex: 1; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); color: white; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
-        .profile-share-btn { background: #1e293b; border: 1px solid rgba(255,255,255,0.15); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
-
-        .profile-bio { font-size: 12px; color: #cbd5e1; line-height: 1.5; max-width: 320px; margin: 0 auto 15px; text-align: center; }
-
-        .profile-tabs-nav { display: flex; justify-content: space-around; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-top: 5px; }
-        .profile-tab-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
-        .profile-tab-btn.active::after { content: ''; position: absolute; bottom: -9px; left: 15%; right: 15%; height: 2px; background: #ffffff; }
-
-        .profile-grid-posts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; margin-top: 5px; }
-        .profile-grid-item { position: relative; height: 155px; background: #18181b; overflow: hidden; cursor: pointer; }
-        .profile-grid-item video, .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-grid-views { position: absolute; bottom: 6px; right: 6px; font-size: 10px; font-weight: bold; color: white; display: flex; align-items: center; gap: 3px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-        .pinned-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: white; font-size: 8px; font-weight: bold; padding: 1px 4px; border-radius: 3px; }
-        
-        .profile-select-checkbox { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; accent-color: #fe2c55; z-index: 10; display: none; cursor: pointer; }
-        body.selecting-mode .profile-select-checkbox { display: block; }
-
-        /* القوائم واللوحات */
-        #menuDrawerModal, #settingsModal, #editProfileModal, #cameraRecordModal, #postEditorModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
-        .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 35px; display: flex; flex-direction: column; gap: 16px; max-height: 85vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
-        
-        .menu-section-title { font-size: 11px; color: #71717a; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .menu-item-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .menu-item-left { display: flex; align-items: center; gap: 12px; }
-        .menu-item-icon { font-size: 18px; width: 24px; text-align: center; }
-
-        .settings-content { background: #000; position: absolute; inset: 0; z-index: 4500; display: none; flex-direction: column; overflow-y: auto; padding: 15px; }
-        .settings-header { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid #1f2937; margin-bottom: 15px; font-size: 17px; font-weight: bold; }
-
-        .explore-container { padding: 15px; }
-        .explore-search-box { background: #1e293b; border-radius: 20px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 15px; }
-        .explore-search-box input { background: none; border: none; outline: none; color: white; font-size: 13px; width: 100%; }
-
-        .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .form-input, .form-textarea, .form-select { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
-        .form-textarea { height: 75px; resize: none; margin-top: 6px; }
-        .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
-        .delete-btn { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
-
-        .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
-        .inbox-avatar { width: 42px; height: 42px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
-
-        #pdfViewerModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; position: relative; }
-        .modal-close-btn { position: absolute; top: 12px; left: 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
-
-        /* الشريط السفلي للتنقل */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #000000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #a1a1aa; text-decoration: none; font-size: 8.5px; gap: 3px; border: none; background: none; flex: 1; cursor: pointer; }
-        .nav-item.active { color: #ffffff; font-weight: bold; }
-        .nav-icon { font-size: 17px; }
-
-        .tiktok-plus-btn { width: 38px; height: 25px; background: #ffffff; border-radius: 8px; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; margin: 0 2px; }
-        .tiktok-plus-btn::before { content: ''; position: absolute; left: -3px; width: 38px; height: 25px; background: #25f4ee; border-radius: 8px; z-index: -1; }
-        .tiktok-plus-btn::after { content: ''; position: absolute; right: -3px; width: 38px; height: 25px; background: #fe2c55; border-radius: 8px; z-index: -2; }
-        .tiktok-plus-icon { color: #000; font-weight: bold; font-size: 15px; }
+        /* الشريط السفلي */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 55px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { color: #888; background: none; border: none; font-size: 9px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; flex: 1; }
+        .nav-item.active { color: #fff; font-weight: bold; }
+        .plus-btn { background: #fff; color: #000; width: 36px; height: 24px; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة البداية (Splash Screen) مطابقة تماماً لصورة تيك توك -->
+    <!-- شاشة البداية السريعة -->
     <div id="splashScreen">
-        <div class="tiktok-splash-logo">
-            <div class="tiktok-splash-icon">⚔️</div>
-            <div class="tiktok-splash-text">QAIM</div>
-        </div>
+        <div class="splash-logo">⚔️ QAIM</div>
     </div>
 
-    <!-- شاشة تسجيل الدخول والإنشاء -->
-    <div id="authScreen">
-        <div class="auth-card">
-            <div class="auth-title">تسجيل حساب آمن ومستقل 🛡️</div>
-            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">كل مشترك له خصوصيته وإعداداته المستقلة</p>
-            
-            <input type="text" id="regName" class="form-input" placeholder="الاسم الظاهر...">
-            <input type="text" id="regUsername" class="form-input" placeholder="المعرف الفرعي (مثال: @user)...">
-            <input type="password" id="regPassword" class="form-input" placeholder="كلمة المرور السرية الخاصة بك...">
-
-            <button class="primary-btn" onclick="submitRegistration()">إنشاء حساب جديد 🚀</button>
-            <button class="primary-btn" style="background:#1e293b; color:#38bdf8;" onclick="submitLogin()">تسجيل الدخول 🔑</button>
+    <!-- الصفحة الرئيسية -->
+    <div id="page-home" class="page active">
+        <div class="top-header">
+            <div style="font-size: 12px; color:#ef4444; font-weight:bold;">🔴 LIVE</div>
+            <div class="top-tabs">
+                <span onclick="switchTab(this)">المجتمع</span>
+                <span onclick="switchTab(this)">أتابعه</span>
+                <span class="active" onclick="switchTab(this)">لك</span>
+            </div>
+            <span onclick="switchPage('explore')" style="font-size:18px; cursor:pointer;">🔍</span>
         </div>
+        <div class="feed" id="mainFeedContainer"></div>
     </div>
 
-    <!-- الشاشة الرئيسية -->
-    <div id="page-home" class="page">
-        <div class="top-tiktok-header">
-            <div class="top-right-actions">
-                <button class="live-tv-btn" onclick="switchPage('live')">
-                    <span class="live-tv-icon">LIVE</span>
-                </button>
-                <button class="accessibility-header-btn" onclick="toggleAccessibilityMode()">
-                    ♿ الوصول
-                </button>
-            </div>
-
-            <div class="top-nav-tabs">
-                <span class="top-tab" onclick="switchTopTab(this, 'community')">المجتمع</span>
-                <span class="top-tab" onclick="switchTopTab(this, 'following')">أتابعه</span>
-                <span class="top-tab active" onclick="switchTopTab(this, 'foryou')">لك</span>
-            </div>
-
-            <div class="top-left-actions">
-                <button class="header-icon-btn" onclick="switchPage('library')" title="المكتبة">📚</button>
-                <button class="header-icon-btn" onclick="switchPage('explore')" title="إكسبلور">🔍</button>
-            </div>
-        </div>
-
-        <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)"></div>
-    </div>
-
-    <!-- الإكسبلور والبحث -->
+    <!-- إكسبلور -->
     <div id="page-explore" class="page">
-        <div class="explore-container">
-            <div class="explore-search-box">
-                <span>🔍</span>
-                <input type="text" id="globalSearchInput" placeholder="بحث عالمي ذكي..." onkeyup="globalSearchEngine(this.value)">
-            </div>
-
-            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🎧 صوتيات وقراءات ترند:</h4>
-            <div id="trendingAudioList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px;">
-                <div class="inbox-item" onclick="toggleAudioPlayback('https://server8.mp3quran.net/basit/055.mp3', this)">
-                    <div class="inbox-avatar" style="background:#0284c7; color:white;">🎵</div>
-                    <div style="flex:1;">
-                        <div style="font-size:12px; font-weight:bold;">تلاوة سورة الرحمن</div>
-                        <div style="font-size:10px; color:#94a3b8;">الشيخ عبد الباسط عبد الصمد</div>
-                    </div>
-                    <span class="audio-status-btn" style="font-size:10px; color:#38bdf8;">تشغيل ▷</span>
-                </div>
-            </div>
-
-            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المحتوى العالمي الأكثر مشاهدة:</h4>
-            <div class="explore-grid" id="exploreGridContainer" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
-        </div>
-    </div>
-
-    <!-- البث المباشر -->
-    <div id="page-live" class="page">
-        <div style="height: 100vh; display: flex; flex-direction: column; background: #000;">
-            <div style="height: 50%; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
-                <button onclick="switchPage('home')" style="position:absolute; top:15px; left:15px; z-index:10; background:rgba(0,0,0,0.6); color:white; border:none; padding:6px 12px; border-radius:12px; font-size:11px; cursor:pointer;">↩️ رجوع</button>
-                <div style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔴 بث حي عالمي</div>
-                <video id="realCameraFeed" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover;"></video>
-                <div style="position: absolute; bottom: 10px; display: flex; gap: 8px;">
-                    <button class="primary-btn" style="width: auto; margin-top:0;" onclick="startLiveBroadcast()">🎥 تشغيل الكاميرا</button>
-                    <button class="primary-btn delete-btn" style="width: auto; margin-top:0;" onclick="stopLiveBroadcast()">إيقاف</button>
-                </div>
-            </div>
-            <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; background: #0b1120;">
-                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في غرفة البث المباشر العالمية!</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- البريد الوارد -->
-    <div id="page-inbox" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 صندوق الوارد والرسائل</h2>
-            <div class="inbox-item">
-                <div class="inbox-avatar">أ</div>
-                <div style="flex: 1;">
-                    <div style="font-size: 13px; font-weight: bold;">الناشر الرسمي</div>
-                    <div style="font-size: 11px; color: #94a3b8;">مرحباً بك في منصة QAIM العالمية!</div>
-                </div>
-            </div>
+            <h3 style="color:#38bdf8; margin-bottom:10px;">🔍 الإكسبلور والبحث</h3>
+            <input type="text" class="form-input" placeholder="ابحث في المنصة..." onkeyup="searchPosts(this.value)">
+            <div id="exploreResults" style="margin-top:15px; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
     </div>
 
-    <!-- المكتبة -->
-    <div id="page-library" class="page">
-        <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي</h2>
-            
-            <div id="founderExclusiveReader" class="content-box" style="border: 1px solid rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, #1e293b, #0f172a); display: none;">
-                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ الصوتي</h4>
-                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق النص هنا..."></textarea>
-                
-                <div style="display: flex; gap: 8px; margin-top: 8px;">
-                    <select id="readerLangSelect" class="form-input" style="flex: 1; padding: 6px;">
-                        <option value="ar-SA">العربية (Arabic)</option>
-                        <option value="en-US">إنجليزية (English)</option>
-                    </select>
-                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل الصوت</button>
-                </div>
-            </div>
-
-            <div class="content-box">
-                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF عالمي جديد</h4>
-                <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب...">
-                <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز..."></textarea>
-                <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 4px; margin-top:6px;">
-                <button class="primary-btn" onclick="saveNewBookOrPost()">إضافة للمكتبة 🚀</button>
-            </div>
-
-            <div id="postsListContainer">
-                <div class="content-box">
-                    <h4 style="font-size: 14px;">📖 كتاب القواعد الفكرية الأساسية (PDF)</h4>
-                    <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
-                        <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
-                        <button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- الأصدقاء -->
-    <div id="page-friends" class="page">
-        <div style="padding: 20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h2 style="font-size: 18px; color: #38bdf8;">👥 العثور على أصدقاء</h2>
-                <button onclick="switchPage('home')" style="background:none; border:none; color:white; font-size:16px; cursor:pointer;">✕</button>
-            </div>
-
-            <div class="explore-search-box" style="margin-bottom:15px;">
-                <span>🔍</span>
-                <input type="text" id="friendSearchInput" placeholder="البحث بالاسم..." onkeyup="filterFriends(this.value)">
-            </div>
-
-            <div id="friendSuggestionsList">
-                <div class="inbox-item">
-                    <div class="inbox-avatar" style="background:#ec4899;">س</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">سُويْبةـ🌸ـ</div>
-                        <div style="font-size:11px; color:#94a3b8;">@mase6_18 (يتابعك)</div>
-                    </div>
-                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تمت المتابعة!')">رد المتابعة</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- الملف الشخصي مع طريقة الحذف بالتحديد الاحترافي -->
+    <!-- الملف الشخصي -->
     <div id="page-profile" class="page">
         <div class="profile-container">
-            <div class="profile-top-header">
-                <button class="profile-header-icon" onclick="openMenuDrawer()">☰</button>
-                <div style="display:flex; gap:16px; align-items:center;">
-                    <button class="profile-header-icon" onclick="switchPage('friends')">👤+</button>
-                    <button class="profile-header-icon" onclick="switchPage('live')">📺</button>
-                </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <div id="profileAvatar" style="width: 70px; height: 70px; background: #38bdf8; color:#000; border-radius: 50%; margin: 0 auto 10px; display:flex; justify-content:center; align-items:center; font-size:24px; font-weight:bold;">👤</div>
+                <h3 id="profileNameDisplay">مستخدم المنصة</h3>
+                <p id="profileUserTag" style="font-size: 11px; color: #888;">@qaim_user</p>
             </div>
-
-            <div class="profile-info-section">
-                <div class="profile-avatar-wrapper">
-                    <div class="profile-avatar-img" id="profileAvatarDisplay">👤</div>
-                    <div class="profile-story-plus" onclick="triggerAvatarUpload()">+</div>
-                    <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(this)">
-                </div>
-                <div class="profile-name" id="profileNameDisplay">مستخدِم المنصة 🛡️</div>
-                <div class="profile-username" id="profileUsernameDisplay">@qaim_member</div>
-
-                <div class="profile-stats-bar">
-                    <div class="profile-stat-item"><span class="profile-stat-num">142</span><span class="profile-stat-label">أتابعه</span></div>
-                    <div class="profile-stat-item"><span class="profile-stat-num">1.2k</span><span class="profile-stat-label">متابعين</span></div>
-                    <div class="profile-stat-item"><span class="profile-stat-num">15.8k</span><span class="profile-stat-label">الإعجابات</span></div>
-                </div>
-
-                <div class="profile-actions-row">
-                    <button class="profile-edit-btn" onclick="openEditProfileModal()">تعديل الملف الشخصي</button>
-                    <button class="profile-share-btn" onclick="sharePlatform()">مشاركة الملف</button>
-                </div>
-
-                <div class="profile-bio" id="profileBioDisplay">مشارك في منصة المنهج القويم (QAIM) ✨</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                <span style="font-size: 12px; color: #888;">منشوراتك العامة:</span>
+                <button onclick="toggleSelectMode()" class="primary-btn" style="width:auto; padding:4px 10px; font-size:10px; background:#222; color:#38bdf8;">تحديد للحذف 🗑️</button>
             </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; margin: 10px 0; padding: 0 5px;">
-                <span style="font-size: 12px; color: #94a3b8;">إدارة المنشورات:</span>
-                <div>
-                    <button id="toggleSelectModeBtn" class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px; background:#1e293b; color:#38bdf8;" onclick="toggleSelectModeForDeletion()">تحديد للحذف 🗑️</button>
-                    <button id="confirmDeleteSelectedBtn" class="primary-btn" style="width:auto; padding:4px 10px; font-size:11px; background:#ef4444; color:white; display:none;" onclick="deleteSelectedPosts()">حذف المخصص ✕</button>
-                </div>
-            </div>
-
-            <div class="profile-tabs-nav">
-                <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)">📊</button>
-                <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)">🔄</button>
-                <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)">📑</button>
-                <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)">❤️</button>
-            </div>
-
-            <div class="profile-grid-posts" id="userProfilePostsGrid"></div>
+            <div class="profile-grid" id="profileGridContainer"></div>
         </div>
     </div>
 
-    <!-- شاشة إعداد المنشور قبل النشر (مثل تيك توك Studio) -->
-    <div id="postEditorModal" style="position:fixed; inset:0; background:#000; z-index:5500; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <button onclick="closePostEditor()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إلغاء</button>
-            <div style="color:#38bdf8; font-weight:bold; font-size:14px;">✨ إعداد المنشور وتعديله</div>
-            <button onclick="finalPublishPost()" style="background:#fe2c55; color:white; border:none; padding:6px 16px; border-radius:20px; font-weight:bold; cursor:pointer;">نشر الآن 🚀</button>
-        </div>
-        <div style="flex:1; display:flex; flex-direction:column; gap:12px; margin:15px 0; justify-content:center; align-items:center;">
-            <div id="editorMediaPreviewBox" style="width:160px; height:200px; border-radius:12px; overflow:hidden; background:#111; border:1px solid #334155;"></div>
-            <input type="text" id="editorTitleInput" class="form-input" placeholder="اكتب وصفاً جذاباً أو هاشتاغ #المنهج_القويم ...">
-            <select id="editorMusicSelect" class="form-select">
-                <option value="تلاوة خاشعة - ترند">🎵 صوت ترند: تلاوة خاشعة</option>
-                <option value="أهزوجة حماسية - QAIM">🎶 صوت ترند: أهزوجة حماسية</option>
-            </select>
-        </div>
-        <div></div>
-    </div>
-
-    <!-- كاميرا التصوير -->
-    <div id="cameraRecordModal" style="position:fixed; inset:0; background:#000; z-index:5000; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <button onclick="closeCameraModal()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إغلاق</button>
-            <div style="color:#38bdf8; font-weight:bold; font-size:14px;">📷 كاميرا QAIM</div>
-            <div></div>
-        </div>
-        <div style="flex:1; display:flex; justify-content:center; align-items:center; position:relative; margin:15px 0; border-radius:20px; overflow:hidden; background:#111;">
-            <video id="liveCameraPreview" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover;"></video>
-            <canvas id="snapshotCanvas" style="display:none;"></canvas>
-        </div>
-        <div style="display:flex; justify-content:space-around; align-items:center; padding-bottom:10px;">
-            <button class="primary-btn" style="width:auto; background:#22c55e; color:white;" onclick="capturePhotoToEditor()">📸 التقاط صورة</button>
+    <!-- استوديو النشر (مثل تيك توك) -->
+    <div id="postEditorModal">
+        <div class="modal-box">
+            <h3 style="color:#38bdf8; font-size:14px; text-align:center;">✨ إعداد المنشور ونشره للعام</h3>
+            <div id="editorPreview" style="height:140px; background:#000; border-radius:8px; overflow:hidden;"></div>
+            <input type="text" id="editorCaption" class="form-input" placeholder="اكتب وصفاً أو هاشتاغ...">
+            <button class="primary-btn" onclick="publishPostNow()">نشر الآن للعام 🚀</button>
+            <button onclick="document.getElementById('postEditorModal').style.display='none'" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; text-align:center;">إلغاء</button>
         </div>
     </div>
 
-    <!-- نافذة اختيار الوسائط -->
-    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
-        <div class="upload-card">
-            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 إنشاء محتوى جديد</h3>
-            
-            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (التقاط صورة)</button>
-            
-            <div style="border: 1px dashed #38bdf8; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;" onclick="document.getElementById('deviceGalleryInput').click()">
-                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار صورة أو فيديو من الجهاز</span>
-            </div>
-            <input type="file" id="deviceGalleryInput" accept="image/*,video/*" style="display:none;" onchange="handleDeviceGalleryUpload(this)">
-        </div>
-    </div>
-
-    <!-- تعديل الملف الشخصي -->
-    <div id="editProfileModal" onclick="if(event.target===this) closeEditProfileModal()">
-        <div class="upload-card">
-            <button class="modal-close-btn" onclick="closeEditProfileModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">✏️ تعديل الملف الشخصي</h3>
-            <label style="font-size:11px; color:#94a3b8;">الاسم الظاهر:</label>
-            <input type="text" id="editNameInput" class="form-input">
-            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio):</label>
-            <textarea id="editBioInput" class="form-textarea"></textarea>
-            <button class="primary-btn" onclick="saveProfileEdits()">حفظ التعديلات 💾</button>
-        </div>
-    </div>
-
-    <!-- القائمة الجانبية -->
-    <div id="menuDrawerModal" onclick="if(event.target===this) closeMenuDrawer()">
-        <div class="menu-drawer-content">
-            <div class="menu-item-row" onclick="closeMenuDrawer(); openSettingsPage();">
-                <div class="menu-item-left"><span class="menu-item-icon">⚙️</span><span>الإعدادات والخصوصية</span></div>
-                <span>‹</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- الإعدادات والخصوصية -->
-    <div id="settingsModal" class="settings-content">
-        <div class="settings-header">
-            <button onclick="closeSettingsPage()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">←</button>
-            <span>الإعدادات والخصوصية</span>
-        </div>
-        <div class="menu-item-row" onclick="toggleAccountPrivacy()">
-            <div class="menu-item-left"><span class="menu-item-icon">🔒</span><span>حساب خاص / عام</span></div>
-            <span id="privacyStatusBadge" style="font-size:11px; color:#38bdf8; font-weight:bold;">عام (Public)</span>
-        </div>
-        <div class="menu-item-row" onclick="openBlockedAccountsModal()">
-            <div class="menu-item-left"><span class="menu-item-icon">🚫</span><span>الحسابات المحظورة وطلب رفع الحظر</span></div>
-            <span>‹</span>
-        </div>
-    </div>
-
-    <!-- عارض PDF -->
-    <div id="pdfViewerModal" onclick="if(event.target===this) closePdfViewer()">
-        <div style="width: 100%; height: 100%; display: flex; flex-direction: column; position:relative;">
-            <div style="padding: 10px; background: #0b1120; display: flex; justify-content: space-between; align-items: center;">
-                <h3 id="pdfModalTitle" style="font-size: 14px; color: #38bdf8;">عارض الكتب</h3>
-                <button onclick="closePdfViewer()" style="background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-weight:bold;">رجوع ✕</button>
-            </div>
-            <iframe id="pdfIframe"></iframe>
-        </div>
-    </div>
+    <!-- رفع الوسائط -->
+    <input type="file" id="deviceFilePicker" accept="image/*,video/*" style="display:none;" onchange="handleFileSelected(this)">
 
     <!-- الشريط السفلي -->
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="switchPage('explore', this)"><span class="nav-icon">🔍</span><span>إكسبلور</span></button>
-        <div class="tiktok-plus-btn" onclick="openUploadModal()"><span class="tiktok-plus-icon">+</span></div>
-        <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>الوارد</span></button>
-        <button class="nav-item" onclick="switchPage('library', this)"><span class="nav-icon">📚</span><span>المكتبة</span></button>
-        <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>الملف الشخصي</span></button>
+        <button class="nav-item active" onclick="switchPage('home', this)"><span>🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="switchPage('explore', this)"><span>🔍</span><span>إكسبلور</span></button>
+        <div class="plus-btn" onclick="document.getElementById('deviceFilePicker').click()">+</div>
+        <button class="nav-item" onclick="switchPage('profile', this)"><span>👤</span><span>الملف الشخصي</span></button>
     </nav>
 
     <script>
-        let currentUser = null;
-        let touchstartX = 0, touchendX = 0, liveStream = null, currentAudioElement = null;
-        let pendingMediaData = null;
-
-        let globalPostsDatabase = [
-            { id: 1, user: "بغداد لايف", username: "@baghdad_live", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: 128500, comments: 18400, bookmarks: 21200, shares: 45900, type: 'video' },
-            { id: 2, user: "خادم القرآن", username: "@quran_servant", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: 250100, comments: 32800, bookmarks: 41600, shares: 89300, type: 'video' }
+        let posts = [
+            { id: 1, user: "بغداد لايف", title: "انطلاق منصة المنهج القويم ⚔️", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", type: "video" }
         ];
+        let tempMedia = null;
 
-        const exploreItems = [
-            { title: "تلاوة خاشعة سورة الرحمن", user: "خادم القرآن", views: "450.2k", img: "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80" },
-            { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
-        ];
-
-        // شاشة البداية الذكية وتلاشيها كتيك توك
         window.onload = function() {
             setTimeout(() => {
-                const splash = document.getElementById('splashScreen');
+                let splash = document.getElementById('splashScreen');
                 splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    const saved = localStorage.getItem('qaim_user');
-                    if(!saved) {
-                        document.getElementById('authScreen').style.display = 'flex';
-                    } else {
-                        currentUser = JSON.parse(saved);
-                        updateProfileUI();
-                    }
-                }, 600);
-            }, 1500);
+                setTimeout(() => splash.style.display = 'none', 400);
+            }, 1000);
 
-            const savedGlobalPosts = localStorage.getItem('qaim_global_posts');
-            if(savedGlobalPosts) {
-                try { globalPostsDatabase = JSON.parse(savedGlobalPosts); } catch(e){}
-            }
-            renderFeedGlobal();
-            renderExploreGrid();
-            renderUserProfileGrid();
-            checkFounderStatus();
+            let saved = localStorage.getItem('qaim_posts_light');
+            if(saved) { try { posts = JSON.parse(saved); } catch(e){} }
+            renderFeed();
+            renderProfile();
         };
 
-        function submitRegistration() {
-            const name = document.getElementById('regName').value.trim();
-            const username = document.getElementById('regUsername').value.trim();
-            const pass = document.getElementById('regPassword').value.trim();
-            if(!name || !username || !pass) { alert('يرجى ملء الحقول الإجبارية!'); return; }
-
-            currentUser = { name, username, bio: "مشارك في منصة المنهج القويم (QAIM)", avatar: "", isPrivate: false };
-            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
-            alert('تم إنشاء الحساب بنجاح!');
-            document.getElementById('authScreen').style.display = 'none';
-            updateProfileUI();
+        function renderFeed() {
+            let container = document.getElementById('mainFeedContainer');
+            container.innerHTML = '';
+            posts.forEach(p => {
+                let card = document.createElement('div');
+                card.className = 'card';
+                let mediaTag = p.type === 'image' ? `<img class="card-media" src="${p.url}">` : `<video class="card-media" src="${p.url}" autoplay loop muted playsinline></video>`;
+                card.innerHTML = `
+                    ${mediaTag}
+                    <div class="card-overlay"></div>
+                    <div class="side-actions">
+                        <button class="action-btn" onclick="this.classList.toggle('liked')">❤️<span class="action-text">12k</span></button>
+                        <button class="action-btn" onclick="alert('مشاركة ناجحة!')">🚀<span class="action-text">مشاركة</span></button>
+                    </div>
+                    <div class="card-content">
+                        <h4 style="font-size:14px; font-weight:bold;">@${p.user}</h4>
+                        <p style="font-size:11px; color:#ddd; margin-top:3px;">${p.title}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function submitLogin() {
-            const username = document.getElementById('regUsername').value.trim();
-            const pass = document.getElementById('regPassword').value.trim();
-            if(!username || !pass) { alert('يرجى إدخال المعرف وكلمة المرور!'); return; }
-
-            const saved = localStorage.getItem('qaim_user');
-            if(saved) {
-                currentUser = JSON.parse(saved);
-            } else {
-                currentUser = { name: "مستخدم المنصة", username: username, bio: "مشارك في منصة QAIM", avatar: "", isPrivate: false };
-            }
-            alert('تم تسجيل الدخول بنجاح!');
-            document.getElementById('authScreen').style.display = 'none';
-            updateProfileUI();
-        }
-
-        function updateProfileUI() {
-            if(!currentUser) return;
-            document.getElementById('profileNameDisplay').innerText = currentUser.name;
-            document.getElementById('profileUsernameDisplay').innerText = currentUser.username;
-            document.getElementById('profileBioDisplay').innerHTML = currentUser.bio;
-            if(currentUser.avatar) {
-                document.getElementById('profileAvatarDisplay').innerHTML = `<img src="${currentUser.avatar}">`;
-            }
-        }
-
-        function openEditProfileModal() {
-            document.getElementById('editNameInput').value = currentUser.name;
-            document.getElementById('editBioInput').value = currentUser.bio;
-            document.getElementById('editProfileModal').style.display = 'flex';
-        }
-        function closeEditProfileModal() { document.getElementById('editProfileModal').style.display = 'none'; }
-
-        function saveProfileEdits() {
-            currentUser.name = document.getElementById('editNameInput').value.trim();
-            currentUser.bio = document.getElementById('editBioInput').value.trim();
-            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
-            updateProfileUI();
-            closeEditProfileModal();
-            alert('تم حفظ التعديلات بنجاح!');
-        }
-
-        function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
-        function handleAvatarUpload(input) {
+        function handleFileSelected(input) {
             if(input.files && input.files[0]) {
-                const reader = new FileReader();
+                let file = input.files[0];
+                let reader = new FileReader();
                 reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
-                    localStorage.setItem('qaim_user', JSON.stringify(currentUser));
-                    updateProfileUI();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        /* مرحلة إعداد المنشور قبل النشر النهائي (طريقة تيك توك Studio) */
-        function handleDeviceGalleryUpload(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    pendingMediaData = { url: e.target.result, type: file.type.includes('video') ? 'video' : 'image' };
-                    closeUploadModal();
-                    openPostEditor();
+                    tempMedia = { url: e.target.result, type: file.type.includes('video') ? 'video' : 'image' };
+                    let prev = document.getElementById('editorPreview');
+                    prev.innerHTML = tempMedia.type === 'image' ? `<img src="${tempMedia.url}" style="width:100%;height:100%;object-fit:cover;">` : `<video src="${tempMedia.url}" style="width:100%;height:100%;object-fit:cover;" autoplay muted></video>`;
+                    document.getElementById('postEditorModal').style.display = 'flex';
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function openPostEditor() {
-            document.getElementById('editorTitleInput').value = '';
-            const box = document.getElementById('editorMediaPreviewBox');
-            box.innerHTML = pendingMediaData.type === 'image' ? `<img src="${pendingMediaData.url}" style="width:100%; height:100%; object-fit:cover;">` : `<video src="${pendingMediaData.url}" style="width:100%; height:100%; object-fit:cover;" autoplay muted loop></video>`;
-            document.getElementById('postEditorModal').style.display = 'flex';
-        }
-
-        function closePostEditor() {
+        function publishPostNow() {
+            let caption = document.getElementById('editorCaption').value.trim() || "منشور عام جديد ✨";
+            let newPost = { id: Date.now(), user: "حيدر_العگاب", title: caption, url: tempMedia.url, type: tempMedia.type };
+            posts.unshift(newPost);
+            localStorage.setItem('qaim_posts_light', JSON.stringify(posts));
             document.getElementById('postEditorModal').style.display = 'none';
-        }
-
-        function finalPublishPost() {
-            const titleInput = document.getElementById('editorTitleInput').value.trim();
-            const title = titleInput ? titleInput : "منشور جديد ✨";
-            const music = document.getElementById('editorMusicSelect').value;
-            
-            const newPost = {
-                id: Date.now(),
-                user: currentUser ? currentUser.name : "مستخدم QAIM",
-                username: currentUser ? currentUser.username : "@user",
-                title: title + " (" + music + ")",
-                desc: "منشور عام عبر المنصة.",
-                video: pendingMediaData.url,
-                type: pendingMediaData.type,
-                likes: 1, comments: 0, bookmarks: 0, shares: 0
-            };
-
-            globalPostsDatabase.unshift(newPost);
-            localStorage.setItem('qaim_global_posts', JSON.stringify(globalPostsDatabase));
-            closePostEditor();
-            renderFeedGlobal();
-            renderUserProfileGrid();
+            renderFeed();
+            renderProfile();
             switchPage('home');
-            alert('تم نشر المحتوى بنجاح ليظهر للعام!');
+            alert('تم النشر بنجاح ليظهر للعام!');
         }
 
-        /* عرض الخلاصة العامة المعالجة لتظهر الصور والفيديوهات للعام فوراً */
-        function renderFeedGlobal() {
-            const container = document.getElementById('mainFeedContainer');
-            container.innerHTML = '';
-            
-            globalPostsDatabase.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                let mediaElement = '';
-                if(post.type === 'image' || post.video.startsWith('data:image')) {
-                    mediaElement = `<img class="card-media" src="${post.video}" style="object-fit:cover;">`;
-                } else {
-                    mediaElement = `<video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>`;
-                }
-
-                card.innerHTML = `
-                    ${mediaElement}
-                    <div class="card-overlay"></div>
-                    
-                    <div class="side-actions">
-                        <div class="avatar-container" onclick="toggleFollowPlus(this)">
-                            <div class="action-avatar">${post.user.charAt(0)}</div>
-                            <div class="follow-plus-badge">+</div>
-                        </div>
-                        
-                        <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${post.likes}</span></button>
-                        <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">${post.comments}</span></button>
-                        <button class="action-btn" onclick="toggleBookmark(this)">🔖<span class="action-text">${post.bookmarks}</span></button>
-                        <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">${post.shares}</span></button>
-                    </div>
-
-                    <div class="card-content">
-                        <h3 style="font-size: 16px; font-weight: bold;">${post.user} <span style="font-size:11px; color:#94a3b8;">(${post.username})</span></h3>
-                        <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title}</p>
-                        <div class="audio-disc-badge" onclick="toggleCardAudio(this, 'https://server8.mp3quran.net/basit/055.mp3')">
-                            <div class="disc-icon">🎵</div>
-                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        /* نظام الحذف الاحترافي بالتحديد (طريقة تيك توك) */
-        let isSelectingForDeletion = false;
-        function toggleSelectModeForDeletion() {
-            isSelectingForDeletion = !isSelectingForDeletion;
-            const btn = document.getElementById('toggleSelectModeBtn');
-            const confirmBtn = document.getElementById('confirmDeleteSelectedBtn');
-            if(isSelectingForDeletion) {
-                document.body.classList.add('selecting-mode');
-                btn.innerText = "إلغاء التحديد";
-                confirmBtn.style.display = "block";
-            } else {
-                document.body.classList.remove('selecting-mode');
-                btn.innerText = "تحديد للحذف 🗑️";
-                confirmBtn.style.display = "none";
-            }
-        }
-
-        function renderUserProfileGrid() {
-            const grid = document.getElementById('userProfilePostsGrid');
+        function renderProfile() {
+            let grid = document.getElementById('profileGridContainer');
             grid.innerHTML = '';
-            
-            globalPostsDatabase.forEach(post => {
-                const item = document.createElement('div');
+            posts.forEach(p => {
+                let item = document.createElement('div');
                 item.className = 'profile-grid-item';
-                let mediaContent = post.type === 'image' || post.video.startsWith('data:image') ? `<img src="${post.video}">` : `<img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">`;
-
+                let imgContent = p.type === 'image' ? `<img src="${p.url}">` : `<img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">`;
                 item.innerHTML = `
-                    ${mediaContent}
-                    <input type="checkbox" class="profile-select-checkbox" value="${post.id}">
-                    <div class="profile-grid-views">⭐ ${post.title}</div>
+                    ${imgContent}
+                    <button class="delete-post-btn" onclick="deletePost(${p.id})">✕</button>
+                    <div style="position:absolute; bottom:4px; right:4px; font-size:9px; color:#fff; text-shadow:0 1px 2px #000;">⭐ ${p.title}</div>
                 `;
                 grid.appendChild(item);
             });
         }
 
-        function deleteSelectedPosts() {
-            const checkboxes = document.querySelectorAll('.profile-select-checkbox:checked');
-            if(checkboxes.length === 0) { alert('يرجى تحديد المنشورات المراد حذفها أولاً.'); return; }
-            
-            if(confirm('هل تريد حقاً مسح المنشورات المحددة نهائياً؟')) {
-                const idsToDelete = Array.from(checkboxes).map(cb => Number(cb.value));
-                globalPostsDatabase = globalPostsDatabase.filter(p => !idsToDelete.includes(p.id));
-                localStorage.setItem('qaim_global_posts', JSON.stringify(globalPostsDatabase));
-                toggleSelectModeForDeletion();
-                renderFeedGlobal();
-                renderUserProfileGrid();
-                alert('تم حذف المنشورات المحددة بنجاح!');
+        function deletePost(id) {
+            if(confirm('حذف هذا المنشور نهائياً؟')) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('qaim_posts_light', JSON.stringify(posts));
+                renderFeed();
+                renderProfile();
+                alert('تم الحذف بنجاح!');
             }
         }
 
-        /* الكاميرا والتصوير */
-        async function openCameraModal() {
-            closeUploadModal();
-            document.getElementById('cameraRecordModal').style.display = 'flex';
-            try {
-                liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                document.getElementById('liveCameraPreview').srcObject = liveStream;
-            } catch(e) { alert('تعذر الوصول للكاميرا.'); }
-        }
-        function closeCameraModal() {
-            if(liveStream) { liveStream.getTracks().forEach(t => t.stop()); }
-            document.getElementById('cameraRecordModal').style.display = 'none';
-        }
-
-        function capturePhotoToEditor() {
-            const video = document.getElementById('liveCameraPreview');
-            const canvas = document.getElementById('snapshotCanvas');
-            canvas.width = video.videoWidth || 300;
-            canvas.height = video.videoHeight || 400;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            pendingMediaData = { url: canvas.toDataURL('image/png'), type: 'image' };
-            closeCameraModal();
-            openPostEditor();
-        }
-
-        async function startLiveBroadcast() {
-            try {
-                liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                document.getElementById('realCameraFeed').srcObject = liveStream;
-                alert('تم بدء البث المباشر!');
-            } catch (err) { alert('تعذر تشغيل البث.'); }
-        }
-        function stopLiveBroadcast() { 
-            if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; alert('تم إيقاف البث.'); } 
-        }
-
-        function globalSearchEngine(query) {
-            const q = query.toLowerCase().trim();
-            if(!q) { renderFeedGlobal(); return; }
-            const container = document.getElementById('mainFeedContainer');
-            container.innerHTML = '';
-            const results = globalPostsDatabase.filter(p => p.title.toLowerCase().includes(q) || p.user.toLowerCase().includes(q));
-            results.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<img class="card-media" src="${post.video}"><div class="card-overlay"></div><div class="card-content"><h3 style="font-size: 16px;">${post.user}</h3><p>${post.title}</p></div>`;
-                container.appendChild(card);
-            });
-        }
-
-        function filterFriends(q) { console.log(q); }
-        function switchColoredTab(tabColor, btn) {
-            document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function openSettingsPage() { document.getElementById('settingsModal').style.display = 'flex'; }
-        function closeSettingsPage() { document.getElementById('settingsModal').style.display = 'none'; }
-        function toggleAccountPrivacy() { alert('تم تبديل وضع الحساب بنجاح.'); }
-        function openBlockedAccountsModal() { prompt('طلب رفع الحظر:'); }
-
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            if (touchendX < touchstartX - 70) switchPage('live');
-            if (touchendX > touchstartX + 70) switchPage('home');
-        });
-
-        function openMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'flex'; }
-        function closeMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'none'; }
-        function switchTopTab(tabEl, cat) {
-            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
-            tabEl.classList.add('active');
-            renderFeedGlobal();
-        }
-
-        function toggleCardAudio(badgeEl, audioUrl) {
-            if (currentAudioElement && !currentAudioElement.paused) { currentAudioElement.pause(); } 
-            else { currentAudioElement = new Audio(audioUrl); currentAudioElement.play(); }
-        }
-
-        function renderExploreGrid() {
-            const grid = document.getElementById('exploreGridContainer');
-            grid.innerHTML = '';
-            exploreItems.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'explore-card-item';
-                card.innerHTML = `<img src="${item.img}"><div style="padding:10px;"><span style="color:white; font-size:11px;">${item.title}</span></div>`;
-                grid.appendChild(card);
-            });
-        }
-
-        function toggleAccessibilityMode() { document.body.classList.toggle('accessibility-mode'); }
-        function checkFounderStatus() {
-            const isFounder = localStorage.getItem('qaim_is_founder') === 'true';
-            const readerBox = document.getElementById('founderExclusiveReader');
-            if (readerBox) readerBox.style.display = isFounder ? 'block' : 'none';
-        }
-        function activateFounderMode() { localStorage.setItem('qaim_is_founder', 'true'); checkFounderStatus(); switchPage('library'); }
-        function speakMelodicFounderText() {
-            const text = document.getElementById('articleTextInput').value.trim();
-            if (text && 'speechSynthesis' in window) {
-                window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-            }
-        }
-
-        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
-        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
-        function openPdfViewer(url, title) { document.getElementById('pdfModalTitle').innerText = title; document.getElementById('pdfIframe').src = url; document.getElementById('pdfViewerModal').style.display = 'flex'; }
-        function closePdfViewer() { document.getElementById('pdfViewerModal').style.display = 'none'; document.getElementById('pdfIframe').src = ''; }
-
-        function handleInfiniteScroll(feedEl) {}
-        function toggleFollowPlus(btn) {}
-        function toggleBookmark(btn) { btn.classList.toggle('bookmarked'); }
         function switchPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            if (btn) btn.classList.add('active');
-            if (pageId === 'profile') renderUserProfileGrid();
+            if(btn) btn.classList.add('active');
+            if(pageId === 'profile') renderProfile();
         }
-        function toggleVideoPlay(video) { if (video.paused) video.play(); else video.pause(); }
-        function toggleLike(btn) { btn.classList.toggle('liked'); }
-        function toggleCardComments(btn) { alert('التعليقات نشطة.'); }
 
-        function saveNewBookOrPost() { alert('تمت الإضافة للمكتبة.'); }
-        function deleteBookCard(btn) { btn.closest('.content-box').remove(); }
-        function sharePlatform() { alert('تم نسخ الرابط بنجاح!'); }
+        function switchTab(el) {
+            document.querySelectorAll('.top-tabs span').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+            renderFeed();
+        }
+
+        function searchPosts(q) {
+            let res = document.getElementById('exploreResults');
+            res.innerHTML = '';
+            let filtered = posts.filter(p => p.title.includes(q) || p.user.includes(q));
+            filtered.forEach(p => {
+                let div = document.createElement('div');
+                div.style.padding = "10px"; div.style.background = "#1e293b"; div.style.borderRadius = "8px"; div.style.fontSize = "12px";
+                div.innerHTML = `<b>@${p.user}</b>: ${p.title}`;
+                res.appendChild(div);
+            });
+        }
     </script>
 </body>
 </html>
