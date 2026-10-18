@@ -5,38 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QAIM Platform - منصة المنهج القويم المتكاملة العالمية</title>
 
-    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف، البث الحي، المكتبات التفاعلية، والذكاء الاصطناعي السيادي.">
+    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف الحقة.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="QAIM">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; transition: 0.3s; }
         
-        /* وضع إمكانية الوصول لذوي الاحتياجات الخاصة (Accessibility Mode) */
+        /* وضع إمكانية الوصول لذوي الاحتياجات الخاصة */
         body.accessibility-mode { font-size: 18px !important; background-color: #0b132b !important; color: #ffff00 !important; }
-        body.accessibility-mode .card-content h3, body.accessibility-mode p { color: #ffffff !important; font-weight: 900 !important; }
+        body.accessibility-mode h3, body.accessibility-mode p { color: #ffffff !important; font-weight: 900 !important; }
 
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
         .page.active { display: block; }
 
         /* الشريط العلوي بأسلوب TikTok */
-        .top-tiktok-header { position: absolute; top: 12px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
-        .top-left-actions, .top-right-actions { display: flex; align-items: center; gap: 12px; }
+        .top-tiktok-header { position: absolute; top: 12px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 14px; }
+        .top-left-actions, .top-right-actions { display: flex; align-items: center; gap: 8px; }
         
-        .live-tv-btn { display: flex; align-items: center; gap: 4px; background: none; border: none; color: white; font-size: 13px; font-weight: bold; cursor: pointer; }
+        .live-tv-btn { display: flex; align-items: center; gap: 4px; background: none; border: none; color: white; font-size: 12px; font-weight: bold; cursor: pointer; }
         .live-tv-icon { border: 2px solid #ffffff; border-radius: 6px; padding: 1px 5px; font-size: 10px; font-weight: 900; background: #ef4444; }
 
-        .top-nav-tabs { display: flex; align-items: center; gap: 18px; }
+        .accessibility-header-btn { background: rgba(56, 189, 248, 0.25); border: 1px solid #38bdf8; color: #ffffff; border-radius: 8px; padding: 3px 8px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+
+        .top-nav-tabs { display: flex; align-items: center; gap: 16px; }
         .top-tab { font-size: 15px; color: rgba(255, 255, 255, 0.6); font-weight: bold; cursor: pointer; position: relative; padding-bottom: 4px; transition: 0.2s; }
         .top-tab.active { color: #ffffff; font-size: 16px; font-weight: 900; }
         .top-tab.active::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 3px; background-color: #ffffff; border-radius: 2px; }
 
         .header-icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
-        /* التغذية التلقائية للفيديوهات - Infinite Feed */
+        /* التغذية التلقائية للفيديوهات */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
         .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
@@ -56,12 +57,13 @@
         .action-btn.bookmarked { color: #f59e0b; background: rgba(245, 158, 11, 0.25); }
         .action-text { font-size: 10px; margin-top: 2px; color: #ffffff; font-weight: bold; }
 
-        /* القرص الصوتي الدوار */
+        /* القرص الصوتي الدوار وتأثير التشغيل/الإيقاف */
         .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 8px; width: fit-content; cursor: pointer; }
         .disc-icon { width: 20px; height: 20px; border-radius: 50%; background: #38bdf8; color: #000; display: flex; justify-content: center; align-items: center; font-size: 10px; animation: spin 4s linear infinite; }
+        .disc-icon.paused { animation-play-state: paused; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* تصميم قسم الإكسبلور */
+        /* قسم الإكسبلور */
         .explore-container { padding: 15px; }
         .explore-search-box { background: #1e293b; border-radius: 20px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 15px; }
         .explore-search-box input { background: none; border: none; outline: none; color: white; font-size: 13px; width: 100%; }
@@ -75,11 +77,6 @@
         .explore-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; }
         .explore-views-count { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px; font-size: 10px; }
 
-        /* المكونات والصناديق والنوافذ */
-        .card-comments-box { position: absolute; bottom: 70px; left: 12px; right: 12px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 220px; }
-        .card-comments-list { flex: 1; overflow-y: auto; max-height: 130px; display: flex; flex-direction: column; gap: 6px; }
-        .card-comment-item { font-size: 11px; background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 6px; color: #cbd5e1; }
-
         .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .form-input, .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
         .form-textarea { height: 75px; resize: none; margin-top: 6px; }
@@ -91,14 +88,10 @@
         .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
         .inbox-avatar { width: 42px; height: 42px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
 
-        /* عارض الـ PDF والنوافذ المزودة بزر إغلاق راقي */
         #pdfViewerModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; position: relative; }
         .modal-close-btn { position: absolute; top: 12px; left: 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; }
         #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
-
-        /* زر إمكانية الوصول العائم لذوي الاحتياجات الخاصة */
-        .accessibility-float-btn { position: fixed; bottom: 75px; right: 15px; background: #38bdf8; color: #000; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; z-index: 200; box-shadow: 0 4px 15px rgba(56,189,248,0.5); cursor: pointer; border: 2px solid white; }
 
         /* الشريط السفلي للتنقل */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #000000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
@@ -114,15 +107,16 @@
 </head>
 <body>
 
-    <!-- زر إمكانية الوصول لذوي الاحتياجات الخاصة عائم -->
-    <div class="accessibility-float-btn" onclick="toggleAccessibilityMode()" title="وضع ذوي الاحتياجات الخاصة وإمكانية الوصول">♿</div>
-
     <!-- 1. الشاشة الرئيسية (TikTok Main Feed) -->
     <div id="page-home" class="page active">
         <div class="top-tiktok-header">
+            <!-- أعلى اليمين: البث المباشر LIVE + زر ذوي الاحتياجات الخاصة ♿ -->
             <div class="top-right-actions">
                 <button class="live-tv-btn" onclick="switchPage('live')">
                     <span class="live-tv-icon">LIVE</span>
+                </button>
+                <button class="accessibility-header-btn" onclick="toggleAccessibilityMode()">
+                    ♿ الوصول
                 </button>
             </div>
 
@@ -139,7 +133,7 @@
         </div>
 
         <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)">
-            <!-- الفيديوهات -->
+            <!-- الفيديوهات التفاعلية ذات الأعداد الكبيرة -->
         </div>
     </div>
 
@@ -155,18 +149,17 @@
                 <span class="explore-tag-item" onclick="filterExploreTag('#تلاوات_القرآن')">#تلاوات_القرآن 📖</span>
                 <span class="explore-tag-item" onclick="filterExploreTag('#قصائد_حسينية')">#قصائد_حسينية 🏴</span>
                 <span class="explore-tag-item" onclick="filterExploreTag('#المنهج_القويم')">#المنهج_القويم 🔥</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#صوتيات_ترند')">#صوتيات_ترند 🎵</span>
             </div>
 
             <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🎧 صوتيات وقراءات ترند:</h4>
             <div id="trendingAudioList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px;">
-                <div class="inbox-item" onclick="playAudioTrend('تلاوة سورة الرحمن - الشيخ عبد الباسط', 'https://server8.mp3quran.net/basit/055.mp3')">
+                <div class="inbox-item" onclick="toggleAudioPlayback('https://server8.mp3quran.net/basit/055.mp3', this)">
                     <div class="inbox-avatar" style="background:#0284c7; color:white;">🎵</div>
                     <div style="flex:1;">
                         <div style="font-size:12px; font-weight:bold;">تلاوة سورة الرحمن</div>
-                        <div style="font-size:10px; color:#94a3b8;">الشيخ عبد الباسط عبد الصمد</div>
+                        <div style="font-size:10px; color:#94a3b8;">الشيخ عبد الباسط عبد الصمد (185.4k استماع)</div>
                     </div>
-                    <span style="font-size:10px; color:#38bdf8;">تشغيل ▷</span>
+                    <span class="audio-status-btn" style="font-size:10px; color:#38bdf8;">تشغيل ▷</span>
                 </div>
             </div>
 
@@ -212,7 +205,7 @@
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي الشجي</h2>
             
-            <!-- أداة القارئ الصوتي الحصرية للمؤسس (تظهر فقط لك) -->
+            <!-- أداة القارئ الصوتي الحصرية للمؤسس -->
             <div id="founderExclusiveReader" class="content-box" style="border: 1px solid rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, #1e293b, #0f172a); display: none;">
                 <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ الصوتي الشجي متعدد اللغات</h4>
                 <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق نص الكتاب أو المقال هنا..."></textarea>
@@ -220,12 +213,12 @@
                 <div style="display: flex; gap: 8px; margin-top: 8px;">
                     <select id="readerLangSelect" class="form-input" style="flex: 1; padding: 6px;">
                         <option value="ar-SA">العربية (Arabic)</option>
-                        <option value="en-US">الإنجليزية (English)</option>
-                        <option value="fr-FR">الفرنسية (French)</option>
-                        <option value="es-ES">الإسبانية (Spanish)</option>
-                        <option value="de-DE">الألمانية (German)</option>
-                        <option value="tr-TR">التركية (Turkish)</option>
-                        <option value="fa-IR">الفارسية (Persian)</option>
+                        <option value="en-US">إنجليزية (English)</option>
+                        <option value="fr-FR">فرنسية (French)</option>
+                        <option value="es-ES">إسبانية (Spanish)</option>
+                        <option value="de-DE">ألمانية (German)</option>
+                        <option value="tr-TR">تركية (Turkish)</option>
+                        <option value="fa-IR">فارسية (Persian)</option>
                     </select>
                     <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل بصوت شجي</button>
                 </div>
@@ -261,19 +254,19 @@
         </div>
     </div>
 
-    <!-- 7. الملف الشخصي للمؤسس -->
+    <!-- 7. الملف الشخصي للمؤسس (دون إفصاح عن الهوية) -->
     <div id="page-profile" class="page">
         <div style="padding: 20px; text-align: center;">
             <div style="width: 80px; height: 80px; background: #f59e0b; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000; font-weight: bold;">👑</div>
-            <h3 style="font-size: 18px; color: #f59e0b;">المؤسس (حيدر حميد)</h3>
+            <h3 style="font-size: 18px; color: #f59e0b;">محمد (المؤسس العام)</h3>
             <span class="badge-chip" style="background:#f59e0b;">🛡️ المؤسس العام</span>
             <span class="badge-chip">🎖️ باحث متميز</span>
-            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">@founder_qaim</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">@mohammed_founder</p>
             <button onclick="activateFounderMode()" style="background: rgba(245,158,11,0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 8px 16px; border-radius: 12px; margin-top: 15px; font-size: 11px; font-weight: bold; cursor: pointer;">تفعيل صلاحيات المؤسس الشاملة 🔑</button>
         </div>
     </div>
 
-    <!-- نافذة عرض الـ PDF مزودة بزر إغلاق راقي -->
+    <!-- نافذة عرض الـ PDF -->
     <div id="pdfViewerModal" onclick="if(event.target===this) closePdfViewer()">
         <div style="width: 100%; height: 100%; display: flex; flex-direction: column; position:relative;">
             <div style="padding: 10px; background: #0b1120; display: flex; justify-content: space-between; align-items: center;">
@@ -284,7 +277,7 @@
         </div>
     </div>
 
-    <!-- نافذة النشر المنبثقة مزودة بزر إغلاق راقي -->
+    <!-- نافذة النشر المنبثقة -->
     <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
         <div class="upload-card">
             <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
@@ -326,16 +319,17 @@
     </nav>
 
     <script>
-        let touchstartX = 0, touchendX = 0, liveStream = null, currentAudio = null;
+        let touchstartX = 0, touchendX = 0, liveStream = null, currentAudioElement = null;
 
         const samplePosts = [
-            { user: "بغداد لايف", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: "12.5k", comments: "1840", bookmarks: "2100", shares: "4500" },
-            { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "25.1k", comments: "3200", bookmarks: "4100", shares: "8900" }
+            { user: "بغداد لايف", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: "128.5k", comments: "18.4k", bookmarks: "21.2k", shares: "45.9k" },
+            { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "250.1k", comments: "32.8k", bookmarks: "41.6k", shares: "89.3k" },
+            { user: "منتظر السلامي", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: "98.3k", comments: "12.9k", bookmarks: "19.5k", shares: "31.2k" }
         ];
 
         const exploreItems = [
-            { title: "تلاوة خاشعة سورة الرحمن", user: "خادم القرآن", views: "45.2k", img: "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80" },
-            { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "28.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
+            { title: "تلاوة خاشعة سورة الرحمن", user: "خادم القرآن", views: "450.2k", img: "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80" },
+            { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
         function renderInitialFeed() {
@@ -360,9 +354,10 @@
                     </div>
 
                     <div class="card-comments-box">
-                        <div style="font-size: 11px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
+                        <div style="font-size: 11px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات الحية</div>
                         <div class="card-comments-list">
                             <div class="card-comment-item"><b>أبو حسن:</b> منصة مباركة وخطوة رائدة.</div>
+                            <div class="card-comment-item"><b>حسين الكاظمي:</b> أحسنتم بارك الله فيكم!</div>
                         </div>
                         <input type="text" class="form-input" style="padding: 4px 8px; font-size: 10px;" placeholder="اكتب تعليقك...">
                     </div>
@@ -370,14 +365,43 @@
                     <div class="card-content">
                         <h3 style="font-size: 16px; font-weight: bold;">${post.user}</h3>
                         <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title} - ${post.desc}</p>
-                        <div class="audio-disc-badge">
+                        <div class="audio-disc-badge" onclick="toggleCardAudio(this, 'https://server8.mp3quran.net/basit/055.mp3')">
                             <div class="disc-icon">🎵</div>
-                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM</span>
+                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM (انقر للتشغيل/الإيقاف)</span>
                         </div>
                     </div>
                 `;
                 container.appendChild(card);
             });
+        }
+
+        /* تشغيل وإيقاف الصوت بالضغط مرة أخرى */
+        function toggleCardAudio(badgeEl, audioUrl) {
+            const discIcon = badgeEl.querySelector('.disc-icon');
+            if (currentAudioElement && !currentAudioElement.paused && currentAudioElement.src === audioUrl) {
+                currentAudioElement.pause();
+                discIcon.classList.add('paused');
+            } else {
+                if (currentAudioElement) currentAudioElement.pause();
+                currentAudioElement = new Audio(audioUrl);
+                currentAudioElement.play();
+                discIcon.classList.remove('paused');
+            }
+        }
+
+        function toggleAudioPlayback(url, itemEl) {
+            const btn = itemEl.querySelector('.audio-status-btn');
+            if (currentAudioElement && !currentAudioElement.paused && currentAudioElement.src === url) {
+                currentAudioElement.pause();
+                btn.innerText = 'تشغيل ▷';
+                btn.style.color = '#38bdf8';
+            } else {
+                if (currentAudioElement) currentAudioElement.pause();
+                currentAudioElement = new Audio(url);
+                currentAudioElement.play();
+                btn.innerText = 'إيقاف ⏸';
+                btn.style.color = '#ef4444';
+            }
         }
 
         function renderExploreGrid() {
@@ -399,18 +423,12 @@
             });
         }
 
-        /* تفعيل وضع ذوي الاحتياجات الخاصة وإمكانية الوصول */
+        /* تفعيل وضع ذوي الاحتياجات الخاصة */
         function toggleAccessibilityMode() {
             document.body.classList.toggle('accessibility-mode');
-            const isActive = document.body.classList.contains('accessibility-mode');
-            if(isActive) {
-                speakMelodicText("تم تفعيل وضع إمكانية الوصول وقراءة محتوى الشاشة لذوي الاحتياجات الخاصة.");
-            } else {
-                speakMelodicText("تم إلغاء وضع إمكانية الوصول.");
-            }
         }
 
-        /* التحقق من حساب المؤسس وتفعيل القارئ متعدد اللغات حصرياً */
+        /* التحقق من حساب المؤسس وتفعيل القارئ حصرياً */
         function checkFounderStatus() {
             const isFounder = localStorage.getItem('qaim_is_founder') === 'true';
             const readerBox = document.getElementById('founderExclusiveReader');
@@ -423,39 +441,23 @@
 
         function activateFounderMode() {
             localStorage.setItem('qaim_is_founder', 'true');
-            alert('تم تفعيل صلاحيات حساب المؤسس بنجاح! ظهرت لك الآن لوحة التحكم الحصرية للقارئ الصوتي الشجي.');
             checkFounderStatus();
+            switchPage('library');
         }
 
         /* القارئ الصوتي الشجي متعدد اللغات للمؤسس */
         function speakMelodicFounderText() {
             const text = document.getElementById('articleTextInput').value.trim();
             const lang = document.getElementById('readerLangSelect').value;
-            if (!text) { alert('يرجى كتابة النص المراد قراءته بصوت شجي.'); return; }
+            if (!text) return;
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const msg = new SpeechSynthesisUtterance(text);
                 msg.lang = lang;
-                msg.pitch = 0.95; // نبرة صوت شجية عميقة
-                msg.rate = 0.88;  // متأنية وواضحة
-                window.speechSynthesis.speak(msg);
-            } else { alert('ميزة القراءة الصوتية غير مدعومة.'); }
-        }
-
-        function speakMelodicText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const msg = new SpeechSynthesisUtterance(text);
-                msg.lang = 'ar-SA';
+                msg.pitch = 0.95;
+                msg.rate = 0.88;
                 window.speechSynthesis.speak(msg);
             }
-        }
-
-        function playAudioTrend(title, url) {
-            if (currentAudio) { currentAudio.pause(); }
-            currentAudio = new Audio(url);
-            currentAudio.play();
-            alert('تم تشغيل: ' + title);
         }
 
         function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
@@ -486,7 +488,7 @@
 
         function toggleFollowPlus(container) {
             const badge = container.querySelector('.follow-plus-badge');
-            if (badge.innerText === '+') { badge.innerText = '✓'; badge.style.background = '#38bdf8'; alert('تمت المتابعة بنجاح!'); }
+            if (badge.innerText === '+') { badge.innerText = '✓'; badge.style.background = '#38bdf8'; }
             else { badge.innerText = '+'; badge.style.background = '#fe2c55'; }
         }
 
@@ -512,7 +514,7 @@
 
         function saveNewBookOrPost() {
             const title = document.getElementById('postTitleInput').value.trim();
-            if (!title) { alert('يرجى كتابة عنوان الكتاب'); return; }
+            if (!title) return;
             const container = document.getElementById('postsListContainer');
             const card = document.createElement('div');
             card.className = 'content-box';
@@ -524,7 +526,6 @@
                 </div>
             `;
             container.prepend(card);
-            alert('تمت إضافة الكتاب للمكتبة!');
         }
 
         function deleteBookCard(btn) { if (confirm('حذف من المكتبة؟')) btn.closest('.content-box').remove(); }
@@ -532,10 +533,10 @@
             try {
                 liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('realCameraFeed').srcObject = liveStream;
-            } catch (err) { alert('تعذر فتح الكاميرا.'); }
+            } catch (err) {}
         }
         function stopLiveBroadcast() { if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; } }
-        function sharePlatform() { alert('تم نسخ رابط المنصة!'); }
+        function sharePlatform() {}
 
         function filterExploreContent(val) { console.log('بحث إكسبلور: ' + val); }
         function filterExploreTag(tag) { console.log('تصفية الهاشتاغ: ' + tag); }
