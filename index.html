@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QAIM Platform - منصة المنهج القويم المتكاملة العالمية</title>
+    <title>QAIM Platform - المنصة العالمية الأولى</title>
 
-    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف الحقة.">
+    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف والفضيلة.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -109,7 +109,6 @@
         .menu-item-left { display: flex; align-items: center; gap: 12px; }
         .menu-item-icon { font-size: 18px; width: 24px; text-align: center; }
 
-        /* نافذة الإعدادات الشاملة (المطابقة لصورك تماماً) */
         .settings-content { background: #000; position: absolute; inset: 0; z-index: 4500; display: none; flex-direction: column; overflow-y: auto; padding: 15px; }
         .settings-header { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid #1f2937; margin-bottom: 15px; font-size: 17px; font-weight: bold; }
 
@@ -429,7 +428,7 @@
         </div>
     </div>
 
-    <!-- 9. كاميرا تسجيل الفيديو والتقاط الصور للمشتركين -->
+    <!-- 9. كاميرا تسجيل الفيديو والتقاط الصور الحية -->
     <div id="cameraRecordModal" style="position:fixed; inset:0; background:#000; z-index:5000; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <button onclick="closeCameraModal()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إغلاق</button>
@@ -442,11 +441,31 @@
         </div>
         <div style="display:flex; justify-content:space-around; align-items:center; padding-bottom:10px;">
             <button class="primary-btn" style="width:auto; background:#22c55e; color:white;" onclick="capturePhotoToPublish()">📸 التقاط صورة</button>
-            <button class="primary-btn" style="width:auto; background:#ef4444; color:white;" onclick="recordVideoToPublish()">🎥 تسجيل فيديو ونشر</button>
+            <button class="primary-btn" style="width:auto; background:#ef4444; color:white;" onclick="recordVideoToPublish()">🎥 تسجيل فيديو</button>
         </div>
     </div>
 
-    <!-- نافذة تعديل الملف الشخصي (الاسم مرة كل شهر، السيرة والصورة فوري) -->
+    <!-- 10. نافذة النشر الشاملة (دعم كاميرا + الوصول لمكتبة الصور والفيديوهات في جهاز الآيفون) -->
+    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
+        <div class="upload-card">
+            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى في منصة QAIM</h3>
+            
+            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (التقاط صورة / تسجيل فيديو)</button>
+            
+            <div style="border: 1px dashed #38bdf8; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;" onclick="document.getElementById('deviceGalleryInput').click()">
+                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار من مكتبة الصور أو الفيديوهات في جهازك</span>
+                <p style="font-size: 10px; color: #94a3b8; margin-top: 3px;">انقر للوصول لمعرض صور الآيفون والستوديو</p>
+            </div>
+            <!-- حقل مخفي للوصول لمكتبة الصور والفيديوهات في الجهاز -->
+            <input type="file" id="deviceGalleryInput" accept="image/*,video/*" style="display:none;" onchange="handleDeviceGalleryUpload(this)">
+
+            <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور أو المعايدة...">
+            <button class="primary-btn" onclick="publishNewPost()">نشر في حسابي فوراً 🚀</button>
+        </div>
+    </div>
+
+    <!-- نافذة تعديل الملف الشخصي -->
     <div id="editProfileModal" onclick="if(event.target===this) closeEditProfileModal()">
         <div class="upload-card">
             <button class="modal-close-btn" onclick="closeEditProfileModal()">✕</button>
@@ -510,7 +529,7 @@
         </div>
     </div>
 
-    <!-- نافذة إعدادات والخصوصية الشاملة المطابقة لصورتك تماماً -->
+    <!-- نافذة إعدادات والخصوصية الشاملة المطابقة لصورك تماماً -->
     <div id="settingsModal" class="settings-content">
         <div class="settings-header">
             <button onclick="closeSettingsPage()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">←</button>
@@ -553,17 +572,6 @@
         <div class="menu-item-row" onclick="openBlockedAccountsModal()">
             <div class="menu-item-left"><span class="menu-item-icon">🚫</span><span>الحسابات المحظورة وطلب رفع الحظر للإدارة</span></div>
             <span>‹</span>
-        </div>
-    </div>
-
-    <!-- نافذة النشر واختيار التصوير (فيديو أو صورة) -->
-    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
-        <div class="upload-card">
-            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى جديد في منصة QAIM</h3>
-            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">🎥 فتح الكاميرا (تصوير فيديو أو صورة)</button>
-            <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور أو المقال...">
-            <button class="primary-btn" onclick="publishNewPost()">نشر وتحفظ في حسابي 🚀</button>
         </div>
     </div>
 
@@ -631,7 +639,7 @@
             { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
-        /* نظام التسجيل وحفظ الجلسة محلياً على الآيفون */
+        /* نظام التسجيل وحفظ الجلسة محلياً */
         function submitRegistration() {
             const name = document.getElementById('regName').value.trim();
             const username = document.getElementById('regUsername').value.trim();
@@ -685,7 +693,7 @@
             }
         }
 
-        /* تعديل الملف الشخصي (الاسم مرة كل شهر، السيرة والصورة فوري) */
+        /* تعديل الملف الشخصي */
         function openEditProfileModal() {
             document.getElementById('editNameInput').value = currentUser.name;
             document.getElementById('editUsernameInput').value = currentUser.username;
@@ -715,7 +723,7 @@
             alert('تم حفظ التعديلات بنجاح!');
         }
 
-        /* رفع الصورة الشخصية ومسحها */
+        /* رفع وتغيير الصورة الشخصية */
         function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
         function handleAvatarUpload(input) {
             if(input.files && input.files[0]) {
@@ -729,7 +737,25 @@
             }
         }
 
-        /* نظام تشغيل الكاميرا للتصوير ونشر الفيديوهات والصور */
+        /* الوصول إلى مكتبة الصور والفيديوهات في جهاز الآيفون */
+        function handleDeviceGalleryUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const mediaUrl = e.target.result;
+                    const customTitle = document.getElementById('newPostTitle').value.trim() || "منشور من مكتبة الصور 📱";
+                    addPostToMyProfileCustom(customTitle, mediaUrl);
+                    closeUploadModal();
+                    document.getElementById('newPostTitle').value = '';
+                    switchPage('profile');
+                    alert('تم اختيار ونشر المحتوى من مكتبة جهازك بنجاح!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        /* كاميرا التصوير الحي */
         async function openCameraModal() {
             closeUploadModal();
             document.getElementById('cameraRecordModal').style.display = 'flex';
@@ -737,7 +763,7 @@
                 liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('liveCameraPreview').srcObject = liveStream;
             } catch(e) {
-                alert('تعذر الوصول للكاميرا، يرجى السماح بالصلاحيات.');
+                alert('تعذر الوصول للكاميرا.');
             }
         }
         function closeCameraModal() {
@@ -778,13 +804,12 @@
             };
             mediaRecorder.start();
             alert('جارٍ تسجيل الفيديو... انقر مرة أخرى للإيقاف والنشر.');
-            // إيقاف التسجيل بعد 5 ثوانٍ تلقائياً أو عند النقر
             setTimeout(() => {
                 if(mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
             }, 6000);
         }
 
-        /* إدارة التبويبات الملونة في البروفايل */
+        /* التبويبات الملونة في البروفايل */
         function switchColoredTab(tabColor, btn) {
             document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -807,7 +832,7 @@
             }
         }
 
-        /* إعدادات الخصوصية والحساب الخاص والحظر */
+        /* الإعدادات والخصوصية */
         function openSettingsPage() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettingsPage() { document.getElementById('settingsModal').style.display = 'none'; }
 
@@ -833,7 +858,6 @@
             }
         }
 
-        /* زر إضافة المنشورات لصفحة المشترك من الرئيسية */
         function addPostToMyProfile(title) {
             addPostToMyProfileCustom(title, "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80");
             alert('تمت إضافة المنشور إلى صفحتك الشخصية بنجاح!');
@@ -860,7 +884,7 @@
             switchPage('profile');
         }
 
-        /* سحب الشاشة لليسار للبث المباشر */
+        /* سحب الشاشة للبث المباشر */
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
