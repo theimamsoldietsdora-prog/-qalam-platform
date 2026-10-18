@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QAIM Platform - منصة المنهج القويم</title>
+    <title>QAIM Platform - منصة المنهج القويم المتكاملة</title>
     
     <!-- SEO & PWA Meta Tags -->
-    <meta name="description" content="QAIM Platform - المنصة العالمية المتكاملة لنشر المعارف والعلوم والحوارات المباشرة.">
+    <meta name="description" content="QAIM Platform - المنصة العالمية المتكاملة لنشر العلوم والمعارف الحقة، الرسائل الخاصة، الصوتيات، البث المباشر، والمكتبة.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,50 +14,73 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0b1120; color: #ffffff; overflow: hidden; }
 
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 75px; }
         .page.active { display: block; }
 
         /* الشاشة الرئيسية - TikTok Style Feed */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
-        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; overflow: hidden; }
+        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; background-size: cover; background-position: center; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 15%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.5) 100%); z-index: 1; }
-        .card-content { position: relative; z-index: 2; margin-bottom: 80px; padding-right: 10px; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.9) 18%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
+        .card-content { position: relative; z-index: 2; margin-bottom: 75px; padding-right: 5px; }
 
         /* أزرار التفاعل الجانبية - TikTok Style */
-        .side-actions { position: absolute; left: 12px; bottom: 120px; display: flex; flex-direction: column; gap: 16px; z-index: 3; align-items: center; }
-        .action-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ffffff; position: relative; margin-bottom: 8px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; }
-        .action-follow-badge { position: absolute; bottom: -6px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; }
-        
-        .action-btn { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border: none; width: 46px; height: 46px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
-        .action-btn:active { transform: scale(0.85); }
+        .side-actions { position: absolute; left: 12px; bottom: 110px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
+        .action-avatar { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #ffffff; position: relative; margin-bottom: 6px; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0b1120; font-size: 16px; }
+        .action-follow-badge { position: absolute; bottom: -5px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: bold; }
+
+        .action-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: none; width: 46px; height: 46px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 17px; cursor: pointer; transition: 0.2s; }
+        .action-btn:active { transform: scale(0.88); }
         .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.25); }
         .action-text { font-size: 10px; margin-top: 2px; color: #e2e8f0; }
 
-        /* القرص الصوتي الدوار (TikTok Vinyl Disc) */
-        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); margin-top: 10px; width: fit-content; cursor: pointer; }
+        /* القرص الصوتي الدوار (TikTok Sound Vinyl) */
+        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.4); margin-top: 8px; width: fit-content; cursor: pointer; }
         .disc-icon { width: 22px; height: 22px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; justify-content: center; align-items: center; font-size: 11px; animation: spin 4s linear infinite; }
         .disc-icon.paused { animation-play-state: paused; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* شريط البحث العلوي الترند */
-        .top-search-bar { position: absolute; top: 15px; left: 15px; right: 15px; z-index: 10; display: flex; gap: 10px; align-items: center; }
-        .search-input-box { flex: 1; background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; padding: 6px 14px; gap: 8px; }
+        /* شريط البحث والتثبيت العلوي */
+        .top-search-bar { position: absolute; top: 15px; left: 12px; right: 12px; z-index: 10; display: flex; gap: 8px; align-items: center; }
+        .search-input-box { flex: 1; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; display: flex; align-items: center; padding: 6px 14px; gap: 8px; }
         .search-input-box input { background: none; border: none; outline: none; color: white; font-size: 12px; width: 100%; }
 
         /* صندوق التعليقات المنبثق */
-        .card-comments-box { position: absolute; bottom: 75px; left: 10px; right: 10px; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 14px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 250px; }
-        .card-comments-list { flex: 1; overflow-y: auto; max-height: 150px; display: flex; flex-direction: column; gap: 8px; }
-        .card-comment-item { font-size: 11px; background: rgba(255,255,255,0.06); padding: 8px 10px; border-radius: 8px; color: #cbd5e1; }
+        .card-comments-box { position: absolute; bottom: 70px; left: 12px; right: 12px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 220px; }
+        .card-comments-list { flex: 1; overflow-y: auto; max-height: 130px; display: flex; flex-direction: column; gap: 6px; }
+        .card-comment-item { font-size: 11px; background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 6px; color: #cbd5e1; }
         .comment-user-name { font-weight: bold; color: #38bdf8; margin-left: 4px; }
 
-        /* صندوق الوارد الرسائل والإشعارات Inbox */
+        /* غرفة البث المباشر */
+        .live-container { height: 100vh; display: flex; flex-direction: column; background: #070a13; }
+        .live-video-box { height: 45%; background: #000; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .live-badge { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; z-index: 5; }
+        .pulse { width: 8px; height: 8px; background: white; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        #realCameraFeed { width: 100%; height: 100%; object-fit: cover; background: #000; }
+        .broadcast-controls { position: absolute; bottom: 10px; z-index: 5; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .bc-btn { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 11px; cursor: pointer; }
+
+        .chat-container { height: 55%; display: flex; flex-direction: column; background: #0b1120; padding: 15px; padding-bottom: 85px; }
+        .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px; }
+        .chat-msg { background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 12px; font-size: 13px; max-width: 85%; }
+        .chat-user { font-weight: bold; color: #38bdf8; font-size: 11px; margin-bottom: 2px; }
+        .chat-input-box { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .chat-input { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 10px 15px; color: white; font-size: 13px; outline: none; }
+
+        /* الأقسام والمكتبة والرسائل */
+        .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
+        .form-textarea { height: 60px; resize: none; margin-top: 6px; }
+        .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
+
         .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
         .inbox-avatar { width: 45px; height: 45px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
 
-        /* خيارات الخصوصية والأصدقاء */
+        /* مفتاح الخصوصية */
         .toggle-switch { position: relative; display: inline-block; width: 44px; height: 22px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; inset: 0; background-color: #334155; transition: .4s; border-radius: 20px; }
@@ -65,19 +88,16 @@
         input:checked + .slider { background-color: #38bdf8; }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* المودالات والمستندات */
-        #authModal, #uploadModal, #dmModal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        /* عارض الـ PDF والمودالات */
+        #pdfViewerModal, #authModal, #uploadModal, #dmModal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .auth-card, .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
-        .form-textarea { height: 60px; resize: none; }
-        .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
+        #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
 
-        /* شريط التنقل السفلي - TikTok Style Navigation Bar */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: #000000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #a1a1aa; text-decoration: none; font-size: 10px; gap: 3px; border: none; background: none; width: 18%; cursor: pointer; }
-        .nav-item.active { color: #ffffff; font-weight: bold; }
-        .nav-icon { font-size: 20px; }
+        /* الشريط السفلي للتنقل - TikTok Navigation Bar */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 68px; background: rgba(11, 17, 32, 0.98); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 5px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 3px; border: none; background: none; width: 16%; cursor: pointer; }
+        .nav-item.active { color: #38bdf8; font-weight: bold; }
+        .nav-icon { font-size: 18px; }
 
         .tiktok-plus-btn { width: 45px; height: 28px; background: #ffffff; border-radius: 8px; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; }
         .tiktok-plus-btn::before { content: ''; position: absolute; left: -3px; width: 45px; height: 28px; background: #25f4ee; border-radius: 8px; z-index: -1; }
@@ -92,29 +112,85 @@
         
         <!-- شريط البحث العلوي -->
         <div class="top-search-bar">
+            <button onclick="switchPage('live')" style="background: rgba(239, 68, 68, 0.8); border: none; border-radius: 12px; padding: 6px 10px; font-size: 11px; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; gap: 4px;">🔴 بث حي</button>
             <div class="search-input-box">
                 <span>🔍</span>
-                <input type="text" id="globalSearchInput" placeholder="بحث في الفيديوهات، الأصدقاء، والبث..." onkeyup="filterFeedContent(this.value)">
+                <input type="text" id="globalSearchInput" placeholder="بحث في المنشورات، الأصدقاء والكتب..." onkeyup="filterFeedContent(this.value)">
             </div>
             <button onclick="switchPage('inbox')" style="background: none; border: none; font-size: 20px; color: white; cursor: pointer;">📥</button>
         </div>
 
-        <div class="feed" id="mainFeedContainer">
-            <!-- سيتم توليد مقاطع الفيديو الحقيقية ديناميكياً ولانهائياً -->
+        <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)">
+            <!-- المنشور الأول -->
+            <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
+                <video class="card-media" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
+                <div class="card-overlay"></div>
+                
+                <div class="side-actions">
+                    <div class="action-avatar">ق<div class="action-follow-badge">+</div></div>
+                    <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
+                    <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
+                    <button class="action-btn" onclick="openDirectMessage('الناشر الرسمي')">✉️<span class="action-text">خاص</span></button>
+                    <button class="action-btn" onclick="switchPage('live')">🔴<span class="action-text">مباشر</span></button>
+                    <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
+                </div>
+
+                <div class="card-comments-box">
+                    <div style="font-size: 12px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
+                    <div class="card-comments-list">
+                        <div class="card-comment-item"><span class="comment-user-name">أبو حسن:</span> منصة مباركة وخطوة رائدة لنشر الحق.</div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" class="form-input" style="margin-top: 0; padding: 6px 10px; font-size: 11px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ QAIM - البلاغ الأول</span>
+                    <h2 style="font-size: 18px; margin: 6px 0;">إنطلاق منصة المنهج القويم (QAIM)</h2>
+                    <p id="postText1" style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">منبر فكري وعلمي مستقل لنشر العلم الصحيح والمعارف الحقة وإحياء الخلق السامي.</p>
+                    
+                    <button onclick="translatePostText('postText1')" style="background: rgba(255,255,255,0.1); border: none; color: #38bdf8; padding: 3px 8px; border-radius: 6px; font-size: 10px; margin-top: 5px; cursor: pointer;">🌐 ترجمة للإنجليزية</button>
+
+                    <div class="audio-disc-badge" onclick="toggleAudioPlay(this)">
+                        <div class="disc-icon">🎵</div>
+                        <span style="font-size: 11px; color: #e2e8f0;">تلاوة سورة الفاتحة - الشيخ عبد الباسط</span>
+                        <audio src="https://server8.mp3quran.net/basit/001.mp3" loop></audio>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 2. قسم البريد الوارد (Inbox 📥) -->
+    <!-- 2. غرفة البث والمساحات الصوتية (🔴 Live Stream) -->
+    <div id="page-live" class="page">
+        <div class="live-container">
+            <div class="live-video-box">
+                <div class="live-badge"><div class="pulse"></div> بث مباشر حي</div>
+                <video id="realCameraFeed" autoplay playsinline muted></video>
+                
+                <div class="broadcast-controls">
+                    <button class="bc-btn" onclick="startLiveBroadcast()">🎥 بث فيديو</button>
+                    <button class="bc-btn" style="background: #0284c7;" onclick="startAudioSpace()">🎙️ مساحة صوتية</button>
+                    <button class="bc-btn" style="background: #334155;" onclick="stopLiveBroadcast()">إيقاف</button>
+                </div>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-msg"><div class="chat-user">QAIM Platform</div>أهلاً بكم في البث المباشر والمساحات الصوتية الحية!</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقاً حياً..." onkeypress="if(event.key==='Enter') sendComment()">
+                    <button class="primary-btn" style="width: 70px; margin-top:0;" onclick="sendComment()">إرسال</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. قسم البريد الوارد والتفاعلات (Inbox 📥) -->
     <div id="page-inbox" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 البريد الوارد والتفاعلات</h2>
-            
-            <div style="display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
-                <button class="primary-btn" style="width: auto; font-size: 11px;" onclick="alert('لا توجد إشعارات جديدة حالياً')">🔔 الإشعارات</button>
-                <button class="primary-btn" style="width: auto; font-size: 11px; background: #334155; color: white;" onclick="alert('لا توجد إشارات جديدة')">🏷️ الإشارات</button>
-            </div>
-
-            <h4 style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">الرسائل المباشرة والأصدقاء:</h4>
+            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 البريد الوارد والرسائل</h2>
             
             <div id="inboxList">
                 <div class="inbox-item" onclick="openDirectMessage('أحمد الكاظمي')">
@@ -130,7 +206,7 @@
                     <div class="inbox-avatar" style="background: #ef4444; color: white;">خ</div>
                     <div style="flex: 1;">
                         <div style="font-size: 13px; font-weight: bold;">خادم القرآن</div>
-                        <div style="font-size: 11px; color: #94a3b8;">تم إعجابك بمقطع التلاوة المباركة.</div>
+                        <div style="font-size: 11px; color: #94a3b8;">تم الإعجاب بمقطع التلاوة الخاص بك.</div>
                     </div>
                     <span style="font-size: 10px; color: #94a3b8;">منذ 5د</span>
                 </div>
@@ -138,16 +214,54 @@
         </div>
     </div>
 
-    <!-- 3. قسم الأصدقاء والمتابعين (Friends 👥) -->
+    <!-- 4. المكتبة ومساعد AI (Library 📚) -->
+    <div id="page-library" class="page">
+        <div style="padding: 20px;">
+            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والمساعد الذكي</h2>
+            
+            <!-- مساعد QAIM AI -->
+            <div class="content-box" style="border: 1px solid rgba(56, 189, 248, 0.4);">
+                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 6px;">🤖 مساعد QAIM الفكري الذكي</h4>
+                <div style="display: flex; gap: 6px;">
+                    <input type="text" id="aiQueryInput" class="form-input" placeholder="اسأل المساعد الذكي عن أي كتاب أو مفهوم...">
+                    <button class="primary-btn" style="width: auto; margin-top:0;" onclick="askQaimAI()">استفسار</button>
+                </div>
+                <div id="aiResponseBox" style="font-size: 11px; color: #38bdf8; margin-top: 8px; display: none; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;"></div>
+            </div>
+
+            <!-- رفع كتاب PDF -->
+            <div class="content-box">
+                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF للمكتبة</h4>
+                <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب...">
+                <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز للمحتوى..."></textarea>
+                <div style="margin-top: 6px;">
+                    <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 4px;">
+                </div>
+                <button class="primary-btn" onclick="saveNewBookOrPost()">إضافة للمكتبة 🚀</button>
+            </div>
+
+            <div id="postsListContainer">
+                <div class="content-box">
+                    <h4 style="font-size: 14px;">📖 كتاب القواعد الفكرية الأساسية (PDF)</h4>
+                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي للنشر والقراءة المباشرة والتحميل.</p>
+                    <div style="display: flex; gap: 8px; margin-top: 10px;">
+                        <button class="primary-btn" style="padding: 6px 12px; font-size: 11px;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
+                        <a class="primary-btn" style="background: #334155; color: white; text-align: center; text-decoration: none; padding: 6px 12px; font-size: 11px;" href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download>📥 تحميل</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. قسم الأصدقاء والخصوصية (Friends 👥) -->
     <div id="page-friends" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">👥 قائمة الأصدقاء والمتابعين</h2>
+            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">👥 الأصدقاء والمتابعين</h2>
             
-            <!-- إعدادات خصوصية الأصدقاء -->
-            <div style="background: #1e293b; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="background: #1e293b; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div>
                     <div style="font-size: 12px; font-weight: bold;">🔒 إخفاء قائمة الأصدقاء</div>
-                    <div style="font-size: 10px; color: #94a3b8;">جعل قائمة أصدقائك مخفية عن الآخرين</div>
+                    <div style="font-size: 10px; color: #94a3b8;">إخفاء أصدقائك عن الزوار الآخرين</div>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="privacyToggle" onchange="toggleFriendsPrivacy(this)">
@@ -155,36 +269,34 @@
                 </label>
             </div>
 
-            <input type="text" class="form-input" placeholder="🔍 بحث في قائمة الأصدقاء..." style="margin-bottom: 15px;" onkeyup="searchFriendsList(this.value)">
-
-            <div id="friendsContainer" style="display: flex; flex-direction: column; gap: 10px;">
-                <!-- سيتم تعبئة الأصدقاء تلقائياً -->
+            <div id="friendsContainer" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- سيتم إدراج الأصدقاء -->
             </div>
         </div>
     </div>
 
-    <!-- 4. حسابي والتعديلات الشخصية (Profile 👤) -->
+    <!-- 6. حسابي والبروفايل (Profile 👤) -->
     <div id="page-profile" class="page">
         <div style="padding: 20px; text-align: center;">
-            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000; font-weight: bold;" id="profileAvatar">👤</div>
-            <h3 id="displayProfileName" style="font-size: 18px; color: #38bdf8;">مشترك QAIM</h3>
-            <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">@user_qaim</p>
+            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000; font-weight: bold;" id="profileAvatar">ح</div>
+            <h3 id="displayProfileName" style="font-size: 18px; color: #38bdf8;">حيدر حميد محمد ال عگاب</h3>
+            <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">عضو منصة QAIM المنهج القويم</p>
 
-            <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; background: #1e293b; padding: 12px; border-radius: 14px;">
-                <div><h4 style="font-size: 15px; color: white;" id="followingCount">15</h4><span style="font-size: 10px; color: #94a3b8;">أتابعهم</span></div>
-                <div><h4 style="font-size: 15px; color: white;" id="followersCount">142</h4><span style="font-size: 10px; color: #94a3b8;">المتابعون</span></div>
-                <div><h4 style="font-size: 15px; color: white;" id="likesCount">1.2k</h4><span style="font-size: 10px; color: #94a3b8;">الإعجابات</span></div>
+            <div style="display: flex; justify-content: space-around; margin: 20px 0; background: #1e293b; padding: 12px; border-radius: 14px;">
+                <div><h4 style="font-size: 15px; color: #38bdf8;">15</h4><span style="font-size: 10px; color: #94a3b8;">أتابعهم</span></div>
+                <div><h4 style="font-size: 15px; color: #38bdf8;">142</h4><span style="font-size: 10px; color: #94a3b8;">المتابعون</span></div>
+                <div><h4 style="font-size: 15px; color: #38bdf8;">1.2k</h4><span style="font-size: 10px; color: #94a3b8;">الإعجابات</span></div>
             </div>
 
-            <button onclick="logoutUser()" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer;">🚪 تسجيل الخروج</button>
+            <button onclick="alert('تم تسجيل الخروج')" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 8px 16px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer;">🚪 تسجيل الخروج</button>
         </div>
     </div>
 
     <!-- نافذة الرسائل الخاصة (Direct Message Modal) -->
     <div id="dmModal">
-        <div class="upload-card" style="max-width: 100%; height: 90vh; display: flex; flex-direction: column;">
+        <div class="upload-card" style="max-width: 100%; height: 80vh; display: flex; flex-direction: column;">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px;">
-                <h3 id="dmTargetName" style="font-size: 14px; color: #38bdf8;">محادثة خاص</h3>
+                <h3 id="dmTargetName" style="font-size: 14px; color: #38bdf8;">محادثة خاصة</h3>
                 <button onclick="closeDmModal()" style="background: none; border: none; color: #ef4444; font-size: 18px; cursor: pointer;">✕</button>
             </div>
             <div id="dmMessagesList" style="flex: 1; overflow-y: auto; padding: 10px 0; display: flex; flex-direction: column; gap: 8px;">
@@ -192,23 +304,34 @@
             </div>
             <div style="display: flex; gap: 6px; margin-top: 10px;">
                 <input type="text" id="dmInput" class="form-input" placeholder="اكتب رسالة..." onkeypress="if(event.key==='Enter') sendDmMessage()">
-                <button class="primary-btn" style="width: 70px;" onclick="sendDmMessage()">إرسال</button>
+                <button class="primary-btn" style="width: 70px; margin-top:0;" onclick="sendDmMessage()">إرسال</button>
             </div>
         </div>
     </div>
 
-    <!-- نافذة النشر السريعة -->
+    <!-- نافذة عرض الـ PDF -->
+    <div id="pdfViewerModal">
+        <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+            <div style="padding: 10px; background: #0b1120; display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="pdfModalTitle" style="font-size: 14px; color: #38bdf8;">عارض الكتب</h3>
+                <button onclick="closePdfViewer()" style="background: #ef4444; color: white; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer;">إغلاق ✕</button>
+            </div>
+            <iframe id="pdfIframe"></iframe>
+        </div>
+    </div>
+
+    <!-- نافذة النشر المنبثقة Modal -->
     <div id="uploadModal">
         <div class="upload-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 15px; color: #38bdf8;">🎬 نشر فيديو قصير جديد</h3>
+                <h3 style="font-size: 15px; color: #38bdf8;">🎬 نشر محتوى فيديو جديد</h3>
                 <button onclick="closeUploadModal()" style="background: none; border: none; color: #ef4444; font-size: 18px; cursor: pointer;">✕</button>
             </div>
-            <input type="text" id="feedTitleInput" class="form-input" placeholder="عنوان الفيديو...">
+            <input type="text" id="feedTitleInput" class="form-input" placeholder="عنوان المنشور...">
             <textarea id="feedDescInput" class="form-textarea" placeholder="الوصف والهاشتاغات..."></textarea>
             <div>
-                <label style="font-size: 10px; color: #94a3b8;">اختر فيديو من هاتفك:</label>
-                <input type="file" id="feedMediaInput" accept="video/*" class="form-input" style="padding: 4px;">
+                <label style="font-size: 10px; color: #94a3b8;">اختر فيديو من الهاتف:</label>
+                <input type="file" id="feedMediaInput" accept="video/*,image/*" class="form-input" style="padding: 4px;">
             </div>
             <button class="primary-btn" onclick="publishFeedMedia()">نشر فوراً 🚀</button>
         </div>
@@ -233,89 +356,95 @@
             <span class="nav-icon">📥</span>
             <span>صندوق الوارد</span>
         </button>
+        <button class="nav-item" onclick="switchPage('library', this)">
+            <span class="nav-icon">📚</span>
+            <span>المكتبة</span>
+        </button>
         <button class="nav-item" onclick="switchPage('profile', this)">
             <span class="nav-icon">👤</span>
-            <span>ملفي</span>
+            <span>حسابي</span>
         </button>
     </nav>
 
     <script>
-        let currentUsername = localStorage.getItem('qaim_logged_user') || 'حيدر حميد';
+        let liveStream = null;
 
-        /* قائمة فيديوهات تفاعلية حقيقية مستقرة تعمل على جميع الأجهزة والآيفون */
-        const realVideos = [
-            {
-                user: "الناشر الرسمى",
-                title: "انطلاق منصة المنهج القويم (QAIM)",
-                desc: "منبر فكري وعلمي مستقل لنشر المعارف الحقة والعلوم السامية.",
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                audio: "تلاوة سورة الفاتحة - الشيخ عبد الباسط",
-                likes: "12.4k"
-            },
-            {
-                user: "منتظر الحيدري",
-                title: "أهزوجة الثبات والاستقامة",
-                desc: "نشيد فكري يعزز القيم والفضائل النبيلة #QAIM",
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-                audio: "نشيد المنهج القويم - أداء جماعي",
-                likes: "8.9k"
-            },
-            {
-                user: "خادم القرآن",
-                title: "تلاوة خاشعة تدبرية",
-                desc: "تلاوة عطرة تريح القلوب من العلوم المباركة.",
-                url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-                audio: "سورة الرحمن - الشيخ ياسر الدوسري",
-                likes: "15.1k"
+        const mockUsers = ['أحمد الكاظمي', 'زينب الموسوي', 'كرار الفاطمي', 'فاطمة الزهراء', 'حسين الحجامي', 'خادم القرآن'];
+        const mockTitles = ['تلاوة نادرة ومباركة', 'مفهوم فكري سامي', 'قصيدة ترند حسينية', 'قبسات من العلوم الحقة', 'شرح منهاج الصالحين'];
+        const mockVideos = [
+            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
+        ];
+
+        function handleInfiniteScroll(feedEl) {
+            if (feedEl.scrollTop + feedEl.clientHeight >= feedEl.scrollHeight - 300) {
+                generateMoreTikTokPosts(2);
             }
-        ];
+        }
 
-        const mockFriends = [
-            { name: "أحمد الكاظمي", status: "مشارك نشط", avatar: "أ" },
-            { name: "زينب الموسوي", status: "متابِع", avatar: "ز" },
-            { name: "كرار الفاطمي", status: "صديق مقرب", avatar: "ك" },
-            { name: "حسين الحجامي", status: "مشارك", avatar: "ح" }
-        ];
+        function generateMoreTikTokPosts(count) {
+            const feedContainer = document.getElementById('mainFeedContainer');
+            for (let i = 0; i < count; i++) {
+                const user = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+                const title = mockTitles[Math.floor(Math.random() * mockTitles.length)];
+                const videoUrl = mockVideos[Math.floor(Math.random() * mockVideos.length)];
+                const likes = (Math.floor(Math.random() * 950) + 120);
 
-        function renderTikTokVideos() {
-            const container = document.getElementById('mainFeedContainer');
-            realVideos.forEach((v, idx) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <video class="card-media" src="${v.url}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                cardDiv.innerHTML = `
+                    <video class="card-media" src="${videoUrl}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
                     <div class="card-overlay"></div>
-                    
                     <div class="side-actions">
-                        <div class="action-avatar">${v.user.charAt(0)}<div class="action-follow-badge">+</div></div>
-                        <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${v.likes}</span></button>
+                        <div class="action-avatar">${user.charAt(0)}<div class="action-follow-badge">+</div></div>
+                        <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${likes}</span></button>
                         <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
-                        <button class="action-btn" onclick="openDirectMessage('${v.user}')">✉️<span class="action-text">خاص</span></button>
+                        <button class="action-btn" onclick="openDirectMessage('${user}')">✉️<span class="action-text">خاص</span></button>
                         <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                     </div>
-
                     <div class="card-comments-box">
                         <div style="font-size: 11px; font-weight: bold; color: #38bdf8;">التعليقات والمناقشات</div>
                         <div class="card-comments-list">
-                            <div class="card-comment-item"><span class="comment-user-name">علي:</span> ما شاء الله منشور مبارك!</div>
+                            <div class="card-comment-item"><span class="comment-user-name">${user}:</span> منشور مبارك وفقكم الله.</div>
                         </div>
-                        <div style="display: flex; gap: 4px;">
-                            <input type="text" class="form-input" style="padding: 4px 8px; font-size: 10px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addComment(this)">
+                        <div style="display: flex; gap: 6px;">
+                            <input type="text" class="form-input" style="padding: 4px 8px; font-size: 10px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
                         </div>
                     </div>
-
                     <div class="card-content">
-                        <span style="background: #38bdf8; color: #000; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: bold;">👤 @${v.user}</span>
-                        <h2 style="font-size: 16px; margin: 6px 0;">${v.title}</h2>
-                        <p style="font-size: 11px; color: #cbd5e1;">${v.desc}</p>
-                        <div class="audio-disc-badge">
+                        <span style="background: #38bdf8; color: #0b1120; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: bold;">👤 @${user}</span>
+                        <h2 style="font-size: 18px; margin: 6px 0;">${title}</h2>
+                        <p style="font-size: 11px; color: #cbd5e1;">منشور حركي تفاعلي من منصة QAIM.</p>
+                        <div class="audio-disc-badge" onclick="toggleAudioPlay(this)">
                             <div class="disc-icon">🎵</div>
-                            <span style="font-size: 10px; color: #e2e8f0;">${v.audio}</span>
+                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM</span>
+                            <audio src="https://server8.mp3quran.net/basit/001.mp3" loop></audio>
                         </div>
                     </div>
                 `;
-                container.appendChild(card);
-            });
+                feedContainer.appendChild(cardDiv);
+            }
+        }
+
+        async function startLiveBroadcast() {
+            try {
+                liveStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
+                const videoElement = document.getElementById('realCameraFeed');
+                videoElement.srcObject = liveStream;
+                videoElement.muted = true;
+                alert('تم بدء البث المباشر المباشر بالحاسوب/الهاتف بنجاح!');
+            } catch (error) { alert('تعذر الوصول للكاميرا.'); }
+        }
+
+        function startAudioSpace() { alert('تم تشغيل المساحة الصوتية الحية!'); }
+
+        function stopLiveBroadcast() {
+            if (liveStream) {
+                liveStream.getTracks().forEach(track => track.stop());
+                document.getElementById('realCameraFeed').srcObject = null;
+                alert('تم إيقاف البث.');
+            }
         }
 
         function toggleVideoPlay(video) {
@@ -329,32 +458,24 @@
             if (btn) btn.classList.add('active');
         }
 
-        function renderFriendsList() {
-            const container = document.getElementById('friendsContainer');
-            container.innerHTML = '';
-            mockFriends.forEach(f => {
-                const item = document.createElement('div');
-                item.className = 'inbox-item';
-                item.innerHTML = `
-                    <div class="inbox-avatar">${f.avatar}</div>
-                    <div style="flex: 1;">
-                        <div style="font-size: 13px; font-weight: bold;">${f.name}</div>
-                        <div style="font-size: 10px; color: #94a3b8;">${f.status}</div>
-                    </div>
-                    <button class="primary-btn" style="width: auto; padding: 5px 12px; font-size: 10px;" onclick="openDirectMessage('${f.name}')">مراسلة ✉️</button>
-                `;
-                container.appendChild(item);
-            });
+        function askQaimAI() {
+            const query = document.getElementById('aiQueryInput').value.trim();
+            const box = document.getElementById('aiResponseBox');
+            if (query !== "") {
+                box.style.display = 'block';
+                box.innerText = "🤖 إجابة QAIM AI: «المنهج القويم يركز على نشر العلم النافع وتزكية النفوس وبناء الإنسان الصالح.»";
+            }
         }
 
-        function toggleFriendsPrivacy(checkbox) {
-            const container = document.getElementById('friendsContainer');
-            if (checkbox.checked) {
-                container.style.opacity = '0.3';
-                alert('تم تفعيل وضع الخصوصية: قائمة الأصدقاء أصبحت مخفية الآن عن الزوار.');
-            } else {
-                container.style.opacity = '1';
-            }
+        function openPdfViewer(pdfUrl, title) {
+            document.getElementById('pdfModalTitle').innerText = title;
+            document.getElementById('pdfIframe').src = pdfUrl;
+            document.getElementById('pdfViewerModal').style.display = 'flex';
+        }
+
+        function closePdfViewer() {
+            document.getElementById('pdfViewerModal').style.display = 'none';
+            document.getElementById('pdfIframe').src = '';
         }
 
         function openDirectMessage(user) {
@@ -376,30 +497,55 @@
             }
         }
 
+        function toggleFriendsPrivacy(checkbox) {
+            const container = document.getElementById('friendsContainer');
+            if (checkbox.checked) {
+                container.style.opacity = '0.3';
+                alert('تم تفعيل وضع الخصوصية: قائمة الأصدقاء أصبحت مخفية الآن عن الزوار.');
+            } else {
+                container.style.opacity = '1';
+            }
+        }
+
         function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
         function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
 
-        function toggleLike(btn) {
-            btn.classList.toggle('liked');
-        }
+        function toggleLike(btn) { btn.classList.toggle('liked'); }
 
         function toggleCardComments(btn) {
             const box = btn.closest('.card').querySelector('.card-comments-box');
             box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
         }
 
+        function translatePostText(elId) {
+            const el = document.getElementById(elId);
+            if (el) { el.innerText = "An independent intellectual and scientific platform to disseminate authentic knowledge and high moral virtues."; }
+        }
+
         function sharePlatform() {
-            if (navigator.share) {
-                navigator.share({ title: 'QAIM Platform', url: window.location.href });
-            } else {
-                alert('تم نسخ رابط المنصة!');
-            }
+            if (navigator.share) { navigator.share({ title: 'QAIM Platform', url: window.location.href }); } else { alert('تم نسخ رابط المنصة!'); }
+        }
+
+        function renderFriendsList() {
+            const container = document.getElementById('friendsContainer');
+            container.innerHTML = '';
+            mockUsers.forEach(u => {
+                const item = document.createElement('div');
+                item.className = 'inbox-item';
+                item.innerHTML = `
+                    <div class="inbox-avatar">${u.charAt(0)}</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 13px; font-weight: bold;">${u}</div>
+                        <div style="font-size: 10px; color: #94a3b8;">مشارك نشط في QAIM</div>
+                    </div>
+                    <button class="primary-btn" style="width: auto; padding: 5px 12px; font-size: 10px; margin-top:0;" onclick="openDirectMessage('${u}')">مراسلة ✉️</button>
+                `;
+                container.appendChild(item);
+            });
         }
 
         window.onload = function() {
-            renderTikTokVideos();
             renderFriendsList();
-            document.getElementById('displayProfileName').innerText = currentUsername;
         };
     </script>
 </body>
