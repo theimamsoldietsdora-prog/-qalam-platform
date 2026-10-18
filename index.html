@@ -7,6 +7,7 @@
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -15,59 +16,74 @@
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 60px; }
         .page.active { display: block; }
 
-        /* شاشة البداية السريعة */
-        #splashScreen { position: fixed; inset: 0; background: #000000; z-index: 6000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease; }
-        .splash-logo { font-size: 50px; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 10px; }
+        /* شاشة البداية المطابقة تماماً لتيك توك */
+        #splashScreen { position: fixed; inset: 0; background: #000000; z-index: 6000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
+        .tiktok-logo-box { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .tiktok-logo-icon { font-size: 65px; filter: drop-shadow(0 0 20px rgba(37, 244, 238, 0.5)); }
+        .tiktok-logo-text { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 2px; }
 
-        /* الشريط العلوي */
-        .top-header { position: absolute; top: 10px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; }
-        .top-tabs { display: flex; gap: 15px; font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.6); cursor: pointer; }
-        .top-tabs span.active { color: #fff; font-size: 16px; border-bottom: 2px solid #fff; }
+        /* الهيدر العلوي */
+        .top-tiktok-header { position: absolute; top: 12px; left: 0; right: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; }
+        .top-nav-tabs { display: flex; gap: 18px; font-size: 15px; color: rgba(255,255,255,0.6); font-weight: bold; cursor: pointer; }
+        .top-nav-tabs span.active { color: #ffffff; font-size: 16px; font-weight: 900; border-bottom: 3px solid #fff; padding-bottom: 2px; }
 
-        /* الخلاصة الخفيفة */
-        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background: #000; }
+        /* الخلاصة الرئيسية (Feed) */
+        .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
+        .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background: #000; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 15%, transparent 50%); z-index: 1; }
-        .card-content { position: relative; z-index: 2; margin-bottom: 65px; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%); z-index: 1; }
+        .card-content { position: relative; z-index: 2; margin-bottom: 70px; }
 
-        /* الأزرار الجانبية */
-        .side-actions { position: absolute; left: 12px; bottom: 90px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
-        .action-btn { background: rgba(255,255,255,0.15); border: none; width: 42px; height: 42px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; }
-        .action-text { font-size: 9px; margin-top: 2px; }
+        /* أزرار التفاعل الجانبية (تيك توك ستايل) */
+        .side-actions { position: absolute; left: 12px; bottom: 100px; display: flex; flex-direction: column; gap: 16px; z-index: 3; align-items: center; }
+        .action-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .action-btn:active { transform: scale(0.85); }
+        .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.3); }
+        .action-text { font-size: 10px; margin-top: 2px; color: #fff; font-weight: bold; }
 
-        /* الملف الشخصي */
+        /* الملف الشخصي والتبويبات الملونة */
         .profile-container { padding: 15px; background: #000; }
-        .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 10px; }
-        .profile-grid-item { position: relative; height: 150px; background: #111; overflow: hidden; }
-        .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-        .delete-post-btn { position: absolute; top: 6px; right: 6px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; cursor: pointer; z-index: 5; }
+        .profile-tabs-nav { display: flex; justify-content: space-around; border-bottom: 1px solid #1f2937; padding-bottom: 8px; margin-top: 15px; }
+        .profile-tab-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 6px 12px; position: relative; }
+        .profile-tab-btn.active::after { content: ''; position: absolute; bottom: -9px; left: 15%; right: 15%; height: 2px; background: #ffffff; }
 
-        /* استوديو النشر */
-        #postEditorModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .modal-box { background: #121212; border: 1px solid #38bdf8; border-radius: 16px; padding: 20px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; }
-        .form-input { width: 100%; padding: 10px; background: #000; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 12px; outline: none; }
-        .primary-btn { background: #38bdf8; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+        .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 5px; }
+        .profile-grid-item { position: relative; height: 155px; background: #111; overflow: hidden; cursor: pointer; }
+        .profile-grid-item img, .profile-grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        .delete-post-btn { position: absolute; top: 6px; right: 6px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 5; display: none; }
+        body.selecting-mode .delete-post-btn { display: flex; }
 
-        /* الشريط السفلي */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 55px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { color: #888; background: none; border: none; font-size: 9px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; flex: 1; }
-        .nav-item.active { color: #fff; font-weight: bold; }
-        .plus-btn { background: #fff; color: #000; width: 36px; height: 24px; border-radius: 6px; font-weight: bold; font-size: 16px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        /* استوديو إعداد المنشور قبل النشر (مثل تيك توك) */
+        #postEditorModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 5000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #1e293b; border: 1px solid #38bdf8; border-radius: 16px; padding: 20px; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 12px; }
+        .form-input { width: 100%; padding: 10px; background: #0b1120; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 12px; outline: none; }
+        .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+
+        /* الشريط السفلي (تيك توك ستايل) */
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #000000; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { color: #a1a1aa; background: none; border: none; font-size: 8.5px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
+        .nav-item.active { color: #ffffff; font-weight: bold; }
+        .nav-icon { font-size: 17px; }
+        .tiktok-plus-btn { width: 38px; height: 25px; background: #ffffff; border-radius: 8px; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer; }
+        .tiktok-plus-btn::before { content: ''; position: absolute; left: -3px; width: 38px; height: 25px; background: #25f4ee; border-radius: 8px; z-index: -1; }
+        .tiktok-plus-btn::after { content: ''; position: absolute; right: -3px; width: 38px; height: 25px; background: #fe2c55; border-radius: 8px; z-index: -2; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة البداية السريعة -->
+    <!-- شاشة البداية المطابقة لتيك توك -->
     <div id="splashScreen">
-        <div class="splash-logo">⚔️ QAIM</div>
+        <div class="tiktok-logo-box">
+            <div class="tiktok-logo-icon">⚔️</div>
+            <div class="tiktok-logo-text">QAIM</div>
+        </div>
     </div>
 
-    <!-- الصفحة الرئيسية -->
+    <!-- الشاشة الرئيسية -->
     <div id="page-home" class="page active">
-        <div class="top-header">
-            <div style="font-size: 12px; color:#ef4444; font-weight:bold;">🔴 LIVE</div>
-            <div class="top-tabs">
+        <div class="top-tiktok-header">
+            <div style="font-size: 12px; color:#ef4444; font-weight:bold; cursor:pointer;" onclick="alert('غرفة البث المباشر نشطة.')">🔴 LIVE</div>
+            <div class="top-nav-tabs">
                 <span onclick="switchTab(this)">المجتمع</span>
                 <span onclick="switchTab(this)">أتابعه</span>
                 <span class="active" onclick="switchTab(this)">لك</span>
@@ -77,7 +93,7 @@
         <div class="feed" id="mainFeedContainer"></div>
     </div>
 
-    <!-- إكسبلور -->
+    <!-- الإكسبلور -->
     <div id="page-explore" class="page">
         <div style="padding: 20px;">
             <h3 style="color:#38bdf8; margin-bottom:10px;">🔍 الإكسبلور والبحث</h3>
@@ -90,25 +106,38 @@
     <div id="page-profile" class="page">
         <div class="profile-container">
             <div style="text-align: center; margin-top: 20px;">
-                <div id="profileAvatar" style="width: 70px; height: 70px; background: #38bdf8; color:#000; border-radius: 50%; margin: 0 auto 10px; display:flex; justify-content:center; align-items:center; font-size:24px; font-weight:bold;">👤</div>
-                <h3 id="profileNameDisplay">مستخدم المنصة</h3>
-                <p id="profileUserTag" style="font-size: 11px; color: #888;">@qaim_user</p>
+                <div style="width: 75px; height: 75px; background: #38bdf8; color:#000; border-radius: 50%; margin: 0 auto 10px; display:flex; justify-content:center; align-items:center; font-size:26px; font-weight:bold;">👤</div>
+                <h3 id="profileNameDisplay">حيدر حميد محمد ال عگاب</h3>
+                <p style="font-size: 11px; color: #94a3b8;">@qaim_founder</p>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                <span style="font-size: 12px; color: #888;">منشوراتك العامة:</span>
-                <button onclick="toggleSelectMode()" class="primary-btn" style="width:auto; padding:4px 10px; font-size:10px; background:#222; color:#38bdf8;">تحديد للحذف 🗑️</button>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; padding: 0 5px;">
+                <span style="font-size: 12px; color: #94a3b8;">إدارة المنشورات:</span>
+                <button onclick="document.body.classList.toggle('selecting-mode')" class="primary-btn" style="width:auto; padding:4px 10px; font-size:10px; background:#1e293b; color:#38bdf8;">إدارة للحذف 🗑️</button>
             </div>
+
+            <div class="profile-tabs-nav">
+                <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)">📊</button>
+                <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)">🔄</button>
+                <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)">📑</button>
+                <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)">❤️</button>
+            </div>
+
             <div class="profile-grid" id="profileGridContainer"></div>
         </div>
     </div>
 
-    <!-- استوديو النشر (مثل تيك توك) -->
+    <!-- استوديو إعداد المنشور قبل النشر (مثل تيك توك Studio) -->
     <div id="postEditorModal">
         <div class="modal-box">
-            <h3 style="color:#38bdf8; font-size:14px; text-align:center;">✨ إعداد المنشور ونشره للعام</h3>
-            <div id="editorPreview" style="height:140px; background:#000; border-radius:8px; overflow:hidden;"></div>
-            <input type="text" id="editorCaption" class="form-input" placeholder="اكتب وصفاً أو هاشتاغ...">
-            <button class="primary-btn" onclick="publishPostNow()">نشر الآن للعام 🚀</button>
+            <h3 style="color:#38bdf8; font-size:14px; text-align:center;">✨ إعداد المنشور وتعديله</h3>
+            <div id="editorPreview" style="height:150px; background:#000; border-radius:8px; overflow:hidden;"></div>
+            <input type="text" id="editorCaption" class="form-input" placeholder="اكتب وصفاً أو هاشتاغ #المنهج_القويم ...">
+            <select id="editorMusicSelect" class="form-input">
+                <option value="تلاوة خاشعة - ترند">🎵 صوت ترند: تلاوة خاشعة</option>
+                <option value="أهزوجة حماسية">🎶 صوت ترند: أهزوجة حماسية</option>
+            </select>
+            <button class="primary-btn" onclick="publishPostNow()" style="background:#fe2c55; color:white;">نشر الآن للعام 🚀</button>
             <button onclick="document.getElementById('postEditorModal').style.display='none'" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; text-align:center;">إلغاء</button>
         </div>
     </div>
@@ -116,12 +145,13 @@
     <!-- رفع الوسائط -->
     <input type="file" id="deviceFilePicker" accept="image/*,video/*" style="display:none;" onchange="handleFileSelected(this)">
 
-    <!-- الشريط السفلي -->
+    <!-- الشريط السفلي (تيك توك ستايل) -->
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="switchPage('home', this)"><span>🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="switchPage('explore', this)"><span>🔍</span><span>إكسبلور</span></button>
-        <div class="plus-btn" onclick="document.getElementById('deviceFilePicker').click()">+</div>
-        <button class="nav-item" onclick="switchPage('profile', this)"><span>👤</span><span>الملف الشخصي</span></button>
+        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="switchPage('explore', this)"><span class="nav-icon">🔍</span><span>إكسبلور</span></button>
+        <div class="tiktok-plus-btn" onclick="document.getElementById('deviceFilePicker').click()"><span style="color:#000; font-weight:bold; font-size:16px;">+</span></div>
+        <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>الوارد</span></button>
+        <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>الملف الشخصي</span></button>
     </nav>
 
     <script>
@@ -134,10 +164,10 @@
             setTimeout(() => {
                 let splash = document.getElementById('splashScreen');
                 splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 400);
-            }, 1000);
+                setTimeout(() => splash.style.display = 'none', 500);
+            }, 1200);
 
-            let saved = localStorage.getItem('qaim_posts_light');
+            let saved = localStorage.getItem('qaim_tiktok_exact');
             if(saved) { try { posts = JSON.parse(saved); } catch(e){} }
             renderFeed();
             renderProfile();
@@ -149,17 +179,17 @@
             posts.forEach(p => {
                 let card = document.createElement('div');
                 card.className = 'card';
-                let mediaTag = p.type === 'image' ? `<img class="card-media" src="${p.url}">` : `<video class="card-media" src="${p.url}" autoplay loop muted playsinline></video>`;
+                let mediaTag = p.type === 'image' ? `<img class="card-media" src="${p.url}">` : `<video class="card-media" src="${p.url}" autoplay loop muted playsinline onclick="this.paused ? this.play() : this.pause()"></video>`;
                 card.innerHTML = `
                     ${mediaTag}
                     <div class="card-overlay"></div>
                     <div class="side-actions">
                         <button class="action-btn" onclick="this.classList.toggle('liked')">❤️<span class="action-text">12k</span></button>
-                        <button class="action-btn" onclick="alert('مشاركة ناجحة!')">🚀<span class="action-text">مشاركة</span></button>
+                        <button class="action-btn" onclick="alert('تم المشاركة بنجاح!')">🚀<span class="action-text">مشاركة</span></button>
                     </div>
                     <div class="card-content">
-                        <h4 style="font-size:14px; font-weight:bold;">@${p.user}</h4>
-                        <p style="font-size:11px; color:#ddd; margin-top:3px;">${p.title}</p>
+                        <h4 style="font-size:15px; font-weight:bold;">@${p.user}</h4>
+                        <p style="font-size:12px; color:#e2e8f0; margin-top:4px;">${p.title}</p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -182,14 +212,15 @@
 
         function publishPostNow() {
             let caption = document.getElementById('editorCaption').value.trim() || "منشور عام جديد ✨";
-            let newPost = { id: Date.now(), user: "حيدر_العگاب", title: caption, url: tempMedia.url, type: tempMedia.type };
+            let music = document.getElementById('editorMusicSelect').value;
+            let newPost = { id: Date.now(), user: "حيدر_العگاب", title: caption + " (" + music + ")", url: tempMedia.url, type: tempMedia.type };
             posts.unshift(newPost);
-            localStorage.setItem('qaim_posts_light', JSON.stringify(posts));
+            localStorage.setItem('qaim_tiktok_exact', JSON.stringify(posts));
             document.getElementById('postEditorModal').style.display = 'none';
             renderFeed();
             renderProfile();
             switchPage('home');
-            alert('تم النشر بنجاح ليظهر للعام!');
+            alert('تم نشر المحتوى بنجاح ليظهر للعام في تيك توك QAIM!');
         }
 
         function renderProfile() {
@@ -198,20 +229,20 @@
             posts.forEach(p => {
                 let item = document.createElement('div');
                 item.className = 'profile-grid-item';
-                let imgContent = p.type === 'image' ? `<img src="${p.url}">` : `<img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">`;
+                let mediaContent = p.type === 'image' ? `<img src="${p.url}">` : `<img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">`;
                 item.innerHTML = `
-                    ${imgContent}
+                    ${mediaContent}
                     <button class="delete-post-btn" onclick="deletePost(${p.id})">✕</button>
-                    <div style="position:absolute; bottom:4px; right:4px; font-size:9px; color:#fff; text-shadow:0 1px 2px #000;">⭐ ${p.title}</div>
+                    <div style="position:absolute; bottom:6px; right:6px; font-size:10px; color:#fff; font-weight:bold; text-shadow:0 1px 3px #000;">⭐ ${p.title}</div>
                 `;
                 grid.appendChild(item);
             });
         }
 
         function deletePost(id) {
-            if(confirm('حذف هذا المنشور نهائياً؟')) {
+            if(confirm('هل تريد مسح هذا المنشور نهائياً؟')) {
                 posts = posts.filter(p => p.id !== id);
-                localStorage.setItem('qaim_posts_light', JSON.stringify(posts));
+                localStorage.setItem('qaim_tiktok_exact', JSON.stringify(posts));
                 renderFeed();
                 renderProfile();
                 alert('تم الحذف بنجاح!');
@@ -227,9 +258,15 @@
         }
 
         function switchTab(el) {
-            document.querySelectorAll('.top-tabs span').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.top-nav-tabs span').forEach(s => s.classList.remove('active'));
             el.classList.add('active');
             renderFeed();
+        }
+
+        function switchColoredTab(color, btn) {
+            document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProfile();
         }
 
         function searchPosts(q) {
