@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>QAIM Platform - منصة المنهج القويم المتكاملة العالمية</title>
 
-    <!-- SEO & PWA Web App Meta Tags -->
-    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى المباشرة لنشر العلوم والمعارف، البث الحي، المكتبات التفاعلية، والذكاء الاصطناعي.">
+    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف، البث الحي، المكتبات التفاعلية، والذكاء الاصطناعي السيادي.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,7 +13,11 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #000000; color: #ffffff; overflow: hidden; transition: 0.3s; }
+        
+        /* وضع إمكانية الوصول لذوي الاحتياجات الخاصة (Accessibility Mode) */
+        body.accessibility-mode { font-size: 18px !important; background-color: #0b132b !important; color: #ffff00 !important; }
+        body.accessibility-mode .card-content h3, body.accessibility-mode p { color: #ffffff !important; font-weight: 900 !important; }
 
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
         .page.active { display: block; }
@@ -58,7 +61,7 @@
         .disc-icon { width: 20px; height: 20px; border-radius: 50%; background: #38bdf8; color: #000; display: flex; justify-content: center; align-items: center; font-size: 10px; animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* تصميم قسم الإكسبلور الكامل */
+        /* تصميم قسم الإكسبلور */
         .explore-container { padding: 15px; }
         .explore-search-box { background: #1e293b; border-radius: 20px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 15px; }
         .explore-search-box input { background: none; border: none; outline: none; color: white; font-size: 13px; width: 100%; }
@@ -72,14 +75,14 @@
         .explore-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; }
         .explore-views-count { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px; font-size: 10px; }
 
-        /* العناصر العامة والصناديق والمكونات */
+        /* المكونات والصناديق والنوافذ */
         .card-comments-box { position: absolute; bottom: 70px; left: 12px; right: 12px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; padding: 12px; z-index: 10; display: none; flex-direction: column; gap: 8px; max-height: 220px; }
         .card-comments-list { flex: 1; overflow-y: auto; max-height: 130px; display: flex; flex-direction: column; gap: 6px; }
         .card-comment-item { font-size: 11px; background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 6px; color: #cbd5e1; }
 
         .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .form-input, .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 12px; outline: none; }
-        .form-textarea { height: 60px; resize: none; margin-top: 6px; }
+        .form-textarea { height: 75px; resize: none; margin-top: 6px; }
         .primary-btn { background: #38bdf8; color: #0b1120; border: none; padding: 10px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
         .delete-btn { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
 
@@ -88,12 +91,16 @@
         .inbox-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
         .inbox-avatar { width: 42px; height: 42px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
 
-        /* عارض الـ PDF والمودالات */
-        #pdfViewerModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
-        .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
+        /* عارض الـ PDF والنوافذ المزودة بزر إغلاق راقي */
+        #pdfViewerModal, #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; position: relative; }
+        .modal-close-btn { position: absolute; top: 12px; left: 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #ef4444; border-radius: 50%; width: 28px; height: 28px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; }
         #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
 
-        /* الشريط السفلي المنسق بالكامل بأسلوب TikTok */
+        /* زر إمكانية الوصول العائم لذوي الاحتياجات الخاصة */
+        .accessibility-float-btn { position: fixed; bottom: 75px; right: 15px; background: #38bdf8; color: #000; width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; z-index: 200; box-shadow: 0 4px 15px rgba(56,189,248,0.5); cursor: pointer; border: 2px solid white; }
+
+        /* الشريط السفلي للتنقل */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #000000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #a1a1aa; text-decoration: none; font-size: 8.5px; gap: 3px; border: none; background: none; flex: 1; cursor: pointer; }
         .nav-item.active { color: #ffffff; font-weight: bold; }
@@ -107,26 +114,24 @@
 </head>
 <body>
 
+    <!-- زر إمكانية الوصول لذوي الاحتياجات الخاصة عائم -->
+    <div class="accessibility-float-btn" onclick="toggleAccessibilityMode()" title="وضع ذوي الاحتياجات الخاصة وإمكانية الوصول">♿</div>
+
     <!-- 1. الشاشة الرئيسية (TikTok Main Feed) -->
     <div id="page-home" class="page active">
-        
-        <!-- الشريط العلوي المنسق الشفاف -->
         <div class="top-tiktok-header">
-            <!-- أعلى اليمين: البث المباشر LIVE -->
             <div class="top-right-actions">
                 <button class="live-tv-btn" onclick="switchPage('live')">
                     <span class="live-tv-icon">LIVE</span>
                 </button>
             </div>
 
-            <!-- المنتصف: المجتمع | أتابعه | لك -->
             <div class="top-nav-tabs">
                 <span class="top-tab" onclick="switchTopTab(this)">المجتمع</span>
                 <span class="top-tab" onclick="switchTopTab(this)">أتابعه</span>
                 <span class="top-tab active" onclick="switchTopTab(this)">لك</span>
             </div>
 
-            <!-- أعلى اليسار: المكتبة والإكسبلور -->
             <div class="top-left-actions">
                 <button class="header-icon-btn" onclick="switchPage('library')" title="المكتبة">📚</button>
                 <button class="header-icon-btn" onclick="switchPage('explore')" title="إكسبلور">🔍</button>
@@ -134,80 +139,96 @@
         </div>
 
         <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)">
-            <!-- سيتم توليد مقاطع الفيديو ديناميكياً ولانهائياً -->
+            <!-- الفيديوهات -->
         </div>
     </div>
 
-    <!-- 2. قسم الإكسبلور الكامل والمطابق لـ TikTok (Explore Page) -->
+    <!-- 2. قسم الإكسبلور والصوتيات الترند -->
     <div id="page-explore" class="page">
         <div class="explore-container">
             <div class="explore-search-box">
                 <span>🔍</span>
-                <input type="text" id="exploreSearchInput" placeholder="بحث ذكي في الفيديوهات، الكتب، والترند الفكري..." onkeyup="filterExploreContent(this.value)">
+                <input type="text" id="exploreSearchInput" placeholder="بحث عن الصوتيات، القراء، والقصائد..." onkeyup="filterExploreContent(this.value)">
             </div>
 
-            <!-- شريط الهاشتاغات والترندات السريعة -->
             <div class="explore-tags-scroll">
+                <span class="explore-tag-item" onclick="filterExploreTag('#تلاوات_القرآن')">#تلاوات_القرآن 📖</span>
+                <span class="explore-tag-item" onclick="filterExploreTag('#قصائد_حسينية')">#قصائد_حسينية 🏴</span>
                 <span class="explore-tag-item" onclick="filterExploreTag('#المنهج_القويم')">#المنهج_القويم 🔥</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#تلاوات_خاشعة')">#تلاوات_خاشعة 📖</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#العلوم_الحقة')">#العلوم_الحقة ✨</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#بث_حي')">#بث_حي 🔴</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#مكتبة_QAIM')">#مكتبة_QAIM 📚</span>
+                <span class="explore-tag-item" onclick="filterExploreTag('#صوتيات_ترند')">#صوتيات_ترند 🎵</span>
             </div>
 
-            <!-- شبكة عرض المقاطع والترندات -->
-            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المحتوى الأكثر فائدة وتداولاً:</h4>
-            <div class="explore-grid" id="exploreGridContainer">
-                <!-- سيتم تعبئة بطاقات الإكسبلور تلقائياً -->
+            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🎧 صوتيات وقراءات ترند:</h4>
+            <div id="trendingAudioList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px;">
+                <div class="inbox-item" onclick="playAudioTrend('تلاوة سورة الرحمن - الشيخ عبد الباسط', 'https://server8.mp3quran.net/basit/055.mp3')">
+                    <div class="inbox-avatar" style="background:#0284c7; color:white;">🎵</div>
+                    <div style="flex:1;">
+                        <div style="font-size:12px; font-weight:bold;">تلاوة سورة الرحمن</div>
+                        <div style="font-size:10px; color:#94a3b8;">الشيخ عبد الباسط عبد الصمد</div>
+                    </div>
+                    <span style="font-size:10px; color:#38bdf8;">تشغيل ▷</span>
+                </div>
             </div>
+
+            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المقاطع الأكثر مشاهدة:</h4>
+            <div class="explore-grid" id="exploreGridContainer"></div>
         </div>
     </div>
 
-    <!-- 3. غرفة البث المباشر والمناظرات (🔴 LIVE & Spaces) -->
+    <!-- 3. غرفة البث المباشر (LIVE) -->
     <div id="page-live" class="page">
         <div style="height: 100vh; display: flex; flex-direction: column; background: #000;">
             <div style="height: 50%; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
-                <div style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔴 بث حي ومساحة صوتية</div>
+                <button onclick="switchPage('home')" style="position:absolute; top:15px; left:15px; z-index:10; background:rgba(0,0,0,0.6); color:white; border:none; padding:6px 12px; border-radius:12px; font-size:11px; cursor:pointer;">↩️ رجوع</button>
+                <div style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔴 بث حي</div>
                 <video id="realCameraFeed" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover;"></video>
                 <div style="position: absolute; bottom: 10px; display: flex; gap: 8px;">
-                    <button class="primary-btn" style="width: auto; margin-top:0;" onclick="startLiveBroadcast()">🎥 بث مباشر</button>
-                    <button class="primary-btn" style="width: auto; margin-top:0; background: #0284c7;" onclick="alert('تم تفعيل المساحة الصوتية الجماعية!')">🎙️ مساحة صوتية</button>
+                    <button class="primary-btn" style="width: auto; margin-top:0;" onclick="startLiveBroadcast()">🎥 تشغيل الكاميرا</button>
                     <button class="primary-btn delete-btn" style="width: auto; margin-top:0;" onclick="stopLiveBroadcast()">إيقاف</button>
                 </div>
             </div>
             <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; background: #0b1120;">
-                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في البث المباشر والمناظرات الحية لمنصة QAIM!</div>
+                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في البث المباشر لمنصة QAIM!</div>
             </div>
         </div>
     </div>
 
-    <!-- 4. قسم البريد الوارد والتشفير المباشر (Inbox) -->
+    <!-- 4. البريد الوارد -->
     <div id="page-inbox" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 صندوق الوارد والمحادثات المشفّرة</h2>
+            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">📥 صندوق الوارد والرسائل</h2>
             <div class="inbox-item">
                 <div class="inbox-avatar">أ</div>
                 <div style="flex: 1;">
-                    <div style="font-size: 13px; font-weight: bold;">الناشر الرسمي <span style="font-size:10px; color:#38bdf8;">🔒 مشفّر</span></div>
-                    <div style="font-size: 11px; color: #94a3b8;">مرحباً بك في منصة QAIM المنهج القويم المشفّرة!</div>
+                    <div style="font-size: 13px; font-weight: bold;">الناشر الرسمي</div>
+                    <div style="font-size: 11px; color: #94a3b8;">مرحباً بك في منصة QAIM المنهج القويم!</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 5. قسم المكتبة والقارئ التفاعلي الذكي (Library 📚) -->
+    <!-- 5. المكتبة والقارئ الصوتي الشجي الحصري للمؤسس بلغات العالم -->
     <div id="page-library" class="page">
         <div style="padding: 20px;">
-            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM القارئ المباشر والملخص الذكي</h2>
+            <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي الشجي</h2>
             
-            <!-- مساعد الذكاء الاصطناعي QAIM AI -->
-            <div class="content-box" style="border: 1px solid rgba(56, 189, 248, 0.4);">
-                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 6px;">🤖 مساعد QAIM الفكري والترجمة</h4>
-                <div style="display: flex; gap: 6px;">
-                    <input type="text" id="aiQueryInput" class="form-input" placeholder="اسأل الذكاء الاصطناعي أو اطلب تلخيص كتاب...">
-                    <button class="primary-btn" style="width: auto; margin-top:0;" onclick="askQaimAI()">استفسار</button>
+            <!-- أداة القارئ الصوتي الحصرية للمؤسس (تظهر فقط لك) -->
+            <div id="founderExclusiveReader" class="content-box" style="border: 1px solid rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, #1e293b, #0f172a); display: none;">
+                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ الصوتي الشجي متعدد اللغات</h4>
+                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق نص الكتاب أو المقال هنا..."></textarea>
+                
+                <div style="display: flex; gap: 8px; margin-top: 8px;">
+                    <select id="readerLangSelect" class="form-input" style="flex: 1; padding: 6px;">
+                        <option value="ar-SA">العربية (Arabic)</option>
+                        <option value="en-US">الإنجليزية (English)</option>
+                        <option value="fr-FR">الفرنسية (French)</option>
+                        <option value="es-ES">الإسبانية (Spanish)</option>
+                        <option value="de-DE">الألمانية (German)</option>
+                        <option value="tr-TR">التركية (Turkish)</option>
+                        <option value="fa-IR">الفارسية (Persian)</option>
+                    </select>
+                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل بصوت شجي</button>
                 </div>
-                <div id="aiResponseBox" style="font-size: 11px; color: #38bdf8; margin-top: 8px; display: none; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;"></div>
             </div>
 
             <!-- رفع كتاب PDF جديد -->
@@ -222,10 +243,9 @@
             <div id="postsListContainer">
                 <div class="content-box">
                     <h4 style="font-size: 14px;">📖 كتاب القواعد الفكرية الأساسية (PDF)</h4>
-                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي للقراءة المباشرة والتحميل والاستماع الصوتي.</p>
+                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي للقراءة المباشرة والتحميل.</p>
                     <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
                         <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
-                        <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0; background:#0284c7;" onclick="speakText('تم تشغيل الاستماع الصوتي التفاعلي للكتاب')">🔊 استماع</button>
                         <button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button>
                     </div>
                 </div>
@@ -233,7 +253,7 @@
         </div>
     </div>
 
-    <!-- 6. قسم الأصدقاء (Friends) -->
+    <!-- 6. الأصدقاء -->
     <div id="page-friends" class="page">
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 15px;">👥 قائمة الأصدقاء والمتابعين</h2>
@@ -241,38 +261,40 @@
         </div>
     </div>
 
-    <!-- 7. قسم ملفي الشخصي والأوسمة (Profile & Badges) -->
+    <!-- 7. الملف الشخصي للمؤسس -->
     <div id="page-profile" class="page">
         <div style="padding: 20px; text-align: center;">
-            <div style="width: 80px; height: 80px; background: #38bdf8; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000; font-weight: bold;">👤</div>
-            <h3 style="font-size: 18px; color: #38bdf8;">مشترك QAIM</h3>
+            <div style="width: 80px; height: 80px; background: #f59e0b; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000; font-weight: bold;">👑</div>
+            <h3 style="font-size: 18px; color: #f59e0b;">المؤسس (حيدر حميد)</h3>
+            <span class="badge-chip" style="background:#f59e0b;">🛡️ المؤسس العام</span>
             <span class="badge-chip">🎖️ باحث متميز</span>
-            <span class="badge-chip" style="background:#38bdf8;">📖 قارئ القويم</span>
-            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">@qaim_user</p>
+            <p style="font-size: 11px; color: #94a3b8; margin-top: 6px;">@founder_qaim</p>
+            <button onclick="activateFounderMode()" style="background: rgba(245,158,11,0.2); border: 1px solid #f59e0b; color: #f59e0b; padding: 8px 16px; border-radius: 12px; margin-top: 15px; font-size: 11px; font-weight: bold; cursor: pointer;">تفعيل صلاحيات المؤسس الشاملة 🔑</button>
         </div>
     </div>
 
-    <!-- نافذة عرض الـ PDF -->
-    <div id="pdfViewerModal">
-        <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+    <!-- نافذة عرض الـ PDF مزودة بزر إغلاق راقي -->
+    <div id="pdfViewerModal" onclick="if(event.target===this) closePdfViewer()">
+        <div style="width: 100%; height: 100%; display: flex; flex-direction: column; position:relative;">
             <div style="padding: 10px; background: #0b1120; display: flex; justify-content: space-between; align-items: center;">
                 <h3 id="pdfModalTitle" style="font-size: 14px; color: #38bdf8;">عارض الكتب</h3>
-                <button onclick="closePdfViewer()" style="background: #ef4444; color: white; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer;">إغلاق ✕</button>
+                <button onclick="closePdfViewer()" style="background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-weight:bold;">رجوع ✕</button>
             </div>
             <iframe id="pdfIframe"></iframe>
         </div>
     </div>
 
-    <!-- نافذة النشر السريع -->
-    <div id="uploadModal">
+    <!-- نافذة النشر المنبثقة مزودة بزر إغلاق راقي -->
+    <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
         <div class="upload-card">
-            <h3 style="font-size: 15px; color: #38bdf8;">🎬 نشر فيديو جديد</h3>
+            <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر فيديو جديد</h3>
             <input type="text" class="form-input" placeholder="عنوان المنشور...">
             <button class="primary-btn" onclick="closeUploadModal()">نشر فوراً 🚀</button>
         </div>
     </div>
 
-    <!-- الشريط السفلي للتنقل المنسق بأسلوب تيك توك exact layout -->
+    <!-- الشريط السفلي للتنقل -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)">
             <span class="nav-icon">🏠</span>
@@ -281,10 +303,6 @@
         <button class="nav-item" onclick="switchPage('explore', this)">
             <span class="nav-icon">🔍</span>
             <span>إكسبلور</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('friends', this)">
-            <span class="nav-icon">👥</span>
-            <span>الأصدقاء</span>
         </button>
 
         <div class="tiktok-plus-btn" onclick="openUploadModal()">
@@ -308,18 +326,16 @@
     </nav>
 
     <script>
-        let touchstartX = 0, touchendX = 0, liveStream = null;
+        let touchstartX = 0, touchendX = 0, liveStream = null, currentAudio = null;
 
         const samplePosts = [
             { user: "بغداد لايف", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: "12.5k", comments: "1840", bookmarks: "2100", shares: "4500" },
-            { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "25.1k", comments: "3200", bookmarks: "4100", shares: "8900" },
-            { user: "منتظر السلامي", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: "18.3k", comments: "1290", bookmarks: "1950", shares: "3100" }
+            { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "25.1k", comments: "3200", bookmarks: "4100", shares: "8900" }
         ];
 
         const exploreItems = [
             { title: "تلاوة خاشعة سورة الرحمن", user: "خادم القرآن", views: "45.2k", img: "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80" },
-            { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "28.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" },
-            { title: "شرح القواعد الفكرية", user: "الناشر الرسمي", views: "19.4k", img: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=300&q=80" }
+            { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "28.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
         function renderInitialFeed() {
@@ -348,7 +364,7 @@
                         <div class="card-comments-list">
                             <div class="card-comment-item"><b>أبو حسن:</b> منصة مباركة وخطوة رائدة.</div>
                         </div>
-                        <input type="text" class="form-input" style="padding: 4px 8px; font-size: 10px;" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addCardComment(this)">
+                        <input type="text" class="form-input" style="padding: 4px 8px; font-size: 10px;" placeholder="اكتب تعليقك...">
                     </div>
 
                     <div class="card-content">
@@ -356,7 +372,7 @@
                         <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title} - ${post.desc}</p>
                         <div class="audio-disc-badge">
                             <div class="disc-icon">🎵</div>
-                            <span style="font-size: 10px; color: #e2e8f0;">تلاوة مباركة - QAIM</span>
+                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM</span>
                         </div>
                     </div>
                 `;
@@ -383,31 +399,84 @@
             });
         }
 
+        /* تفعيل وضع ذوي الاحتياجات الخاصة وإمكانية الوصول */
+        function toggleAccessibilityMode() {
+            document.body.classList.toggle('accessibility-mode');
+            const isActive = document.body.classList.contains('accessibility-mode');
+            if(isActive) {
+                speakMelodicText("تم تفعيل وضع إمكانية الوصول وقراءة محتوى الشاشة لذوي الاحتياجات الخاصة.");
+            } else {
+                speakMelodicText("تم إلغاء وضع إمكانية الوصول.");
+            }
+        }
+
+        /* التحقق من حساب المؤسس وتفعيل القارئ متعدد اللغات حصرياً */
+        function checkFounderStatus() {
+            const isFounder = localStorage.getItem('qaim_is_founder') === 'true';
+            const readerBox = document.getElementById('founderExclusiveReader');
+            if (isFounder) {
+                readerBox.style.display = 'block';
+            } else {
+                readerBox.style.display = 'none';
+            }
+        }
+
+        function activateFounderMode() {
+            localStorage.setItem('qaim_is_founder', 'true');
+            alert('تم تفعيل صلاحيات حساب المؤسس بنجاح! ظهرت لك الآن لوحة التحكم الحصرية للقارئ الصوتي الشجي.');
+            checkFounderStatus();
+        }
+
+        /* القارئ الصوتي الشجي متعدد اللغات للمؤسس */
+        function speakMelodicFounderText() {
+            const text = document.getElementById('articleTextInput').value.trim();
+            const lang = document.getElementById('readerLangSelect').value;
+            if (!text) { alert('يرجى كتابة النص المراد قراءته بصوت شجي.'); return; }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = lang;
+                msg.pitch = 0.95; // نبرة صوت شجية عميقة
+                msg.rate = 0.88;  // متأنية وواضحة
+                window.speechSynthesis.speak(msg);
+            } else { alert('ميزة القراءة الصوتية غير مدعومة.'); }
+        }
+
+        function speakMelodicText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'ar-SA';
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        function playAudioTrend(title, url) {
+            if (currentAudio) { currentAudio.pause(); }
+            currentAudio = new Audio(url);
+            currentAudio.play();
+            alert('تم تشغيل: ' + title);
+        }
+
+        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
+
+        function openPdfViewer(pdfUrl, title) {
+            document.getElementById('pdfModalTitle').innerText = title;
+            document.getElementById('pdfIframe').src = pdfUrl;
+            document.getElementById('pdfViewerModal').style.display = 'flex';
+        }
+        function closePdfViewer() {
+            document.getElementById('pdfViewerModal').style.display = 'none';
+            document.getElementById('pdfIframe').src = '';
+        }
+
         function handleInfiniteScroll(feedEl) {
             if (feedEl.scrollTop + feedEl.clientHeight >= feedEl.scrollHeight - 400) {
                 renderInitialFeed();
             }
         }
 
-        /* القارئ الصوتي المباشر */
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                const msg = new SpeechSynthesisUtterance(text);
-                msg.lang = 'ar-SA';
-                window.speechSynthesis.speak(msg);
-            } else { alert(text); }
-        }
-
-        function askQaimAI() {
-            const query = document.getElementById('aiQueryInput').value.trim();
-            const box = document.getElementById('aiResponseBox');
-            if (query !== "") {
-                box.style.display = 'block';
-                box.innerText = "🤖 ملخص QAIM AI: «توضح المادة الفكرية أهمية العلم والتربية الواعية وإحياء المعارف الحقة بالأسلوب المعاصر.»";
-            }
-        }
-
-        /* سحب الشاشة يميناً ويساراً للتنقل المباشر */
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
@@ -441,13 +510,6 @@
             box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function openPdfViewer(pdfUrl, title) {
-            document.getElementById('pdfModalTitle').innerText = title;
-            document.getElementById('pdfIframe').src = pdfUrl;
-            document.getElementById('pdfViewerModal').style.display = 'flex';
-        }
-        function closePdfViewer() { document.getElementById('pdfViewerModal').style.display = 'none'; document.getElementById('pdfIframe').src = ''; }
-
         function saveNewBookOrPost() {
             const title = document.getElementById('postTitleInput').value.trim();
             if (!title) { alert('يرجى كتابة عنوان الكتاب'); return; }
@@ -473,16 +535,15 @@
             } catch (err) { alert('تعذر فتح الكاميرا.'); }
         }
         function stopLiveBroadcast() { if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; } }
-        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
-        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
         function sharePlatform() { alert('تم نسخ رابط المنصة!'); }
 
         function filterExploreContent(val) { console.log('بحث إكسبلور: ' + val); }
-        function filterExploreTag(tag) { alert('تصفية بحسب الهاشتاغ: ' + tag); }
+        function filterExploreTag(tag) { console.log('تصفية الهاشتاغ: ' + tag); }
 
         window.onload = function() {
             renderInitialFeed();
             renderExploreGrid();
+            checkFounderStatus();
         };
     </script>
 </body>
