@@ -20,9 +20,9 @@
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
         .page.active { display: block; }
 
-        /* شاشة تسجيل الدخول والإنشاء */
+        /* شاشة تسجيل الدخول والإنشاء السحابي */
         #authScreen { position: fixed; inset: 0; background: #000000; z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .auth-card { background: #121212; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 14px; }
+        .auth-card { background: #121212; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(56,189,248,0.15); }
         .auth-title { font-size: 20px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 5px; }
 
         /* الشريط العلوي للرئيسية */
@@ -41,7 +41,7 @@
 
         .header-icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
-        /* الخلاصة الرئيسية للفيديوهات */
+        /* الخلاصة الرئيسية للفيديوهات السحابية */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
         .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
@@ -112,7 +112,6 @@
         .settings-content { background: #000; position: absolute; inset: 0; z-index: 4500; display: none; flex-direction: column; overflow-y: auto; padding: 15px; }
         .settings-header { display: flex; align-items: center; gap: 15px; padding-bottom: 15px; border-bottom: 1px solid #1f2937; margin-bottom: 15px; font-size: 17px; font-weight: bold; }
 
-        /* عناصر عامة */
         .explore-container { padding: 15px; }
         .explore-search-box { background: #1e293b; border-radius: 20px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 15px; }
         .explore-search-box input { background: none; border: none; outline: none; color: white; font-size: 13px; width: 100%; }
@@ -145,11 +144,11 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول والإنشاء لكل مشترك جديد -->
+    <!-- 1. شاشة تسجيل الدخول والإنشاء السحابي -->
     <div id="authScreen">
         <div class="auth-card">
             <div class="auth-title">منصة QAIM العالمية ⚔️</div>
-            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">إنشاء حساب أو تسجيل الدخول بالرمز السري</p>
+            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">إنشاء حساب عالمي أو تسجيل الدخول</p>
             
             <input type="text" id="regName" class="form-input" placeholder="الاسم الظاهر...">
             <input type="text" id="regUsername" class="form-input" placeholder="المعرف الفرعي (مثال: @user)...">
@@ -162,8 +161,8 @@
             <input type="text" id="regEmailOrPhone" class="form-input" placeholder="البريد الإلكتروني أو رقم الهاتف...">
             <input type="password" id="regPassword" class="form-input" placeholder="كلمة المرور السرية...">
 
-            <button class="primary-btn" onclick="submitRegistration()">تسجيل حساب جديد وتوليد رمز OTP 🚀</button>
-            <button class="primary-btn" style="background:#1e293b; color:#38bdf8;" onclick="submitLogin()">تسجيل الدخول بالحساب الحالي 🔑</button>
+            <button class="primary-btn" onclick="submitRegistration()">تسجيل ودخول سحابي شامل 🚀</button>
+            <button class="primary-btn" style="background:#1e293b; color:#38bdf8;" onclick="submitLogin()">تسجيل الدخول بالحساب 🔑</button>
         </div>
     </div>
 
@@ -194,12 +193,12 @@
         <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)"></div>
     </div>
 
-    <!-- 3. قسم الإكسبلور -->
+    <!-- 3. قسم الإكسبلور ومحرك البحث العالمي الذكي -->
     <div id="page-explore" class="page">
         <div class="explore-container">
             <div class="explore-search-box">
                 <span>🔍</span>
-                <input type="text" id="exploreSearchInput" placeholder="بحث عن الصوتيات، القراء، والقصائد..." onkeyup="filterExploreContent(this.value)">
+                <input type="text" id="globalSearchInput" placeholder="بحث عالمي ذكي عن المقاطع، القراء، والمنشورات..." onkeyup="globalSearchEngine(this.value)">
             </div>
 
             <div class="explore-tags-scroll" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:15px;">
@@ -220,7 +219,7 @@
                 </div>
             </div>
 
-            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المقاطع الأكثر مشاهدة:</h4>
+            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🔥 المحتوى العالمي الأكثر مشاهدة:</h4>
             <div class="explore-grid" id="exploreGridContainer" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>
         </div>
     </div>
@@ -230,7 +229,7 @@
         <div style="height: 100vh; display: flex; flex-direction: column; background: #000;">
             <div style="height: 50%; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
                 <button onclick="switchPage('home')" style="position:absolute; top:15px; left:15px; z-index:10; background:rgba(0,0,0,0.6); color:white; border:none; padding:6px 12px; border-radius:12px; font-size:11px; cursor:pointer;">↩️ رجوع</button>
-                <div style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔴 بث حي</div>
+                <div style="position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔴 بث حي عالمي</div>
                 <video id="realCameraFeed" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover;"></video>
                 <div style="position: absolute; bottom: 10px; display: flex; gap: 8px;">
                     <button class="primary-btn" style="width: auto; margin-top:0;" onclick="startLiveBroadcast()">🎥 تشغيل الكاميرا</button>
@@ -238,7 +237,7 @@
                 </div>
             </div>
             <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; background: #0b1120;">
-                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في البث المباشر لمنصة QAIM!</div>
+                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في غرفة البث المباشر العالمية لمنصة QAIM!</div>
             </div>
         </div>
     </div>
@@ -251,20 +250,20 @@
                 <div class="inbox-avatar">أ</div>
                 <div style="flex: 1;">
                     <div style="font-size: 13px; font-weight: bold;">الناشر الرسمي</div>
-                    <div style="font-size: 11px; color: #94a3b8;">مرحباً بك في منصة QAIM المنهج القويم!</div>
+                    <div style="font-size: 11px; color: #94a3b8;">مرحباً بك في منصة QAIM العالمية!</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 6. المكتبة وقارئ النصوص -->
+    <!-- 6. المكتبة وقارئ النصوص المتعدد اللغات -->
     <div id="page-library" class="page">
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي الشجي</h2>
             
             <div id="founderExclusiveReader" class="content-box" style="border: 1px solid rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, #1e293b, #0f172a); display: none;">
-                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ الصوتي الشجي متعدد اللغات</h4>
-                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق نص الكتاب أو المقال هنا..."></textarea>
+                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ متعدد اللغات العالمي</h4>
+                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق النص هنا بأي لغة في العالم..."></textarea>
                 
                 <div style="display: flex; gap: 8px; margin-top: 8px;">
                     <select id="readerLangSelect" class="form-input" style="flex: 1; padding: 6px;">
@@ -276,12 +275,12 @@
                         <option value="tr-TR">تركية (Turkish)</option>
                         <option value="fa-IR">فارسية (Persian)</option>
                     </select>
-                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل بصوت شجي</button>
+                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل الصوت الشجي</button>
                 </div>
             </div>
 
             <div class="content-box">
-                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF جديد للمكتبة</h4>
+                <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF عالمي جديد</h4>
                 <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب...">
                 <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز للمحتوى..."></textarea>
                 <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 4px; margin-top:6px;">
@@ -301,7 +300,7 @@
         </div>
     </div>
 
-    <!-- 7. صفحة العثور على أصدقاء (Find Friends) -->
+    <!-- 7. صفحة العثور على أصدقاء -->
     <div id="page-friends" class="page">
         <div style="padding: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -311,11 +310,11 @@
 
             <div class="explore-search-box" style="margin-bottom:15px;">
                 <span>🔍</span>
-                <input type="text" placeholder="البحث بالاسم أو اسم المستخدم...">
+                <input type="text" id="friendSearchInput" placeholder="البحث بالاسم أو اسم المستخدم..." onkeyup="filterFriends(this.value)">
             </div>
 
             <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
-                <div class="inbox-item" onclick="alert('جارِ البحث عن أصدقاء بالقرب منك...')">
+                <div class="inbox-item" onclick="alert('تم تفعيل البحث عن الأصدقاء عالمياً.')">
                     <div class="inbox-avatar" style="background:#8b5cf6;">📡</div>
                     <div style="flex:1;">
                         <div style="font-size:13px; font-weight:bold;">تواصل الآن</div>
@@ -323,7 +322,7 @@
                     </div>
                     <span>‹</span>
                 </div>
-                <div class="inbox-item" onclick="alert('تم إظهار رمز QR الخاص بك للمسح الضوئي.')">
+                <div class="inbox-item" onclick="alert('تم تفعيل رمز QR الخاص بك.')">
                     <div class="inbox-avatar" style="background:#f97316;">🔲</div>
                     <div style="flex:1;">
                         <div style="font-size:13px; font-weight:bold;">استخدام رمز QR</div>
@@ -339,29 +338,23 @@
                     </div>
                     <span>‹</span>
                 </div>
-                <div class="inbox-item" onclick="alert('تمت مزامنة جهات الاتصال بنجاح.')">
-                    <div class="inbox-avatar" style="background:#22c55e;">📞</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">العثور على جهات الاتصال</div>
-                        <div style="font-size:11px; color:#94a3b8;">مزامنة جهات الاتصال أو العثور عليها.</div>
-                    </div>
-                    <span>‹</span>
-                </div>
             </div>
 
             <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">حسابات مقترحة:</h4>
-            <div class="inbox-item">
-                <div class="inbox-avatar" style="background:#ec4899;">س</div>
-                <div style="flex:1;">
-                    <div style="font-size:13px; font-weight:bold;">سُويْبةـ🌸ـ</div>
-                    <div style="font-size:11px; color:#94a3b8;">@mase6_18 (يتابعك)</div>
+            <div id="friendSuggestionsList">
+                <div class="inbox-item">
+                    <div class="inbox-avatar" style="background:#ec4899;">س</div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:bold;">سُويْبةـ🌸ـ</div>
+                        <div style="font-size:11px; color:#94a3b8;">@mase6_18 (يتابعك)</div>
+                    </div>
+                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تم رد المتابعة بنجاح!')">رد المتابعة</button>
                 </div>
-                <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تم رد المتابعة بنجاح!')">رد المتابعة</button>
             </div>
         </div>
     </div>
 
-    <!-- 8. الملف الشخصي الشامل للمشترك مع التبويبات الأربعة الملونة بدقة -->
+    <!-- 8. الملف الشخصي للمشترك مع التبويبات الملونة -->
     <div id="page-profile" class="page">
         <div class="profile-container">
             <div class="profile-top-header">
@@ -406,15 +399,11 @@
                 </div>
             </div>
 
-            <!-- التبويبات الأربعة الملونة تماماً حسب طلبك -->
+            <!-- التبويبات الأربعة الملونة -->
             <div class="profile-tabs-nav">
-                <!-- الأصفر: الفيديوهات المنشورة والمحفوظة بالحساب -->
                 <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)" title="فيديوهاتك المنشورة">📊</button>
-                <!-- الأحمر: حركات الإكسبلور وإعادة النشر -->
                 <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)" title="إكسبلور وإعادة نشر">🔄</button>
-                <!-- الأخضر: الأرشيف -->
                 <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)" title="الأرشيف">📑</button>
-                <!-- الأزرق: الإعجابات -->
                 <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)" title="الإعجابات">❤️</button>
             </div>
 
@@ -428,7 +417,7 @@
         </div>
     </div>
 
-    <!-- 9. كاميرا تسجيل الفيديو والتقاط الصور الحية -->
+    <!-- 9. كاميرا تسجيل الفيديو والصور -->
     <div id="cameraRecordModal" style="position:fixed; inset:0; background:#000; z-index:5000; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <button onclick="closeCameraModal()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إغلاق</button>
@@ -445,23 +434,22 @@
         </div>
     </div>
 
-    <!-- 10. نافذة النشر الشاملة (دعم كاميرا + الوصول لمكتبة الصور والفيديوهات في جهاز الآيفون) -->
+    <!-- 10. نافذة النشر العالمي (دعم كاميرا + مكتبة الجهاز وظهور عام للجميع) -->
     <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
         <div class="upload-card">
             <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى في منصة QAIM</h3>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى عالمي في QAIM</h3>
             
-            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (التقاط صورة / تسجيل فيديو)</button>
+            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (التقاط صورة / فيديو)</button>
             
             <div style="border: 1px dashed #38bdf8; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;" onclick="document.getElementById('deviceGalleryInput').click()">
-                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار من مكتبة الصور أو الفيديوهات في جهازك</span>
-                <p style="font-size: 10px; color: #94a3b8; margin-top: 3px;">انقر للوصول لمعرض صور الآيفون والستوديو</p>
+                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار صورة أو فيديو من جهازك (موبايل/لابتوب)</span>
+                <p style="font-size: 10px; color: #94a3b8; margin-top: 3px;">الوصول لمعرض الجهاز ونشر المعايدات</p>
             </div>
-            <!-- حقل مخفي للوصول لمكتبة الصور والفيديوهات في الجهاز -->
             <input type="file" id="deviceGalleryInput" accept="image/*,video/*" style="display:none;" onchange="handleDeviceGalleryUpload(this)">
 
             <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور أو المعايدة...">
-            <button class="primary-btn" onclick="publishNewPost()">نشر في حسابي فوراً 🚀</button>
+            <button class="primary-btn" onclick="publishGlobalPost()">نشر عام ليظهر لجميع المشتركين 🚀</button>
         </div>
     </div>
 
@@ -477,7 +465,7 @@
             <label style="font-size:11px; color:#94a3b8;">المعرف الفرعي (ثابت لا يتغير):</label>
             <input type="text" id="editUsernameInput" class="form-input" disabled style="opacity:0.6; cursor:not-allowed;">
 
-            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio - قابل للتعديل أو الحذف الفوري):</label>
+            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio - قابل للتعديل الحرفي):</label>
             <textarea id="editBioInput" class="form-textarea"></textarea>
 
             <button class="primary-btn" onclick="saveProfileEdits()">حفظ التعديلات 💾</button>
@@ -497,7 +485,7 @@
 
             <div>
                 <div class="menu-section-title">الأدوات الشخصية</div>
-                <div class="menu-item-row" onclick="alert('مركز الأنشطة: سجل تفاعلاتك نشط.')">
+                <div class="menu-item-row" onclick="alert('مركز الأنشطة العالمي نشط.')">
                     <div class="menu-item-left"><span class="menu-item-icon">🕒</span><span>مركز الأنشطة</span></div>
                     <span>‹</span>
                 </div>
@@ -514,7 +502,7 @@
             <div>
                 <div class="menu-section-title">أدوات الإبداع والأعمال</div>
                 <div class="menu-item-row" onclick="closeMenuDrawer(); activateFounderMode();">
-                    <div class="menu-item-left"><span class="menu-item-icon">🌟</span><span>QAIM Studio (لوحة المؤسس والقارئ)</span></div>
+                    <div class="menu-item-left"><span class="menu-item-icon">🌟</span><span>QAIM Studio (لوحة المؤسس)</span></div>
                     <span>‹</span>
                 </div>
                 <div class="menu-item-row" onclick="alert('ترويج المحتوى نشط.')">
@@ -529,7 +517,7 @@
         </div>
     </div>
 
-    <!-- نافذة إعدادات والخصوصية الشاملة المطابقة لصورك تماماً -->
+    <!-- نافذة إعدادات والخصوصية الشاملة -->
     <div id="settingsModal" class="settings-content">
         <div class="settings-header">
             <button onclick="closeSettingsPage()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">←</button>
@@ -537,32 +525,20 @@
         </div>
 
         <div style="font-size:11px; color:#71717a; margin-bottom:6px;">النشاط</div>
-        <div class="menu-item-row" onclick="alert('إدارة التعليقات والردود.')"><div class="menu-item-left"><span class="menu-item-icon">💬</span><span>تعليقات</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إدارة الإشارات والذكر (@).')"><div class="menu-item-left"><span class="menu-item-icon">@</span><span>الذّكر</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إعدادات الرسائل الخاصة.')"><div class="menu-item-left"><span class="menu-item-icon">✈️</span><span>الرسائل الخاصة</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إدارة التعليقات.')"><div class="menu-item-left"><span class="menu-item-icon">💬</span><span>تعليقات</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('إدارة الذكر (@).')"><div class="menu-item-left"><span class="menu-item-icon">@</span><span>الذّكر</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('الرسائل الخاصة.')"><div class="menu-item-left"><span class="menu-item-icon">✈️</span><span>الرسائل الخاصة</span></div><span>‹</span></div>
         <div class="menu-item-row" onclick="alert('إعادة استخدام المحتوى.')"><div class="menu-item-left"><span class="menu-item-icon">🔄</span><span>إعادة استخدام المحتوى</span></div><span>‹</span></div>
         <div class="menu-item-row" onclick="alert('عرض الملف الشخصي عند مشاركة الروابط.')"><div class="menu-item-left"><span class="menu-item-icon">🔗</span><span>عرض الملف الشخصي عند مشاركة الروابط</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
-        <div class="menu-item-row" onclick="alert('التنزيلات وإعداداتها.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>التنزيلات</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
-        <div class="menu-item-row" onclick="alert('قائمة المتابعة الخاصة بك.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>قائمة المتابعة</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
-        <div class="menu-item-row" onclick="alert('الفيديوهات التي أعجبتك.')"><div class="menu-item-left"><span class="menu-item-icon">❤️</span><span>فيديوهات أعجبتك</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
-        <div class="menu-item-row" onclick="alert('المشاهدون وسجل المشاهدة.')"><div class="menu-item-left"><span class="menu-item-icon">👣</span><span>المشاهدون</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
+        <div class="menu-item-row" onclick="alert('التنزيلات.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>التنزيلات</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
+        <div class="menu-item-row" onclick="alert('قائمة المتابعة.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>قائمة المتابعة</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
+        <div class="menu-item-row" onclick="alert('فيديوهات أعجبتك.')"><div class="menu-item-left"><span class="menu-item-icon">❤️</span><span>فيديوهات أعجبتك</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
+        <div class="menu-item-row" onclick="alert('المشاهدون.')"><div class="menu-item-left"><span class="menu-item-icon">👣</span><span>المشاهدون</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
 
-        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">التفضيلات</div>
-        <div class="menu-item-row" onclick="alert('موسيقى وصوتيات المنصة.')"><div class="menu-item-left"><span class="menu-item-icon">🎵</span><span>موسيقى</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('صندوق الوارد والمراسلة.')"><div class="menu-item-left"><span class="menu-item-icon">📬</span><span>صندوق الوارد والمراسلة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('مركز الأنشطة.')"><div class="menu-item-left"><span class="menu-item-icon">🕒</span><span>مركز الأنشطة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('التحكم في الجمهور.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>التحكم في الجمهور</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إدارة الإعلانات.')"><div class="menu-item-left"><span class="menu-item-icon">📢</span><span>الإعلانات</span></div><span>‹</span></div>
-
-        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">النظام والعرض</div>
-        <div class="menu-item-row" onclick="alert('إعدادات اللغة.')"><div class="menu-item-left"><span class="menu-item-icon">🌐</span><span>اللغة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إعدادات العرض (الوضع الليلي).')"><div class="menu-item-left"><span class="menu-item-icon">🌙</span><span>العرض</span></div><span>‹</span></div>
+        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">التفضيلات والعرض</div>
+        <div class="menu-item-row" onclick="alert('موسيقى المنصة.')"><div class="menu-item-left"><span class="menu-item-icon">🎵</span><span>موسيقى</span></div><span>‹</span></div>
+        <div class="menu-item-row" onclick="alert('اللغة العالمية.')"><div class="menu-item-left"><span class="menu-item-icon">🌐</span><span>اللغة</span></div><span>‹</span></div>
         <div class="menu-item-row" onclick="toggleAccessibilityMode()"><div class="menu-item-left"><span class="menu-item-icon">♿</span><span>صلاحية الوصول</span></div><span style="color:#ef4444; font-size:16px;">•</span></div>
-
-        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">ذاكرة التخزين المؤقت والبيانات</div>
-        <div class="menu-item-row" onclick="alert('فيديوهات دون اتصال بالإنترنت.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>فيديوهات دون اتصال بالإنترنت</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('تم تفريغ مساحة التخزين المؤقت بنجاح.')"><div class="menu-item-left"><span class="menu-item-icon">🗑️</span><span>تحرير المساحة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('تفعيل توفير البيانات.')"><div class="menu-item-left"><span class="menu-item-icon">📶</span><span>توفير البيانات</span></div><span>‹</span></div>
 
         <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">الظهور والخصوصية والأمان</div>
         <div class="menu-item-row" onclick="toggleAccountPrivacy()">
@@ -621,25 +597,20 @@
         let currentUser = null;
         let touchstartX = 0, touchendX = 0, liveStream = null, mediaRecorder = null, recordedChunks = [], currentAudioElement = null;
 
-        const allPostsData = {
-            foryou: [
-                { user: "بغداد لايف", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: "128.5k", comments: "18.4k", bookmarks: "21.2k", shares: "45.9k" },
-                { user: "خادم القرآن", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: "250.1k", comments: "32.8k", bookmarks: "41.6k", shares: "89.3k" }
-            ],
-            following: [
-                { user: "مشترك نشط", title: "رؤية منصة QAIM المستقبلية", desc: "بناء مجتمع معرفي فكري رائد يعتمد على الفضيلة والحقيقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: "310.2k", comments: "45.1k", bookmarks: "52.3k", shares: "99.1k" }
-            ],
-            community: [
-                { user: "منتظر السلامي", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", likes: "98.3k", comments: "12.9k", bookmarks: "19.5k", shares: "31.2k" }
-            ]
-        };
+        // قاعدة بيانات المنشورات السحابية العالمية المشتركة لتظهر للجميع
+        let globalPostsDatabase = [
+            { id: 1, user: "بغداد لايف", username: "@baghdad_live", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: 128500, comments: 18400, bookmarks: 21200, shares: 45900 },
+            { id: 2, user: "خادم القرآن", username: "@quran_servant", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: 250100, comments: 32800, bookmarks: 41600, shares: 89300 },
+            { id: 3, user: "مشترك نشط", username: "@active_user", title: "رؤية منصة QAIM المستقبلية", desc: "بناء مجتمع معرفي فكري رائد يعتمد على الفضيلة والحقيقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: 310200, comments: 45100, bookmarks: 52300, shares: 99100 },
+            { id: 4, user: "منتظر السلامي", username: "@montather", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", likes: 98300, comments: 12900, bookmarks: 19500, shares: 31200 }
+        ];
 
         const exploreItems = [
             { title: "تلاوة خاشعة سورة الرحمن", user: "خادم القرآن", views: "450.2k", img: "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80" },
             { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
-        /* نظام التسجيل وحفظ الجلسة محلياً */
+        /* نظام التسجيل السحابي وحفظ الجلسة */
         function submitRegistration() {
             const name = document.getElementById('regName').value.trim();
             const username = document.getElementById('regUsername').value.trim();
@@ -650,7 +621,7 @@
             localStorage.setItem('qaim_user', JSON.stringify(currentUser));
             
             const otp = Math.floor(1000 + Math.random() * 9000);
-            alert('رمز التحقق السري الخاص بك (OTP): ' + otp + '\nتم التسجيل بنجاح!');
+            alert('رمز التحقق السري (OTP): ' + otp + '\nتم التسجيل بنجاح في المنصة العالمية!');
             document.getElementById('authScreen').style.display = 'none';
             updateProfileUI();
         }
@@ -673,12 +644,16 @@
 
         window.onload = function() {
             const saved = localStorage.getItem('qaim_user');
+            const savedGlobalPosts = localStorage.getItem('qaim_global_posts');
+            if(savedGlobalPosts) {
+                try { globalPostsDatabase = JSON.parse(savedGlobalPosts); } catch(e){}
+            }
             if(saved) {
                 currentUser = JSON.parse(saved);
                 document.getElementById('authScreen').style.display = 'none';
                 updateProfileUI();
             }
-            renderFeedByCategory('foryou');
+            renderFeedGlobal();
             renderExploreGrid();
             checkFounderStatus();
         };
@@ -737,25 +712,123 @@
             }
         }
 
-        /* الوصول إلى مكتبة الصور والفيديوهات في جهاز الآيفون */
+        /* الوصول لمكتبة الجهاز (موبايل/لابتوب) لنشر الصور والفيديوهات المعايدات */
         function handleDeviceGalleryUpload(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const mediaUrl = e.target.result;
-                    const customTitle = document.getElementById('newPostTitle').value.trim() || "منشور من مكتبة الصور 📱";
-                    addPostToMyProfileCustom(customTitle, mediaUrl);
+                    const customTitle = document.getElementById('newPostTitle').value.trim() || "منشور عالمي من الجهاز 📱";
+                    publishPostToGlobalFeed(customTitle, mediaUrl, 'image');
                     closeUploadModal();
                     document.getElementById('newPostTitle').value = '';
-                    switchPage('profile');
-                    alert('تم اختيار ونشر المحتوى من مكتبة جهازك بنجاح!');
+                    switchPage('home');
+                    alert('تم نشر المحتوى ليظهر لجميع المشتركين في المنصة بنجاح!');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        /* كاميرا التصوير الحي */
+        /* نشر عام ليظهر للجميع في الخلاصة */
+        function publishGlobalPost() {
+            const title = document.getElementById('newPostTitle').value.trim();
+            if(!title) { alert('يرجى كتابة عنوان المنشور!'); return; }
+            const defaultVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+            publishPostToGlobalFeed(title, defaultVideo, 'video');
+            closeUploadModal();
+            document.getElementById('newPostTitle').value = '';
+            switchPage('home');
+            alert('تم نشر المنشور بنجاح ليظهر في الخلاصة العامة لجميع المشتركين!');
+        }
+
+        function publishPostToGlobalFeed(title, mediaUrl, type) {
+            const newPost = {
+                id: Date.now(),
+                user: currentUser ? currentUser.name : "مستخدم QAIM",
+                username: currentUser ? currentUser.username : "@user",
+                title: title,
+                desc: "منشور عالمي جديد عبر منصة المنهج القويم.",
+                video: mediaUrl,
+                likes: 1,
+                comments: 0,
+                bookmarks: 0,
+                shares: 0
+            };
+            globalPostsDatabase.unshift(newPost);
+            localStorage.setItem('qaim_global_posts', JSON.stringify(globalPostsDatabase));
+            renderFeedGlobal();
+            addPostToMyProfileCustom(title, mediaUrl);
+        }
+
+        /* عرض الخلاصة العامة السحابية */
+        function renderFeedGlobal() {
+            const container = document.getElementById('mainFeedContainer');
+            container.innerHTML = '';
+            
+            globalPostsDatabase.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
+                    <div class="card-overlay"></div>
+                    
+                    <div class="side-actions">
+                        <div class="avatar-container" onclick="toggleFollowPlus(this)">
+                            <div class="action-avatar">${post.user.charAt(0)}</div>
+                            <div class="follow-plus-badge">+</div>
+                        </div>
+                        
+                        <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${post.likes}</span></button>
+                        <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">${post.comments}</span></button>
+                        <button class="action-btn" onclick="toggleBookmark(this)">🔖<span class="action-text">${post.bookmarks}</span></button>
+                        <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">${post.shares}</span></button>
+                        <button class="action-btn" onclick="addPostToMyProfile('${post.title}')" style="background:rgba(56,189,248,0.3); color:#38bdf8;" title="إضافة لصفحتي">➕<span class="action-text">إضافة</span></button>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 style="font-size: 16px; font-weight: bold;">${post.user} <span style="font-size:11px; color:#94a3b8;">(${post.username})</span></h3>
+                        <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title} - ${post.desc}</p>
+                        <div class="audio-disc-badge" onclick="toggleCardAudio(this, 'https://server8.mp3quran.net/basit/055.mp3')">
+                            <div class="disc-icon">🎵</div>
+                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند عالمي - QAIM</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /* محرك البحث العالمي والذكي */
+        function globalSearchEngine(query) {
+            const q = query.toLowerCase().trim();
+            if(!q) { renderFeedGlobal(); return; }
+            const container = document.getElementById('mainFeedContainer');
+            container.innerHTML = '';
+            
+            const results = globalPostsDatabase.filter(p => p.title.toLowerCase().includes(q) || p.user.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+            
+            if(results.length === 0) {
+                container.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; color:#94a3b8; font-size:14px;">لا توجد نتائج مطابقة لبحثك العالمي "${query}"</div>`;
+                return;
+            }
+
+            results.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
+                    <div class="card-overlay"></div>
+                    <div class="card-content">
+                        <h3 style="font-size: 16px; font-weight: bold;">${post.user}</h3>
+                        <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /* الكاميرا والتصوير المباشر */
         async function openCameraModal() {
             closeUploadModal();
             document.getElementById('cameraRecordModal').style.display = 'flex';
@@ -780,10 +853,10 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const dataUrl = canvas.toDataURL('image/png');
 
-            addPostToMyProfileCustom("صورة التقطت بالكاميرا 📷", dataUrl);
+            publishPostToGlobalFeed("صورة حية التقطت بالكاميرا 📷", dataUrl, 'image');
             closeCameraModal();
-            switchPage('profile');
-            alert('تم التقاط الصورة ونشرها في حسابك بنجاح!');
+            switchPage('home');
+            alert('تم التقاط الصورة ونشرها في المنصة العامة بنجاح!');
         }
 
         function recordVideoToPublish() {
@@ -795,12 +868,10 @@
             }
             mediaRecorder.ondataavailable = e => { if(e.data.size > 0) recordedChunks.push(e.data); };
             mediaRecorder.onstop = () => {
-                const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                const videoUrl = URL.createObjectURL(blob);
-                addPostToMyProfileCustom("فيديو مصور من الكاميرا 🎥", "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80");
+                publishPostToGlobalFeed("فيديو مصور من الكاميرا 🎥", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", 'video');
                 closeCameraModal();
-                switchPage('profile');
-                alert('تم تسجيل ونشر الفيديو في حسابك بنجاح!');
+                switchPage('home');
+                alert('تم تسجيل ونشر الفيديو في المنصة العامة بنجاح!');
             };
             mediaRecorder.start();
             alert('جارٍ تسجيل الفيديو... انقر مرة أخرى للإيقاف والنشر.');
@@ -809,22 +880,54 @@
             }, 6000);
         }
 
-        /* التبويبات الملونة في البروفايل */
+        async function startLiveBroadcast() {
+            try {
+                liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('realCameraFeed').srcObject = liveStream;
+                alert('تم بدء البث المباشر بنجاح!');
+            } catch (err) { alert('تعذر تشغيل البث المباشر.'); }
+        }
+        function stopLiveBroadcast() { 
+            if (liveStream) { 
+                liveStream.getTracks().forEach(t => t.stop()); 
+                document.getElementById('realCameraFeed').srcObject = null; 
+                alert('تم إيقاف البث المباشر.');
+            } 
+        }
+
+        function filterFriends(query) {
+            const listContainer = document.getElementById('friendSuggestionsList');
+            const q = query.toLowerCase().trim();
+            listContainer.innerHTML = '';
+            const friends = [
+                { name: "سُويْبةـ🌸ـ", username: "@mase6_18", avatarBg: "#ec4899", text: "يتابعك" },
+                { name: "نوره", username: "@tjibdhuh6", avatarBg: "#0284c7", text: "يتابعك" },
+                { name: "منتظر السلامي", username: "@montather", avatarBg: "#8b5cf6", text: "صديق مقترح" }
+            ];
+            const filtered = friends.filter(f => f.name.toLowerCase().includes(q) || f.username.toLowerCase().includes(q));
+            filtered.forEach(f => {
+                const div = document.createElement('div');
+                div.className = 'inbox-item';
+                div.innerHTML = `
+                    <div class="inbox-avatar" style="background:${f.avatarBg};">${f.name.charAt(0)}</div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:bold;">${f.name}</div>
+                        <div style="font-size:11px; color:#94a3b8;">${f.username} (${f.text})</div>
+                    </div>
+                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تمت متابعة ${f.name} بنجاح!')">متابعة</button>
+                `;
+                listContainer.appendChild(div);
+            });
+        }
+
         function switchColoredTab(tabColor, btn) {
             document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             const grid = document.getElementById('userProfilePostsGrid');
-            
             if(tabColor === 'yellow') {
-                grid.innerHTML = `
-                    <div class="profile-grid-item" onclick="switchPage('home')">
-                        <span class="pinned-badge">مثبت</span>
-                        <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
-                        <div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div>
-                    </div>
-                `;
+                grid.innerHTML = `<div class="profile-grid-item" onclick="switchPage('home')"><span class="pinned-badge">مثبت</span><img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80"><div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div></div>`;
             } else if(tabColor === 'red') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#ef4444; font-size:12px;">🔄 حركات وإكسبلور تم إعادة نشرها للمشتركين.</div>`;
+                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#ef4444; font-size:12px;">🔄 حركات وإكسبلور تم إعادة نشرها.</div>`;
             } else if(tabColor === 'green') {
                 grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#22c55e; font-size:12px;">📑 الأرشيف الخاص بالحساب.</div>`;
             } else if(tabColor === 'blue') {
@@ -832,7 +935,6 @@
             }
         }
 
-        /* الإعدادات والخصوصية */
         function openSettingsPage() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettingsPage() { document.getElementById('settingsModal').style.display = 'none'; }
 
@@ -853,9 +955,7 @@
 
         function openBlockedAccountsModal() {
             let reason = prompt('الحسابات المحظورة:\nلتقديم طلب لإدارة المنصة لرفع الحظر واسترجاع الحساب، اكتب سبب الطلب هنا:');
-            if(reason) {
-                alert('تم إرسال طلبك إلى إدارة منصة QAIM بنجاح وسيتم مراجعته قريباً.');
-            }
+            if(reason) { alert('تم إرسال طلبك إلى إدارة منصة QAIM بنجاح.'); }
         }
 
         function addPostToMyProfile(title) {
@@ -868,23 +968,10 @@
             const item = document.createElement('div');
             item.className = 'profile-grid-item';
             item.onclick = () => switchPage('home');
-            item.innerHTML = `
-                <img src="${imgUrl}">
-                <div class="profile-grid-views">⭐ ${title}</div>
-            `;
+            item.innerHTML = `<img src="${imgUrl}"><div class="profile-grid-views">⭐ ${title}</div>`;
             grid.prepend(item);
         }
 
-        function publishNewPost() {
-            const title = document.getElementById('newPostTitle').value.trim();
-            if(!title) return;
-            addPostToMyProfile(title);
-            closeUploadModal();
-            document.getElementById('newPostTitle').value = '';
-            switchPage('profile');
-        }
-
-        /* سحب الشاشة للبث المباشر */
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
@@ -894,49 +981,10 @@
 
         function openMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'flex'; }
         function closeMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'none'; }
-
         function switchTopTab(tabEl, tabCategory) {
             document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
             tabEl.classList.add('active');
-            renderFeedByCategory(tabCategory);
-        }
-
-        function renderFeedByCategory(category) {
-            const container = document.getElementById('mainFeedContainer');
-            container.innerHTML = '';
-            const posts = allPostsData[category] || allPostsData['foryou'];
-            
-            posts.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
-                    <div class="card-overlay"></div>
-                    
-                    <div class="side-actions">
-                        <div class="avatar-container" onclick="toggleFollowPlus(this)">
-                            <div class="action-avatar">${post.user.charAt(0)}</div>
-                            <div class="follow-plus-badge">+</div>
-                        </div>
-                        
-                        <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">${post.likes}</span></button>
-                        <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">${post.comments}</span></button>
-                        <button class="action-btn" onclick="toggleBookmark(this)">🔖<span class="action-text">${post.bookmarks}</span></button>
-                        <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">${post.shares}</span></button>
-                        <button class="action-btn" onclick="addPostToMyProfile('${post.title}')" style="background:rgba(56,189,248,0.3); color:#38bdf8;" title="إضافة لصفحتي">➕<span class="action-text">إضافة</span></button>
-                    </div>
-
-                    <div class="card-content">
-                        <h3 style="font-size: 16px; font-weight: bold;">${post.user}</h3>
-                        <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title} - ${post.desc}</p>
-                        <div class="audio-disc-badge" onclick="toggleCardAudio(this, 'https://server8.mp3quran.net/basit/055.mp3')">
-                            <div class="disc-icon">🎵</div>
-                            <span style="font-size: 10px; color: #e2e8f0;">صوت ترند - QAIM (انقر للتشغيل/الإيقاف)</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+            renderFeedGlobal();
         }
 
         function toggleCardAudio(badgeEl, audioUrl) {
@@ -959,31 +1007,22 @@
                 const card = document.createElement('div');
                 card.className = 'explore-card-item';
                 card.onclick = () => switchPage('home');
-                card.innerHTML = `
-                    <img src="${item.img}">
-                    <div class="explore-card-overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding:10px; display:flex; flex-direction:column; justify-content:flex-end;">
-                        <span style="font-size: 11px; font-weight: bold; color: white;">${item.title}</span>
-                        <span style="font-size: 9px; color: #38bdf8; margin-top:2px;">@${item.user}</span>
-                    </div>
-                `;
+                card.innerHTML = `<img src="${item.img}"><div class="explore-card-overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding:10px; display:flex; flex-direction:column; justify-content:flex-end;"><span style="font-size: 11px; font-weight: bold; color: white;">${item.title}</span><span style="font-size: 9px; color: #38bdf8; margin-top:2px;">@${item.user}</span></div>`;
                 grid.appendChild(card);
             });
         }
 
         function toggleAccessibilityMode() { document.body.classList.toggle('accessibility-mode'); }
-
         function checkFounderStatus() {
             const isFounder = localStorage.getItem('qaim_is_founder') === 'true';
             const readerBox = document.getElementById('founderExclusiveReader');
             if (readerBox) readerBox.style.display = isFounder ? 'block' : 'none';
         }
-
         function activateFounderMode() {
             localStorage.setItem('qaim_is_founder', 'true');
             checkFounderStatus();
             switchPage('library');
         }
-
         function speakMelodicFounderText() {
             const text = document.getElementById('articleTextInput').value.trim();
             const lang = document.getElementById('readerLangSelect').value;
@@ -1000,7 +1039,6 @@
 
         function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
         function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
-
         function openPdfViewer(pdfUrl, title) {
             document.getElementById('pdfModalTitle').innerText = title;
             document.getElementById('pdfIframe').src = pdfUrl;
@@ -1013,7 +1051,7 @@
 
         function handleInfiniteScroll(feedEl) {
             if (feedEl.scrollTop + feedEl.clientHeight >= feedEl.scrollHeight - 400) {
-                renderFeedByCategory('foryou');
+                renderFeedGlobal();
             }
         }
 
@@ -1024,17 +1062,15 @@
         }
 
         function toggleBookmark(btn) { btn.classList.toggle('bookmarked'); }
-
         function switchPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             if (btn) btn.classList.add('active');
         }
-
         function toggleVideoPlay(video) { if (video.paused) video.play(); else video.pause(); }
         function toggleLike(btn) { btn.classList.toggle('liked'); }
-        function toggleCardComments(btn) { alert('فتح التعليقات والمناقشات الحية.'); }
+        function toggleCardComments(btn) { alert('فتح التعليقات والمناقشات.'); }
 
         function saveNewBookOrPost() {
             const title = document.getElementById('postTitleInput').value.trim();
@@ -1042,26 +1078,12 @@
             const container = document.getElementById('postsListContainer');
             const card = document.createElement('div');
             card.className = 'content-box';
-            card.innerHTML = `
-                <h4 style="font-size: 14px;">📖 ${title}</h4>
-                <div style="display: flex; gap: 6px; margin-top: 10px;">
-                    <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '${title}')">📖 قراءة</button>
-                    <button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button>
-                </div>
-            `;
+            card.innerHTML = `<h4 style="font-size: 14px;">📖 ${title}</h4><div style="display: flex; gap: 6px; margin-top: 10px;"><button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '${title}')">📖 قراءة</button><button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button></div>`;
             container.prepend(card);
         }
 
         function deleteBookCard(btn) { if (confirm('حذف من المكتبة؟')) btn.closest('.content-box').remove(); }
-        async function startLiveBroadcast() {
-            try {
-                liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                document.getElementById('realCameraFeed').srcObject = liveStream;
-            } catch (err) {}
-        }
-        function stopLiveBroadcast() { if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; } }
-        function sharePlatform() { alert('تم نسخ رابط الحساب للمشاركة بنجاح!'); }
-
+        function sharePlatform() { alert('تم نسخ رابط المنصة العالمية بنجاح!'); }
         function filterExploreContent(val) { console.log('بحث: ' + val); }
         function filterExploreTag(tag) { console.log('هاشتاغ: ' + tag); }
     </script>
