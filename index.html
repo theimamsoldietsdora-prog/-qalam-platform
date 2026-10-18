@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QAIM Platform - منصة المنهج القويم</title>
+    <title>QAIM Platform - منصة المنهج القويم المتكاملة</title>
     
     <!-- SEO & PWA Meta Tags -->
-    <meta name="description" content="QAIM Platform - منصة المنهج القويم التعليمية والفكرية - نشر العلوم والمعارف الحقة، التلاوات والصوتيات، والبث المباشر.">
+    <meta name="description" content="QAIM Platform - المنصة العالمية الأولى لنشر العلوم والمعارف الحقة، الرسائل الخاصة، الصوتيات والقرآن، والبث المباشر.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -23,18 +23,18 @@
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
         .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 15%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 18%, rgba(11, 17, 32, 0.2) 60%, rgba(11, 17, 32, 0.6) 100%); z-index: 1; }
         .card-content { position: relative; z-index: 2; margin-bottom: 75px; }
 
-        /* أزرار التفاعل الجانبية */
-        .side-actions { position: absolute; left: 15px; bottom: 120px; display: flex; flex-direction: column; gap: 15px; z-index: 3; align-items: center; }
+        /* أزرار التفاعل الجانبية - TikTok Style */
+        .side-actions { position: absolute; left: 15px; bottom: 110px; display: flex; flex-direction: column; gap: 14px; z-index: 3; align-items: center; }
         .action-btn { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: none; width: 48px; height: 48px; border-radius: 50%; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; transition: 0.2s; }
         .action-btn:active { transform: scale(0.9); }
-        .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.2); }
+        .action-btn.liked { color: #ef4444; background: rgba(239, 68, 68, 0.25); }
         .action-text { font-size: 10px; margin-top: 2px; }
 
-        /* الأقراص الصوتية الدوارة (TikTok Vinyl Audio Badge) */
-        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.4); margin-top: 8px; width: fit-content; cursor: pointer; }
+        /* القرص الصوتي الدوار (TikTok Sound Vinyl) */
+        .audio-disc-badge { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.4); margin-top: 8px; width: fit-content; cursor: pointer; }
         .disc-icon { width: 22px; height: 22px; border-radius: 50%; background: #38bdf8; color: #0b1120; display: flex; justify-content: center; align-items: center; font-size: 11px; animation: spin 4s linear infinite; }
         .disc-icon.paused { animation-play-state: paused; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -57,7 +57,15 @@
         #uploadModal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
         .upload-card { background: #1e293b; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 20px; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
 
-        /* غرفة البث المباشر */
+        /* نافذة الرسائل الخاصة (Direct Messages Modal) */
+        #dmModal { position: fixed; inset: 0; background: rgba(11, 17, 32, 0.98); backdrop-filter: blur(15px); z-index: 2500; display: none; flex-direction: column; }
+        .dm-header { padding: 15px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+        .dm-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .dm-bubble { padding: 10px 14px; border-radius: 16px; font-size: 13px; max-width: 75%; width: fit-content; }
+        .dm-bubble.me { background: #38bdf8; color: #0b1120; align-self: flex-end; border-bottom-left-radius: 2px; }
+        .dm-bubble.other { background: #1e293b; color: #ffffff; align-self: flex-start; border-bottom-right-radius: 2px; }
+
+        /* غرفة البث المباشر والمساحات الصوتية */
         .live-container { height: 100vh; display: flex; flex-direction: column; background: #070a13; }
         .live-video-box { height: 45%; background: #000; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .live-badge { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; z-index: 5; }
@@ -65,8 +73,8 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         
         #realCameraFeed { width: 100%; height: 100%; object-fit: cover; background: #000; }
-        .broadcast-controls { position: absolute; bottom: 10px; z-index: 5; display: flex; gap: 10px; }
-        .bc-btn { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
+        .broadcast-controls { position: absolute; bottom: 10px; z-index: 5; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .bc-btn { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 11px; cursor: pointer; }
 
         .chat-container { height: 55%; display: flex; flex-direction: column; background: #0b1120; padding: 15px; }
         .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px; }
@@ -76,7 +84,7 @@
         .chat-input { flex: 1; background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 10px 15px; color: white; font-size: 13px; outline: none; }
         .send-btn { background: #38bdf8; color: #0b1120; border: none; padding: 0 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
-        /* الأقسام، الكتب والمنشورات */
+        /* الأقسام والكتب */
         .content-box { background: #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .form-input, .form-select { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; outline: none; }
         .form-textarea { width: 100%; padding: 10px 14px; background: #0b1120; border: 1px solid #334155; border-radius: 10px; color: white; font-size: 13px; margin-top: 8px; height: 70px; outline: none; resize: none; }
@@ -93,13 +101,13 @@
         .comments-section { margin-top: 10px; display: none; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; }
         .comment-item { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 6px; margin-top: 5px; }
 
-        /* عارض ملفات PDF التفاعلي */
+        /* عارض ملفات PDF */
         #pdfViewerModal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; flex-direction: column; }
         .pdf-modal-header { padding: 15px; background: #0b1120; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
         .close-pdf-btn { background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         #pdfIframe { flex: 1; width: 100%; border: none; background: white; }
 
-        /* الشريط السفلي للتنقل وزر النشر السريع */
+        /* الشريط السفلي للتنقل */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 75px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 15px; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; text-decoration: none; font-size: 10px; gap: 4px; border: none; background: none; width: 18%; cursor: pointer; }
         .nav-item.active { color: #38bdf8; }
@@ -108,14 +116,12 @@
         .plus-btn-item { position: relative; top: -15px; background: linear-gradient(135deg, #38bdf8, #0284c7); width: 52px; height: 52px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; color: #0b1120; font-weight: bold; border: 3px solid #0b1120; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); cursor: pointer; }
 
         .grid-container { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-
-        /* مشغل الصوتيات العام المدمج */
         audio { width: 100%; height: 32px; border-radius: 8px; margin-top: 6px; }
     </style>
 </head>
 <body>
 
-    <!-- نافذة تسجيل الدخول وإنشاء الحساب بكلمة مرور -->
+    <!-- نافذة تسجيل الدخول -->
     <div id="authModal">
         <div class="auth-card">
             <h3 style="color: #38bdf8; font-size: 18px;" id="authModalTitle">🔐 QAIM - تسجيل الدخول</h3>
@@ -130,7 +136,25 @@
         </div>
     </div>
 
-    <!-- نافذة عرض ملف الـ PDF المدمجة -->
+    <!-- نافذة الرسائل الخاصة (Direct Messages DMs) -->
+    <div id="dmModal">
+        <div class="dm-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 18px;">💬</span>
+                <h3 id="dmTargetName" style="font-size: 15px; color: #38bdf8;">محادثة خاصة</h3>
+            </div>
+            <button onclick="closeDmModal()" style="background: none; border: none; color: #ef4444; font-size: 18px; font-weight: bold; cursor: pointer;">✕</button>
+        </div>
+        <div class="dm-body" id="dmMessagesList">
+            <div class="dm-bubble other">أهلاً بك! مرحباً بك في الخاص في منصة QAIM.</div>
+        </div>
+        <div style="padding: 12px; background: #1e293b; display: flex; gap: 8px;">
+            <input type="text" id="dmInput" class="form-input" style="margin-top: 0;" placeholder="اكتب رسالة خاصة..." onkeypress="if(event.key==='Enter') sendDmMessage()">
+            <button class="send-btn" onclick="sendDmMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <!-- نافذة عرض الـ PDF -->
     <div id="pdfViewerModal">
         <div class="pdf-modal-header">
             <h3 id="pdfModalTitle" style="font-size: 16px; color: #38bdf8;">عارض الكتب</h3>
@@ -139,7 +163,7 @@
         <iframe id="pdfIframe"></iframe>
     </div>
 
-    <!-- نافذة نشر محتوى فيديو/صورة وصوتية (Audio / Video / Image Modal) -->
+    <!-- نافذة النشر المنبثقة -->
     <div id="uploadModal">
         <div class="upload-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -155,25 +179,22 @@
             </div>
 
             <div>
-                <label style="font-size: 11px; color: #94a3b8;">2. اختر مقطع صوتي (تلاوة قرآنية / قصيدة / أهزوجة ترند):</label>
+                <label style="font-size: 11px; color: #94a3b8;">2. اختر مقطع صوتي (تلاوة / قصيدة / أهزوجة ترند):</label>
                 <select id="qaimAudioPreset" class="form-select">
                     <option value="">-- اختر من مكتبة الصوتيات --</option>
-                    <optgroup label="📖 القرآن الكريم (كبار القراء)">
-                        <option value="https://server8.mp3quran.net/basit/001.mp3">سورة الفاتحة - الشيخ عبد الباسط عبد الصمد</option>
+                    <optgroup label="📖 القرآن الكريم">
+                        <option value="https://server8.mp3quran.net/basit/001.mp3">سورة الفاتحة - الشيخ عبد الباسط</option>
                         <option value="https://server11.mp3quran.net/yasser/055.mp3">سورة الرحمن - الشيخ ياسر الدوسري</option>
-                        <option value="https://server10.mp3quran.net/minsh/036.mp3">سورة يس - الشيخ محمد صديق المنشاوي</option>
-                        <option value="https://server6.mp3quran.net/qht/067.mp3">سورة الملك - الشيخ خالد الجليل</option>
-                        <option value="https://server8.mp3quran.net/afs/112.mp3">سورة الإخلاص - الشيخ مشاري العفاسي</option>
+                        <option value="https://server10.mp3quran.net/minsh/036.mp3">سورة يس - الشيخ المنشاوي</option>
                     </optgroup>
-                    <optgroup label="🎵 قصائد وأناشيد وأهازيج ترند">
-                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">نشيد المنهج القويم - أداء جماعي</option>
-                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">أهزوجة الثبات والاستقامة</option>
+                    <optgroup label="🎵 قصائد وأناشيد ترند">
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">نشيد المنهج القويم</option>
                     </optgroup>
                 </select>
             </div>
 
             <div>
-                <label style="font-size: 11px; color: #94a3b8;">أو رفع ملف صوتي خاص بك (MP3 / Audio):</label>
+                <label style="font-size: 11px; color: #94a3b8;">أو رفع ملف صوتي خاص بك (MP3):</label>
                 <input type="file" id="feedCustomAudioInput" accept="audio/*" class="form-input" style="padding: 6px;">
             </div>
 
@@ -181,11 +202,10 @@
         </div>
     </div>
 
-    <!-- 1. الشاشة الرئيسية -->
+    <!-- 1. الشاشة الرئيسية (TikTok Feed) -->
     <div id="page-home" class="page active">
         <div class="feed" id="mainFeedContainer">
             
-            <!-- منشور البلاغ والرسالة التعريفية الأولى -->
             <div class="card" style="background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=600&q=80');">
                 <div class="card-overlay"></div>
                 <div class="install-banner">
@@ -196,6 +216,7 @@
                 <div class="side-actions">
                     <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">1.2k</span></button>
                     <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
+                    <button class="action-btn" onclick="openDirectMessage('الناشر الرسمي')">✉️<span class="action-text">خاص</span></button>
                     <button class="action-btn" onclick="openLive()">🔴<span class="action-text">مباشر</span></button>
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                 </div>
@@ -214,9 +235,10 @@
                 <div class="card-content">
                     <span style="background: #38bdf8; color: #0b1120; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: bold;">⚖️ QAIM - البلاغ الأول</span>
                     <h2 style="font-size: 20px; margin: 8px 0;">إنطلاق منصة المنهج القويم (QAIM)</h2>
-                    <p style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">منبر فكري وعلمي مستقل لنشر العلم الصحيح والمعارف الحقة وإحياء الخلق السامي والفضائل المطلوبة من العباد.</p>
+                    <p id="postText1" style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">منبر فكري وعلمي مستقل لنشر العلم الصحيح والمعارف الحقة وإحياء الخلق السامي والفضائل المطلوبة من العباد.</p>
                     
-                    <!-- المقطع الصوتي التفاعلي للبطاقة الأولى -->
+                    <button onclick="translatePostText('postText1')" style="background: rgba(255,255,255,0.1); border: none; color: #38bdf8; padding: 3px 8px; border-radius: 6px; font-size: 10px; margin-top: 5px; cursor: pointer;">🌐 ترجمة للإنجليزية</button>
+
                     <div class="audio-disc-badge" onclick="toggleAudioPlay(this)">
                         <div class="disc-icon">🎵</div>
                         <span style="font-size: 11px; color: #e2e8f0;">تلاوة سورة الفاتحة - الشيخ عبد الباسط</span>
@@ -228,7 +250,7 @@
         </div>
     </div>
 
-    <!-- 2. غرفة البث المباشر -->
+    <!-- 2. غرفة البث والمساحات الصوتية -->
     <div id="page-live" class="page">
         <div class="live-container">
             <div class="live-video-box">
@@ -236,13 +258,14 @@
                 <video id="realCameraFeed" autoplay playsinline muted></video>
                 
                 <div class="broadcast-controls">
-                    <button class="bc-btn" onclick="startLiveBroadcast()">بدء البث بالكاميرا 🎥</button>
+                    <button class="bc-btn" onclick="startLiveBroadcast()">🎥 بث فيديو</button>
+                    <button class="bc-btn" style="background: #0284c7;" onclick="startAudioSpace()">🎙️ مساحة صوتية</button>
                     <button class="bc-btn" style="background: #334155;" onclick="stopLiveBroadcast()">إيقاف</button>
                 </div>
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="chat-msg"><div class="chat-user">QAIM Platform</div>أهلاً بكم في البث المباشر لمنصة المنهج القويم!</div>
+                    <div class="chat-msg"><div class="chat-user">QAIM Platform</div>أهلاً بكم في البث المباشر والمساحات الصوتية!</div>
                 </div>
                 <div class="chat-input-box">
                     <input type="text" id="chatInput" class="chat-input" placeholder="اكتب تعليقاً حياً..." onkeypress="if(event.key==='Enter') sendComment()">
@@ -252,27 +275,23 @@
         </div>
     </div>
 
-    <!-- 3. المكتبة والمكتبة الصوتية والكتب -->
+    <!-- 3. المكتبة والمساعد الذكي -->
     <div id="page-library" class="page">
         <div style="padding: 20px 20px 10px;">
-            <h2>📚 مكتبة QAIM للكتب والصوتيات</h2>
-            <p style="font-size: 12px; color: #94a3b8;">تصفح واقرأ الكتب، واستمع للتلاوات والقصائد</p>
+            <h2>📚 مكتبة QAIM ومساعد AI</h2>
+            <p style="font-size: 12px; color: #94a3b8;">تصفح واقرأ الكتب واستعن بالذكاء الاصطناعي</p>
         </div>
         
         <div class="grid-container" style="padding-top: 5px;">
-            <!-- قسم المكتبة الصوتية -->
-            <div class="content-box">
-                <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 8px;">🎧 الصوتيات والقرآن الكريم وترند الأهازيج</h4>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px;">
-                        <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">📖 سورة الرحمن - الشيخ ياسر الدوسري</span>
-                        <audio controls src="https://server11.mp3quran.net/yasser/055.mp3"></audio>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px;">
-                        <span style="font-size: 12px; font-weight: bold; color: #38bdf8;">📖 سورة يس - الشيخ محمد صديق المنشاوي</span>
-                        <audio controls src="https://server10.mp3quran.net/minsh/036.mp3"></audio>
-                    </div>
+            <!-- مساعد QAIM AI -->
+            <div class="content-box" style="border: 1px solid rgba(56, 189, 248, 0.4);">
+                <h4 style="font-size: 14px; color: #38bdf8; margin-bottom: 6px;">🤖 مساعد QAIM الفكري الذكي</h4>
+                <p style="font-size: 11px; color: #cbd5e1;">اسأل المساعد الذكي عن ملخص أي كتاب أو استفسار فكري:</p>
+                <div style="display: flex; gap: 6px; margin-top: 8px;">
+                    <input type="text" id="aiQueryInput" class="form-input" style="margin-top: 0;" placeholder="اكتب سؤالك هنا...">
+                    <button class="send-btn" onclick="askQaimAI()">استفسار</button>
                 </div>
+                <div id="aiResponseBox" style="font-size: 11px; color: #38bdf8; margin-top: 8px; display: none; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;"></div>
             </div>
 
             <div class="content-box">
@@ -314,8 +333,13 @@
     <!-- 4. اكتشف -->
     <div id="page-explore" class="page">
         <div style="padding: 20px;">
-            <h2>✨ اكتشف الصوتيات والمنشورات في QAIM</h2>
-            <input type="text" placeholder="🔍 بحث في القراء، القصائد، الأهازيج والكتب..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
+            <h2>✨ اكتشف المحتوى والرسائل في QAIM</h2>
+            <input type="text" placeholder="🔍 بحث في القراء، المشركين، والكتب..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: white; margin-top: 15px; outline: none;">
+            
+            <div style="margin-top: 20px;">
+                <h4 style="font-size: 14px; color: #38bdf8;">💬 الرسائل الخاصة السريعة</h4>
+                <button class="primary-btn" style="margin-top: 10px;" onclick="openDirectMessage('المشترك العام')">فتح محادثة خاصة جديدة ✉️</button>
+            </div>
         </div>
     </div>
 
@@ -371,6 +395,7 @@
     <script>
         let isRegisterMode = false;
         let currentUsername = localStorage.getItem('qaim_logged_user') || '';
+        let currentDmTarget = '';
 
         window.onload = function() {
             if (!currentUsername) {
@@ -452,13 +477,53 @@
             }
         }
 
+        /* ووظائف الرسائل الخاصة (Direct Messaging) */
+        function openDirectMessage(targetUser) {
+            if (!currentUsername) { document.getElementById('authModal').style.display = 'flex'; return; }
+            currentDmTarget = targetUser;
+            document.getElementById('dmTargetName').innerText = "محادثة خاصة مع: " + targetUser;
+            document.getElementById('dmModal').style.display = 'flex';
+        }
+
+        function closeDmModal() {
+            document.getElementById('dmModal').style.display = 'none';
+        }
+
+        function sendDmMessage() {
+            const input = document.getElementById('dmInput');
+            const text = input.value.trim();
+            if (text !== "") {
+                const body = document.getElementById('dmMessagesList');
+                const bubble = document.createElement('div');
+                bubble.className = 'dm-bubble me';
+                bubble.innerText = text;
+                body.appendChild(bubble);
+                input.value = '';
+                body.scrollTop = body.scrollHeight;
+            }
+        }
+
+        /* المساعد الذكي QAIM AI */
+        function askQaimAI() {
+            const query = document.getElementById('aiQueryInput').value.trim();
+            const box = document.getElementById('aiResponseBox');
+            if (query !== "") {
+                box.style.display = 'block';
+                box.innerText = "🤖 جاري التحليل... إجابة QAIM AI: «المنهج القويم يعتمد على نشر العلم النافع وتزكية النفوس والحكمة في البلاغ.»";
+            }
+        }
+
+        /* الترجمة الفورية */
+        function translatePostText(elId) {
+            const el = document.getElementById(elId);
+            if (el) {
+                el.innerText = "An independent intellectual and scientific platform to disseminate authentic knowledge and revive high moral virtues.";
+            }
+        }
+
         function sanitizeText(str) {
             if (!str) return '';
-            return str.replace(/&/g, "&amp;")
-                      .replace(/</g, "&lt;")
-                      .replace(/>/g, "&gt;")
-                      .replace(/"/g, "&quot;")
-                      .replace(/'/g, "&#039;");
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         function switchPage(pageId, btn) {
@@ -468,17 +533,9 @@
             if (btn) btn.classList.add('active');
         }
 
-        function openLive() {
-            switchPage('live', document.querySelectorAll('.nav-item')[1]);
-        }
-
-        function openUploadModal() {
-            document.getElementById('uploadModal').style.display = 'flex';
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadModal').style.display = 'none';
-        }
+        function openLive() { switchPage('live', document.querySelectorAll('.nav-item')[1]); }
+        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
 
         function toggleAudioPlay(badgeEl) {
             const audio = badgeEl.querySelector('audio');
@@ -500,10 +557,7 @@
             const audioSelectUrl = document.getElementById('qaimAudioPreset').value;
             const audioCustomFile = document.getElementById('feedCustomAudioInput').files[0];
 
-            if (rawTitle === "") {
-                alert('يرجى كتابة عنوان للمنشور.');
-                return;
-            }
+            if (rawTitle === "") { alert('يرجى كتابة عنوان للمنشور.'); return; }
 
             const title = sanitizeText(rawTitle);
             const desc = sanitizeText(rawDesc);
@@ -552,6 +606,7 @@
                 <div class="side-actions">
                     <button class="action-btn" onclick="toggleLike(this)">❤️<span class="action-text">0</span></button>
                     <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">تعليق</span></button>
+                    <button class="action-btn" onclick="openDirectMessage('${publisherName}')">✉️<span class="action-text">خاص</span></button>
                     <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">مشاركة</span></button>
                     <button class="action-btn" style="background: rgba(239, 68, 68, 0.4);" onclick="deleteFeedCard(this)">🗑️<span class="action-text">حذف</span></button>
                 </div>
@@ -580,74 +635,51 @@
             document.getElementById('feedCustomAudioInput').value = "";
             closeUploadModal();
             switchPage('home', document.querySelectorAll('.nav-item')[0]);
-            alert('تم نشر المحتوى المرفق بالصوت بنجاح!');
+            alert('تم نشر المحتوى المرفق بنجاح!');
         }
 
         function deleteFeedCard(btn) {
             if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) {
-                const card = btn.closest('.card');
-                card.remove();
+                btn.closest('.card').remove();
             }
         }
 
         let liveStream = null;
         async function startLiveBroadcast() {
             try {
-                liveStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user" }, 
-                    audio: { echoCancellation: true, noiseSuppression: true } 
-                });
+                liveStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
                 const videoElement = document.getElementById('realCameraFeed');
                 videoElement.srcObject = liveStream;
                 videoElement.muted = true;
                 alert('تم بدء البث المباشر بنجاح!');
-            } catch (error) {
-                alert('تعذر فتح الكاميرا أو الميكروفون، يرجى السماح بالصلاحيات من المتصفح.');
-                console.error(error);
-            }
+            } catch (error) { alert('تعذر فتح الكاميرا.'); }
+        }
+
+        function startAudioSpace() {
+            alert('تم فتح المساحة الصوتية الحية! يمكن للمشتركين الانضمام والاستماع.');
         }
 
         function stopLiveBroadcast() {
             if (liveStream) {
                 liveStream.getTracks().forEach(track => track.stop());
                 document.getElementById('realCameraFeed').srcObject = null;
-                alert('تم إيقاف البث المباشر.');
+                alert('تم إيقاف البث.');
             }
         }
 
         function sharePlatform() {
             if (navigator.share) {
-                navigator.share({
-                    title: 'QAIM Platform - منصة المنهج القويم',
-                    text: 'انضم إلينا في منصة QAIM وتصفح الكتب والمنشورات والصوتيات!',
-                    url: window.location.href,
-                }).catch(console.error);
+                navigator.share({ title: 'QAIM Platform', text: 'انضم لمنصة QAIM!', url: window.location.href });
             } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert('تم نسخ رابط منصة QAIM بنجاح!');
+                alert('تم نسخ رابط المنصة!');
             }
         }
 
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
         function handleInstallPrompt() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            if (/android/i.test(userAgent)) {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        deferredPrompt = null;
-                    });
-                } else {
-                    alert('لتثبيت تطبيق QAIM على أندرويد: افتح قائمة المتصفح (⋮) ثم اختر "إضافة إلى الشاشة الرئيسية".');
-                }
-            } else {
-                alert('اضغط زر المشاركة 📤 في سفاري ثم اختر "إضافة إلى الصفحة الرئيسية".');
-            }
+            if (deferredPrompt) { deferredPrompt.prompt(); } else { alert('اضغط مشاركة 📤 ثم إضافة إلى الصفحة الرئيسية.'); }
         }
 
         function toggleLike(btn) {
@@ -655,39 +687,25 @@
             btn.classList.toggle('liked');
             let countEl = document.getElementById('userLikesCount');
             let count = parseInt(countEl.innerText) || 0;
-            if (btn.classList.contains('liked')) {
-                countEl.innerText = count + 1;
-            } else {
-                countEl.innerText = Math.max(0, count - 1);
-            }
+            countEl.innerText = btn.classList.contains('liked') ? count + 1 : Math.max(0, count - 1);
         }
 
         function toggleCardComments(btn) {
-            const card = btn.closest('.card');
-            const box = card.querySelector('.card-comments-box');
+            const box = btn.closest('.card').querySelector('.card-comments-box');
             box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function addCardComment(input) {
-            if (event.key === 'Enter') {
-                processCommentInput(input);
-            }
-        }
-
-        function addCardCommentBtn(btn) {
-            const input = btn.previousElementSibling;
-            processCommentInput(input);
-        }
+        function addCardComment(input) { if (event.key === 'Enter') processCommentInput(input); }
+        function addCardCommentBtn(btn) { processCommentInput(btn.previousElementSibling); }
 
         function processCommentInput(input) {
             if (!currentUsername) { document.getElementById('authModal').style.display = 'flex'; return; }
             const rawText = input.value.trim();
             if (rawText !== "") {
-                const text = sanitizeText(rawText);
                 const list = input.closest('.card-comments-box').querySelector('.card-comments-list');
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'card-comment-item';
-                commentDiv.innerHTML = `<span class="comment-user-name">${currentUsername}:</span> ${text}`;
+                commentDiv.innerHTML = `<span class="comment-user-name">${currentUsername}:</span> ${sanitizeText(rawText)}`;
                 list.appendChild(commentDiv);
                 input.value = "";
                 list.scrollTop = list.scrollHeight;
@@ -709,19 +727,9 @@
             const rawTitle = document.getElementById('postTitleInput').value.trim();
             const rawDesc = document.getElementById('postDescInput').value.trim();
             const pdfFile = document.getElementById('pdfFileInput').files[0];
-            
-            if (rawTitle === "" || rawDesc === "") {
-                alert('يرجى ملء عنوان ووصف المحتوى أولاً.');
-                return;
-            }
+            if (!rawTitle || !rawDesc) { alert('يرجى ملء كافة البيانات.'); return; }
 
-            const title = sanitizeText(rawTitle);
-            const desc = sanitizeText(rawDesc);
-            let pdfUrl = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
-
-            if (pdfFile) {
-                pdfUrl = URL.createObjectURL(pdfFile);
-            }
+            let pdfUrl = pdfFile ? URL.createObjectURL(pdfFile) : 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
 
             const container = document.getElementById('postsListContainer');
             const newCard = document.createElement('div');
@@ -730,13 +738,13 @@
                 <div class="section-header">
                     <div class="section-thumb">📚</div>
                     <div style="flex: 1;">
-                        <h4 style="font-size: 14px;">${title}</h4>
-                        <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">${desc}</p>
+                        <h4 style="font-size: 14px;">${sanitizeText(rawTitle)}</h4>
+                        <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">${sanitizeText(rawDesc)}</p>
                     </div>
                 </div>
                 <div class="post-actions-row">
-                    <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('${pdfUrl}', '${title}')">📖 قراءة الكتاب</button>
-                    <a class="post-action-btn" href="${pdfUrl}" download="${title}.pdf">📥 تحميل</a>
+                    <button class="post-action-btn" style="background: #38bdf8; color: #0b1120;" onclick="openPdfViewer('${pdfUrl}', '${sanitizeText(rawTitle)}')">📖 قراءة الكتاب</button>
+                    <a class="post-action-btn" href="${pdfUrl}" download="${rawTitle}.pdf">📥 تحميل</a>
                     <button class="post-action-btn" onclick="toggleComments(this)">💬 تعليق</button>
                     <button class="post-action-btn" onclick="sharePlatform()">🚀 مشاركة</button>
                     <button class="post-action-btn delete-btn" onclick="deletePostCard(this)">🗑️ حذف</button>
@@ -747,35 +755,29 @@
                 </div>
             `;
             container.prepend(newCard);
-            
             document.getElementById('postTitleInput').value = "";
             document.getElementById('postDescInput').value = "";
             document.getElementById('pdfFileInput').value = "";
-            alert('تمت إضافة ونشر الكتاب بنجاح!');
+            alert('تمت إضافة الكتاب بنجاح!');
         }
 
         function deletePostCard(btn) {
-            if (confirm('هل أنت متأكد من رغبتك في حذف هذا المحتوى؟')) {
-                const card = btn.closest('.section-card');
-                card.remove();
-            }
+            if (confirm('هل أنت متأكد من حذف هذا المحتوى؟')) { btn.closest('.section-card').remove(); }
         }
 
         function toggleComments(btn) {
-            const card = btn.closest('.section-card');
-            const commentsSec = card.querySelector('.comments-section');
-            commentsSec.style.display = commentsSec.style.display === 'block' ? 'none' : 'block';
+            const sec = btn.closest('.section-card').querySelector('.comments-section');
+            sec.style.display = sec.style.display === 'block' ? 'none' : 'block';
         }
 
         function addPostComment(input) {
             if (!currentUsername) { document.getElementById('authModal').style.display = 'flex'; return; }
             const rawText = input.value.trim();
             if (rawText !== "") {
-                const text = sanitizeText(rawText);
                 const list = input.closest('.comments-section').querySelector('.comments-list');
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment-item';
-                commentDiv.innerHTML = `<span class="comment-user-name">${currentUsername}:</span> ${text}`;
+                commentDiv.innerHTML = `<span class="comment-user-name">${currentUsername}:</span> ${sanitizeText(rawText)}`;
                 list.appendChild(commentDiv);
                 input.value = "";
             }
@@ -786,11 +788,10 @@
             const input = document.getElementById('chatInput');
             const rawMsg = input.value.trim();
             if (rawMsg !== "") {
-                const msgText = sanitizeText(rawMsg);
                 const chatBox = document.getElementById('chatMessages');
                 const newMsg = document.createElement('div');
                 newMsg.className = 'chat-msg';
-                newMsg.innerHTML = `<div class="chat-user">${currentUsername}</div>${msgText}`;
+                newMsg.innerHTML = `<div class="chat-user">${currentUsername}</div>${sanitizeText(rawMsg)}`;
                 chatBox.appendChild(newMsg);
                 input.value = "";
                 chatBox.scrollTop = chatBox.scrollHeight;
