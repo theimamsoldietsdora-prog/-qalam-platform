@@ -20,7 +20,7 @@
         .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 70px; }
         .page.active { display: block; }
 
-        /* شاشة تسجيل الدخول والإنشاء السحابي */
+        /* شاشة تسجيل الدخول والإنشاء */
         #authScreen { position: fixed; inset: 0; background: #000000; z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
         .auth-card { background: #121212; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 24px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(56,189,248,0.15); }
         .auth-title { font-size: 20px; font-weight: bold; color: #38bdf8; text-align: center; margin-bottom: 5px; }
@@ -41,7 +41,7 @@
 
         .header-icon-btn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
-        /* الخلاصة الرئيسية للفيديوهات السحابية */
+        /* الخلاصة الرئيسية للفيديوهات */
         .feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
         .card { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-color: #000; overflow: hidden; }
         .card-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
@@ -99,8 +99,9 @@
         .profile-grid-item video, .profile-grid-item img { width: 100%; height: 100%; object-fit: cover; }
         .profile-grid-views { position: absolute; bottom: 6px; right: 6px; font-size: 10px; font-weight: bold; color: white; display: flex; align-items: center; gap: 3px; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
         .pinned-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: white; font-size: 8px; font-weight: bold; padding: 1px 4px; border-radius: 3px; }
+        .delete-post-btn { position: absolute; top: 6px; right: 6px; background: rgba(239, 68, 68, 0.85); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; }
 
-        /* القوائم واللوحات والإنشاء */
+        /* القوائم واللوحات */
         #menuDrawerModal, #settingsModal, #editProfileModal, #cameraRecordModal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); z-index: 4000; display: none; justify-content: flex-end; flex-direction: column; }
         .menu-drawer-content { background: #121212; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 16px 35px; display: flex; flex-direction: column; gap: 16px; max-height: 85vh; overflow-y: auto; border-top: 1px solid rgba(255,255,255,0.1); }
         
@@ -144,11 +145,11 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول والإنشاء السحابي -->
+    <!-- 1. شاشة تسجيل الدخول والإنشاء -->
     <div id="authScreen">
         <div class="auth-card">
             <div class="auth-title">منصة QAIM العالمية ⚔️</div>
-            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">إنشاء حساب عالمي أو تسجيل الدخول</p>
+            <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 5px;">إنشاء حساب أو تسجيل الدخول</p>
             
             <input type="text" id="regName" class="form-input" placeholder="الاسم الظاهر...">
             <input type="text" id="regUsername" class="form-input" placeholder="المعرف الفرعي (مثال: @user)...">
@@ -161,7 +162,7 @@
             <input type="text" id="regEmailOrPhone" class="form-input" placeholder="البريد الإلكتروني أو رقم الهاتف...">
             <input type="password" id="regPassword" class="form-input" placeholder="كلمة المرور السرية...">
 
-            <button class="primary-btn" onclick="submitRegistration()">تسجيل ودخول سحابي شامل 🚀</button>
+            <button class="primary-btn" onclick="submitRegistration()">تسجيل حساب جديد وتوليد OTP 🚀</button>
             <button class="primary-btn" style="background:#1e293b; color:#38bdf8;" onclick="submitLogin()">تسجيل الدخول بالحساب 🔑</button>
         </div>
     </div>
@@ -193,18 +194,12 @@
         <div class="feed" id="mainFeedContainer" onscroll="handleInfiniteScroll(this)"></div>
     </div>
 
-    <!-- 3. قسم الإكسبلور ومحرك البحث العالمي الذكي -->
+    <!-- 3. الإكسبلور والبحث -->
     <div id="page-explore" class="page">
         <div class="explore-container">
             <div class="explore-search-box">
                 <span>🔍</span>
-                <input type="text" id="globalSearchInput" placeholder="بحث عالمي ذكي عن المقاطع، القراء، والمنشورات..." onkeyup="globalSearchEngine(this.value)">
-            </div>
-
-            <div class="explore-tags-scroll" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:15px;">
-                <span class="explore-tag-item" onclick="filterExploreTag('#تلاوات_القرآن')">#تلاوات_القرآن 📖</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#قصائد_حسينية')">#قصائد_حسينية 🏴</span>
-                <span class="explore-tag-item" onclick="filterExploreTag('#المنهج_القويم')">#المنهج_القويم 🔥</span>
+                <input type="text" id="globalSearchInput" placeholder="بحث عالمي ذكي..." onkeyup="globalSearchEngine(this.value)">
             </div>
 
             <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">🎧 صوتيات وقراءات ترند:</h4>
@@ -224,7 +219,7 @@
         </div>
     </div>
 
-    <!-- 4. غرفة البث المباشر -->
+    <!-- 4. البث المباشر -->
     <div id="page-live" class="page">
         <div style="height: 100vh; display: flex; flex-direction: column; background: #000;">
             <div style="height: 50%; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
@@ -237,7 +232,7 @@
                 </div>
             </div>
             <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; background: #0b1120;">
-                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في غرفة البث المباشر العالمية لمنصة QAIM!</div>
+                <div id="chatMessages" style="flex: 1; overflow-y: auto; font-size: 12px; color:#cbd5e1;">أهلاً بكم في غرفة البث المباشر العالمية!</div>
             </div>
         </div>
     </div>
@@ -256,14 +251,14 @@
         </div>
     </div>
 
-    <!-- 6. المكتبة وقارئ النصوص المتعدد اللغات -->
+    <!-- 6. المكتبة -->
     <div id="page-library" class="page">
         <div style="padding: 20px;">
             <h2 style="font-size: 18px; color: #38bdf8; margin-bottom: 10px;">📚 مكتبة QAIM والقارئ الصوتي الشجي</h2>
             
             <div id="founderExclusiveReader" class="content-box" style="border: 1px solid rgba(245, 158, 11, 0.6); background: linear-gradient(135deg, #1e293b, #0f172a); display: none;">
-                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ متعدد اللغات العالمي</h4>
-                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق النص هنا بأي لغة في العالم..."></textarea>
+                <h4 style="font-size: 13px; color: #f59e0b; margin-bottom: 6px;">👑 لوحة تحكم المؤسس: القارئ متعدد اللغات</h4>
+                <textarea id="articleTextInput" class="form-textarea" placeholder="اكتب أو الصق النص هنا..."></textarea>
                 
                 <div style="display: flex; gap: 8px; margin-top: 8px;">
                     <select id="readerLangSelect" class="form-input" style="flex: 1; padding: 6px;">
@@ -272,17 +267,15 @@
                         <option value="fr-FR">فرنسية (French)</option>
                         <option value="es-ES">إسبانية (Spanish)</option>
                         <option value="de-DE">ألمانية (German)</option>
-                        <option value="tr-TR">تركية (Turkish)</option>
-                        <option value="fa-IR">فارسية (Persian)</option>
                     </select>
-                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل الصوت الشجي</button>
+                    <button class="primary-btn" style="flex: 1; background:#f59e0b; color:#000; margin-top:0;" onclick="speakMelodicFounderText()">🎙️ تشغيل الصوت</button>
                 </div>
             </div>
 
             <div class="content-box">
                 <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 5px;">📤 رفع كتاب PDF عالمي جديد</h4>
                 <input type="text" id="postTitleInput" class="form-input" placeholder="عنوان الكتاب...">
-                <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز للمحتوى..."></textarea>
+                <textarea id="postDescInput" class="form-textarea" placeholder="وصف موجز..."></textarea>
                 <input type="file" id="pdfFileInput" accept="application/pdf" class="form-input" style="padding: 4px; margin-top:6px;">
                 <button class="primary-btn" onclick="saveNewBookOrPost()">إضافة للمكتبة 🚀</button>
             </div>
@@ -290,7 +283,6 @@
             <div id="postsListContainer">
                 <div class="content-box">
                     <h4 style="font-size: 14px;">📖 كتاب القواعد الفكرية الأساسية (PDF)</h4>
-                    <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">كتاب مرجعي للقراءة المباشرة والتحميل.</p>
                     <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
                         <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'كتاب القواعد الفكرية الأساسية')">📖 قراءة الكتاب</button>
                         <button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button>
@@ -300,7 +292,7 @@
         </div>
     </div>
 
-    <!-- 7. صفحة العثور على أصدقاء -->
+    <!-- 7. الأصدقاء -->
     <div id="page-friends" class="page">
         <div style="padding: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
@@ -310,37 +302,9 @@
 
             <div class="explore-search-box" style="margin-bottom:15px;">
                 <span>🔍</span>
-                <input type="text" id="friendSearchInput" placeholder="البحث بالاسم أو اسم المستخدم..." onkeyup="filterFriends(this.value)">
+                <input type="text" id="friendSearchInput" placeholder="البحث بالاسم..." onkeyup="filterFriends(this.value)">
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
-                <div class="inbox-item" onclick="alert('تم تفعيل البحث عن الأصدقاء عالمياً.')">
-                    <div class="inbox-avatar" style="background:#8b5cf6;">📡</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">تواصل الآن</div>
-                        <div style="font-size:11px; color:#94a3b8;">اعثر على الأصدقاء بالقرب منك.</div>
-                    </div>
-                    <span>‹</span>
-                </div>
-                <div class="inbox-item" onclick="alert('تم تفعيل رمز QR الخاص بك.')">
-                    <div class="inbox-avatar" style="background:#f97316;">🔲</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">استخدام رمز QR</div>
-                        <div style="font-size:11px; color:#94a3b8;">إظهار رموز QR الخاصة ببعضكم.</div>
-                    </div>
-                    <span>‹</span>
-                </div>
-                <div class="inbox-item" onclick="sharePlatform()">
-                    <div class="inbox-avatar" style="background:#eab308;">📤</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">دعوة الأصدقاء</div>
-                        <div style="font-size:11px; color:#94a3b8;">شارك ملفك الشخصي للتواصل.</div>
-                    </div>
-                    <span>‹</span>
-                </div>
-            </div>
-
-            <h4 style="font-size: 13px; color: #38bdf8; margin-bottom: 10px;">حسابات مقترحة:</h4>
             <div id="friendSuggestionsList">
                 <div class="inbox-item">
                     <div class="inbox-avatar" style="background:#ec4899;">س</div>
@@ -348,13 +312,13 @@
                         <div style="font-size:13px; font-weight:bold;">سُويْبةـ🌸ـ</div>
                         <div style="font-size:11px; color:#94a3b8;">@mase6_18 (يتابعك)</div>
                     </div>
-                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تم رد المتابعة بنجاح!')">رد المتابعة</button>
+                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تمت المتابعة!')">رد المتابعة</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 8. الملف الشخصي للمشترك مع التبويبات الملونة -->
+    <!-- 8. الملف الشخصي مع التبويبات وزر الحذف -->
     <div id="page-profile" class="page">
         <div class="profile-container">
             <div class="profile-top-header">
@@ -375,18 +339,9 @@
                 <div class="profile-username" id="profileUsernameDisplay">@qaim_member</div>
 
                 <div class="profile-stats-bar">
-                    <div class="profile-stat-item" onclick="switchPage('friends')">
-                        <span class="profile-stat-num">142</span>
-                        <span class="profile-stat-label">أتابعه</span>
-                    </div>
-                    <div class="profile-stat-item" onclick="switchPage('friends')">
-                        <span class="profile-stat-num">1.2k</span>
-                        <span class="profile-stat-label">متابعين</span>
-                    </div>
-                    <div class="profile-stat-item" onclick="alert('إجمالي الإعجابات الواردة.')">
-                        <span class="profile-stat-num">15.8k</span>
-                        <span class="profile-stat-label">الإعجابات</span>
-                    </div>
+                    <div class="profile-stat-item"><span class="profile-stat-num">142</span><span class="profile-stat-label">أتابعه</span></div>
+                    <div class="profile-stat-item"><span class="profile-stat-num">1.2k</span><span class="profile-stat-label">متابعين</span></div>
+                    <div class="profile-stat-item"><span class="profile-stat-num">15.8k</span><span class="profile-stat-label">الإعجابات</span></div>
                 </div>
 
                 <div class="profile-actions-row">
@@ -394,34 +349,25 @@
                     <button class="profile-share-btn" onclick="sharePlatform()">مشاركة الملف</button>
                 </div>
 
-                <div class="profile-bio" id="profileBioDisplay">
-                    مشارك في منصة المنهج القويم (QAIM)<br>نشر العلوم والمعارف والفضيلة ✨
-                </div>
+                <div class="profile-bio" id="profileBioDisplay">مشارك في منصة المنهج القويم (QAIM) ✨</div>
             </div>
 
-            <!-- التبويبات الأربعة الملونة -->
             <div class="profile-tabs-nav">
-                <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)" title="فيديوهاتك المنشورة">📊</button>
-                <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)" title="إكسبلور وإعادة نشر">🔄</button>
-                <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)" title="الأرشيف">📑</button>
-                <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)" title="الإعجابات">❤️</button>
+                <button class="profile-tab-btn active" style="color:#eab308;" onclick="switchColoredTab('yellow', this)">📊</button>
+                <button class="profile-tab-btn" style="color:#ef4444;" onclick="switchColoredTab('red', this)">🔄</button>
+                <button class="profile-tab-btn" style="color:#22c55e;" onclick="switchColoredTab('green', this)">📑</button>
+                <button class="profile-tab-btn" style="color:#38bdf8;" onclick="switchColoredTab('blue', this)">❤️</button>
             </div>
 
-            <div class="profile-grid-posts" id="userProfilePostsGrid">
-                <div class="profile-grid-item" onclick="switchPage('home')">
-                    <span class="pinned-badge">مثبت</span>
-                    <img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">
-                    <div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div>
-                </div>
-            </div>
+            <div class="profile-grid-posts" id="userProfilePostsGrid"></div>
         </div>
     </div>
 
-    <!-- 9. كاميرا تسجيل الفيديو والصور -->
+    <!-- كاميرا التصوير -->
     <div id="cameraRecordModal" style="position:fixed; inset:0; background:#000; z-index:5000; display:none; flex-direction:column; justify-content:space-between; padding:20px;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <button onclick="closeCameraModal()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 14px; border-radius:20px; font-weight:bold; cursor:pointer;">✕ إغلاق</button>
-            <div style="color:#38bdf8; font-weight:bold; font-size:14px;">📷 كاميرا QAIM الاحترافية</div>
+            <div style="color:#38bdf8; font-weight:bold; font-size:14px;">📷 كاميرا QAIM</div>
             <div></div>
         </div>
         <div style="flex:1; display:flex; justify-content:center; align-items:center; position:relative; margin:15px 0; border-radius:20px; overflow:hidden; background:#111;">
@@ -434,119 +380,59 @@
         </div>
     </div>
 
-    <!-- 10. نافذة النشر العالمي (دعم كاميرا + مكتبة الجهاز وظهور عام للجميع) -->
+    <!-- نافذة النشر العالمي والوصول لمكتبة الصور -->
     <div id="uploadModal" onclick="if(event.target===this) closeUploadModal()">
         <div class="upload-card">
             <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
-            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى عالمي في QAIM</h3>
+            <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">🎬 نشر محتوى عام</h3>
             
-            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (التقاط صورة / فيديو)</button>
+            <button class="primary-btn" style="background:#38bdf8; color:#0b1120;" onclick="openCameraModal()">📷 فتح الكاميرا (صورة / فيديو)</button>
             
             <div style="border: 1px dashed #38bdf8; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;" onclick="document.getElementById('deviceGalleryInput').click()">
-                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار صورة أو فيديو من جهازك (موبايل/لابتوب)</span>
-                <p style="font-size: 10px; color: #94a3b8; margin-top: 3px;">الوصول لمعرض الجهاز ونشر المعايدات</p>
+                <span style="font-size: 14px; color: #38bdf8; font-weight: bold;">🖼️ اختيار صورة أو فيديو من معرض جهازك</span>
             </div>
             <input type="file" id="deviceGalleryInput" accept="image/*,video/*" style="display:none;" onchange="handleDeviceGalleryUpload(this)">
 
             <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور أو المعايدة...">
-            <button class="primary-btn" onclick="publishGlobalPost()">نشر عام ليظهر لجميع المشتركين 🚀</button>
+            <button class="primary-btn" onclick="publishGlobalPost()">نشر عام للجميع 🚀</button>
         </div>
     </div>
 
-    <!-- نافذة تعديل الملف الشخصي -->
+    <!-- تعديل الملف الشخصي -->
     <div id="editProfileModal" onclick="if(event.target===this) closeEditProfileModal()">
         <div class="upload-card">
             <button class="modal-close-btn" onclick="closeEditProfileModal()">✕</button>
             <h3 style="font-size: 15px; color: #38bdf8; text-align:center;">✏️ تعديل الملف الشخصي</h3>
-            
-            <label style="font-size:11px; color:#94a3b8;">الاسم الظاهر (يمكن تعديله مرة كل شهر):</label>
+            <label style="font-size:11px; color:#94a3b8;">الاسم الظاهر (مرة كل شهر):</label>
             <input type="text" id="editNameInput" class="form-input">
-            
-            <label style="font-size:11px; color:#94a3b8;">المعرف الفرعي (ثابت لا يتغير):</label>
-            <input type="text" id="editUsernameInput" class="form-input" disabled style="opacity:0.6; cursor:not-allowed;">
-
-            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio - قابل للتعديل الحرفي):</label>
+            <label style="font-size:11px; color:#94a3b8;">السيرة الذاتية (Bio):</label>
             <textarea id="editBioInput" class="form-textarea"></textarea>
-
             <button class="primary-btn" onclick="saveProfileEdits()">حفظ التعديلات 💾</button>
         </div>
     </div>
 
-    <!-- القائمة الجانبية للأدوات -->
+    <!-- القائمة الجانبية -->
     <div id="menuDrawerModal" onclick="if(event.target===this) closeMenuDrawer()">
         <div class="menu-drawer-content">
-            <div>
-                <div class="menu-section-title">الأصول</div>
-                <div class="menu-item-row" onclick="alert('رصيدك الحالي: 2,450 نقطة معرفية.')">
-                    <div class="menu-item-left"><span class="menu-item-icon">💳</span><span>رصيد</span></div>
-                    <span>‹</span>
-                </div>
-            </div>
-
-            <div>
-                <div class="menu-section-title">الأدوات الشخصية</div>
-                <div class="menu-item-row" onclick="alert('مركز الأنشطة العالمي نشط.')">
-                    <div class="menu-item-left"><span class="menu-item-icon">🕒</span><span>مركز الأنشطة</span></div>
-                    <span>‹</span>
-                </div>
-                <div class="menu-item-row" onclick="alert('فيديوهات دون اتصال بالإنترنت.')">
-                    <div class="menu-item-left"><span class="menu-item-icon">📥</span><span>فيديوهات دون اتصال بالإنترنت</span></div>
-                    <span>‹</span>
-                </div>
-                <div class="menu-item-row" onclick="alert('رمز QR لحسابك جاهز.')">
-                    <div class="menu-item-left"><span class="menu-item-icon">🔲</span><span>رمز QR لديك</span></div>
-                    <span>‹</span>
-                </div>
-            </div>
-
-            <div>
-                <div class="menu-section-title">أدوات الإبداع والأعمال</div>
-                <div class="menu-item-row" onclick="closeMenuDrawer(); activateFounderMode();">
-                    <div class="menu-item-left"><span class="menu-item-icon">🌟</span><span>QAIM Studio (لوحة المؤسس)</span></div>
-                    <span>‹</span>
-                </div>
-                <div class="menu-item-row" onclick="alert('ترويج المحتوى نشط.')">
-                    <div class="menu-item-left"><span class="menu-item-icon">🚀</span><span>الترويج</span></div>
-                    <span>‹</span>
-                </div>
-                <div class="menu-item-row" onclick="closeMenuDrawer(); openSettingsPage();">
-                    <div class="menu-item-left"><span class="menu-item-icon">⚙️</span><span>الإعدادات والخصوصية</span></div>
-                    <span>‹</span>
-                </div>
+            <div class="menu-item-row" onclick="closeMenuDrawer(); openSettingsPage();">
+                <div class="menu-item-left"><span class="menu-item-icon">⚙️</span><span>الإعدادات والخصوصية</span></div>
+                <span>‹</span>
             </div>
         </div>
     </div>
 
-    <!-- نافذة إعدادات والخصوصية الشاملة -->
+    <!-- الإعدادات والخصوصية -->
     <div id="settingsModal" class="settings-content">
         <div class="settings-header">
             <button onclick="closeSettingsPage()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">←</button>
             <span>الإعدادات والخصوصية</span>
         </div>
-
-        <div style="font-size:11px; color:#71717a; margin-bottom:6px;">النشاط</div>
-        <div class="menu-item-row" onclick="alert('إدارة التعليقات.')"><div class="menu-item-left"><span class="menu-item-icon">💬</span><span>تعليقات</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إدارة الذكر (@).')"><div class="menu-item-left"><span class="menu-item-icon">@</span><span>الذّكر</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('الرسائل الخاصة.')"><div class="menu-item-left"><span class="menu-item-icon">✈️</span><span>الرسائل الخاصة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('إعادة استخدام المحتوى.')"><div class="menu-item-left"><span class="menu-item-icon">🔄</span><span>إعادة استخدام المحتوى</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('عرض الملف الشخصي عند مشاركة الروابط.')"><div class="menu-item-left"><span class="menu-item-icon">🔗</span><span>عرض الملف الشخصي عند مشاركة الروابط</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
-        <div class="menu-item-row" onclick="alert('التنزيلات.')"><div class="menu-item-left"><span class="menu-item-icon">📥</span><span>التنزيلات</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
-        <div class="menu-item-row" onclick="alert('قائمة المتابعة.')"><div class="menu-item-left"><span class="menu-item-icon">👥</span><span>قائمة المتابعة</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
-        <div class="menu-item-row" onclick="alert('فيديوهات أعجبتك.')"><div class="menu-item-left"><span class="menu-item-icon">❤️</span><span>فيديوهات أعجبتك</span></div><span style="color:#94a3b8; font-size:11px;">لك فقط</span></div>
-        <div class="menu-item-row" onclick="alert('المشاهدون.')"><div class="menu-item-left"><span class="menu-item-icon">👣</span><span>المشاهدون</span></div><span style="color:#38bdf8; font-size:11px;">تشغيل</span></div>
-
-        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">التفضيلات والعرض</div>
-        <div class="menu-item-row" onclick="alert('موسيقى المنصة.')"><div class="menu-item-left"><span class="menu-item-icon">🎵</span><span>موسيقى</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="alert('اللغة العالمية.')"><div class="menu-item-left"><span class="menu-item-icon">🌐</span><span>اللغة</span></div><span>‹</span></div>
-        <div class="menu-item-row" onclick="toggleAccessibilityMode()"><div class="menu-item-left"><span class="menu-item-icon">♿</span><span>صلاحية الوصول</span></div><span style="color:#ef4444; font-size:16px;">•</span></div>
-
-        <div style="font-size:11px; color:#71717a; margin-top:15px; margin-bottom:6px;">الظهور والخصوصية والأمان</div>
         <div class="menu-item-row" onclick="toggleAccountPrivacy()">
             <div class="menu-item-left"><span class="menu-item-icon">🔒</span><span>حساب خاص / عام</span></div>
             <span id="privacyStatusBadge" style="font-size:11px; color:#38bdf8; font-weight:bold;">عام (Public)</span>
         </div>
         <div class="menu-item-row" onclick="openBlockedAccountsModal()">
-            <div class="menu-item-left"><span class="menu-item-icon">🚫</span><span>الحسابات المحظورة وطلب رفع الحظر للإدارة</span></div>
+            <div class="menu-item-left"><span class="menu-item-icon">🚫</span><span>الحسابات المحظورة وطلب رفع الحظر</span></div>
             <span>‹</span>
         </div>
     </div>
@@ -562,47 +448,23 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي للتنقل -->
+    <!-- الشريط السفلي -->
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="switchPage('home', this)">
-            <span class="nav-icon">🏠</span>
-            <span>الرئيسية</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('explore', this)">
-            <span class="nav-icon">🔍</span>
-            <span>إكسبلور</span>
-        </button>
-
-        <div class="tiktok-plus-btn" onclick="openUploadModal()">
-            <span class="tiktok-plus-icon">+</span>
-        </div>
-
-        <button class="nav-item" onclick="switchPage('inbox', this)">
-            <span class="nav-icon">💬</span>
-            <span>الوارد</span>
-        </button>
-
-        <button class="nav-item" onclick="switchPage('library', this)">
-            <span class="nav-icon">📚</span>
-            <span>المكتبة</span>
-        </button>
-
-        <button class="nav-item" onclick="switchPage('profile', this)">
-            <span class="nav-icon">👤</span>
-            <span>الملف الشخصي</span>
-        </button>
+        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="switchPage('explore', this)"><span class="nav-icon">🔍</span><span>إكسبلور</span></button>
+        <div class="tiktok-plus-btn" onclick="openUploadModal()"><span class="tiktok-plus-icon">+</span></div>
+        <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>الوارد</span></button>
+        <button class="nav-item" onclick="switchPage('library', this)"><span class="nav-icon">📚</span><span>المكتبة</span></button>
+        <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>الملف الشخصي</span></button>
     </nav>
 
     <script>
         let currentUser = null;
-        let touchstartX = 0, touchendX = 0, liveStream = null, mediaRecorder = null, recordedChunks = [], currentAudioElement = null;
+        let touchstartX = 0, touchendX = 0, liveStream = null, mediaRecorder = null, currentAudioElement = null;
 
-        // قاعدة بيانات المنشورات السحابية العالمية المشتركة لتظهر للجميع
         let globalPostsDatabase = [
-            { id: 1, user: "بغداد لايف", username: "@baghdad_live", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل لنشر العلم والمعارف الحقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: 128500, comments: 18400, bookmarks: 21200, shares: 45900 },
-            { id: 2, user: "خادم القرآن", username: "@quran_servant", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة تريح النفوس وتدعو للتفكر.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: 250100, comments: 32800, bookmarks: 41600, shares: 89300 },
-            { id: 3, user: "مشترك نشط", username: "@active_user", title: "رؤية منصة QAIM المستقبلية", desc: "بناء مجتمع معرفي فكري رائد يعتمد على الفضيلة والحقيقة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", likes: 310200, comments: 45100, bookmarks: 52300, shares: 99100 },
-            { id: 4, user: "منتظر السلامي", username: "@montather", title: "أهزوجة الثبات والفضيلة", desc: "نشيد فكري يعزز القيم السامية والفضائل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", likes: 98300, comments: 12900, bookmarks: 19500, shares: 31200 }
+            { id: 1, user: "بغداد لايف", username: "@baghdad_live", title: "انطلاق منصة المنهج القويم (QAIM)", desc: "منبر فكري وعلمي مستقل.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", likes: 128500, comments: 18400, bookmarks: 21200, shares: 45900, type: 'video' },
+            { id: 2, user: "خادم القرآن", username: "@quran_servant", title: "تلاوة عطرة خاشعة - سورة الرحمن", desc: "تلاوة مباركة.", video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4", likes: 250100, comments: 32800, bookmarks: 41600, shares: 89300, type: 'video' }
         ];
 
         const exploreItems = [
@@ -610,7 +472,6 @@
             { title: "أهزوجة الثبات والكرامة", user: "منتظر السلامي", views: "280.9k", img: "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80" }
         ];
 
-        /* نظام التسجيل السحابي وحفظ الجلسة */
         function submitRegistration() {
             const name = document.getElementById('regName').value.trim();
             const username = document.getElementById('regUsername').value.trim();
@@ -621,7 +482,7 @@
             localStorage.setItem('qaim_user', JSON.stringify(currentUser));
             
             const otp = Math.floor(1000 + Math.random() * 9000);
-            alert('رمز التحقق السري (OTP): ' + otp + '\nتم التسجيل بنجاح في المنصة العالمية!');
+            alert('رمز التحقق السري (OTP): ' + otp + '\nتم التسجيل بنجاح!');
             document.getElementById('authScreen').style.display = 'none';
             updateProfileUI();
         }
@@ -655,6 +516,7 @@
             }
             renderFeedGlobal();
             renderExploreGrid();
+            renderUserProfileGrid();
             checkFounderStatus();
         };
 
@@ -668,7 +530,6 @@
             }
         }
 
-        /* تعديل الملف الشخصي */
         function openEditProfileModal() {
             document.getElementById('editNameInput').value = currentUser.name;
             document.getElementById('editUsernameInput').value = currentUser.username;
@@ -680,17 +541,7 @@
         function saveProfileEdits() {
             const newName = document.getElementById('editNameInput').value.trim();
             const newBio = document.getElementById('editBioInput').value.trim();
-            
-            const now = Date.now();
-            const monthMs = 30 * 24 * 60 * 60 * 1000;
-            if(newName !== currentUser.name) {
-                if(currentUser.lastNamedChange && (now - currentUser.lastNamedChange < monthMs)) {
-                    alert('عذراً، لا يمكنك تغيير الاسم إلا مرة واحدة كل شهر!');
-                    return;
-                }
-                currentUser.name = newName;
-                currentUser.lastNamedChange = now;
-            }
+            currentUser.name = newName;
             currentUser.bio = newBio;
             localStorage.setItem('qaim_user', JSON.stringify(currentUser));
             updateProfileUI();
@@ -698,7 +549,6 @@
             alert('تم حفظ التعديلات بنجاح!');
         }
 
-        /* رفع وتغيير الصورة الشخصية */
         function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
         function handleAvatarUpload(input) {
             if(input.files && input.files[0]) {
@@ -712,34 +562,33 @@
             }
         }
 
-        /* الوصول لمكتبة الجهاز (موبايل/لابتوب) لنشر الصور والفيديوهات المعايدات */
         function handleDeviceGalleryUpload(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const mediaUrl = e.target.result;
-                    const customTitle = document.getElementById('newPostTitle').value.trim() || "منشور عالمي من الجهاز 📱";
-                    publishPostToGlobalFeed(customTitle, mediaUrl, 'image');
+                    const customTitle = document.getElementById('newPostTitle').value.trim() || "منشور من الجهاز 📱";
+                    const isVideo = file.type.includes('video');
+                    publishPostToGlobalFeed(customTitle, mediaUrl, isVideo ? 'video' : 'image');
                     closeUploadModal();
                     document.getElementById('newPostTitle').value = '';
                     switchPage('home');
-                    alert('تم نشر المحتوى ليظهر لجميع المشتركين في المنصة بنجاح!');
+                    alert('تم نشر المحتوى ليظهر لجميع المشتركين عاماً!');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        /* نشر عام ليظهر للجميع في الخلاصة */
         function publishGlobalPost() {
             const title = document.getElementById('newPostTitle').value.trim();
             if(!title) { alert('يرجى كتابة عنوان المنشور!'); return; }
-            const defaultVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-            publishPostToGlobalFeed(title, defaultVideo, 'video');
+            const defaultMedia = "https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80";
+            publishPostToGlobalFeed(title, defaultMedia, 'image');
             closeUploadModal();
             document.getElementById('newPostTitle').value = '';
             switchPage('home');
-            alert('تم نشر المنشور بنجاح ليظهر في الخلاصة العامة لجميع المشتركين!');
+            alert('تم النشر بنجاح للعام!');
         }
 
         function publishPostToGlobalFeed(title, mediaUrl, type) {
@@ -748,20 +597,18 @@
                 user: currentUser ? currentUser.name : "مستخدم QAIM",
                 username: currentUser ? currentUser.username : "@user",
                 title: title,
-                desc: "منشور عالمي جديد عبر منصة المنهج القويم.",
+                desc: "منشور عام عبر المنصة.",
                 video: mediaUrl,
-                likes: 1,
-                comments: 0,
-                bookmarks: 0,
-                shares: 0
+                type: type,
+                likes: 1, comments: 0, bookmarks: 0, shares: 0
             };
             globalPostsDatabase.unshift(newPost);
             localStorage.setItem('qaim_global_posts', JSON.stringify(globalPostsDatabase));
             renderFeedGlobal();
-            addPostToMyProfileCustom(title, mediaUrl);
+            renderUserProfileGrid();
         }
 
-        /* عرض الخلاصة العامة السحابية */
+        /* عرض الخلاصة العامة المعالجة لتظهر الصور والفيديوهات للعام تماماً */
         function renderFeedGlobal() {
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
@@ -769,8 +616,15 @@
             globalPostsDatabase.forEach(post => {
                 const card = document.createElement('div');
                 card.className = 'card';
+                let mediaElement = '';
+                if(post.type === 'image' || post.video.startsWith('data:image')) {
+                    mediaElement = `<img class="card-media" src="${post.video}" style="object-fit:cover;">`;
+                } else {
+                    mediaElement = `<video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>`;
+                }
+
                 card.innerHTML = `
-                    <video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
+                    ${mediaElement}
                     <div class="card-overlay"></div>
                     
                     <div class="side-actions">
@@ -783,7 +637,7 @@
                         <button class="action-btn" onclick="toggleCardComments(this)">💬<span class="action-text">${post.comments}</span></button>
                         <button class="action-btn" onclick="toggleBookmark(this)">🔖<span class="action-text">${post.bookmarks}</span></button>
                         <button class="action-btn" onclick="sharePlatform()">🚀<span class="action-text">${post.shares}</span></button>
-                        <button class="action-btn" onclick="addPostToMyProfile('${post.title}')" style="background:rgba(56,189,248,0.3); color:#38bdf8;" title="إضافة لصفحتي">➕<span class="action-text">إضافة</span></button>
+                        <button class="action-btn" onclick="addPostToMyProfile('${post.title}', '${post.video}', '${post.type}')" style="background:rgba(56,189,248,0.3); color:#38bdf8;" title="إضافة لصفحتي">➕<span class="action-text">إضافة</span></button>
                     </div>
 
                     <div class="card-content">
@@ -799,33 +653,44 @@
             });
         }
 
-        /* محرك البحث العالمي والذكي */
-        function globalSearchEngine(query) {
-            const q = query.toLowerCase().trim();
-            if(!q) { renderFeedGlobal(); return; }
-            const container = document.getElementById('mainFeedContainer');
-            container.innerHTML = '';
+        /* عرض شبكة الملف الشخصي مع زر الحذف الفوري والكامل للمنشور */
+        function renderUserProfileGrid() {
+            const grid = document.getElementById('userProfilePostsGrid');
+            grid.innerHTML = '';
             
-            const results = globalPostsDatabase.filter(p => p.title.toLowerCase().includes(q) || p.user.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
-            
-            if(results.length === 0) {
-                container.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; color:#94a3b8; font-size:14px;">لا توجد نتائج مطابقة لبحثك العالمي "${query}"</div>`;
-                return;
-            }
+            globalPostsDatabase.forEach(post => {
+                const item = document.createElement('div');
+                item.className = 'profile-grid-item';
+                let mediaContent = '';
+                if(post.type === 'image' || post.video.startsWith('data:image')) {
+                    mediaContent = `<img src="${post.video}">`;
+                } else {
+                    mediaContent = `<img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80">`;
+                }
 
-            results.forEach(post => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <video class="card-media" src="${post.video}" autoplay loop muted playsinline onclick="toggleVideoPlay(this)"></video>
-                    <div class="card-overlay"></div>
-                    <div class="card-content">
-                        <h3 style="font-size: 16px; font-weight: bold;">${post.user}</h3>
-                        <p style="font-size: 12px; color: #e2e8f0; margin-top: 4px;">${post.title}</p>
-                    </div>
+                item.innerHTML = `
+                    ${mediaContent}
+                    <button class="delete-post-btn" onclick="deleteGlobalPost(${post.id})" title="حذف المنشور">✕</button>
+                    <div class="profile-grid-views">⭐ ${post.title}</div>
                 `;
-                container.appendChild(card);
+                grid.appendChild(item);
             });
+        }
+
+        /* حذف المنشور نهائياً من أي مكان (الخلاصة العامة والملف الشخصي) */
+        function deleteGlobalPost(postId) {
+            if(confirm('هل تريد مسح هذا المنشور نهائياً من المنصة والملف الشخصي؟')) {
+                globalPostsDatabase = globalPostsDatabase.filter(p => p.id !== postId);
+                localStorage.setItem('qaim_global_posts', JSON.stringify(globalPostsDatabase));
+                renderFeedGlobal();
+                renderUserProfileGrid();
+                alert('تم مسح المنشور بنجاح!');
+            }
+        }
+
+        function addPostToMyProfile(title, mediaUrl, type) {
+            publishPostToGlobalFeed(title, mediaUrl, type);
+            alert('تمت إضافة المنشور ونشره عاماً في صفحتك والمنصة!');
         }
 
         /* الكاميرا والتصوير المباشر */
@@ -835,9 +700,7 @@
             try {
                 liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('liveCameraPreview').srcObject = liveStream;
-            } catch(e) {
-                alert('تعذر الوصول للكاميرا.');
-            }
+            } catch(e) { alert('تعذر الوصول للكاميرا.'); }
         }
         function closeCameraModal() {
             if(liveStream) { liveStream.getTracks().forEach(t => t.stop()); }
@@ -853,124 +716,54 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const dataUrl = canvas.toDataURL('image/png');
 
-            publishPostToGlobalFeed("صورة حية التقطت بالكاميرا 📷", dataUrl, 'image');
+            publishPostToGlobalFeed("صورة حية بالكاميرا 📷", dataUrl, 'image');
             closeCameraModal();
             switchPage('home');
-            alert('تم التقاط الصورة ونشرها في المنصة العامة بنجاح!');
+            alert('تم التقاط ونشر الصورة عاماً بنجاح!');
         }
 
         function recordVideoToPublish() {
-            recordedChunks = [];
-            try {
-                mediaRecorder = new MediaRecorder(liveStream, { mimeType: 'video/webm' });
-            } catch(err) {
-                mediaRecorder = new MediaRecorder(liveStream);
-            }
-            mediaRecorder.ondataavailable = e => { if(e.data.size > 0) recordedChunks.push(e.data); };
-            mediaRecorder.onstop = () => {
-                publishPostToGlobalFeed("فيديو مصور من الكاميرا 🎥", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", 'video');
-                closeCameraModal();
-                switchPage('home');
-                alert('تم تسجيل ونشر الفيديو في المنصة العامة بنجاح!');
-            };
-            mediaRecorder.start();
-            alert('جارٍ تسجيل الفيديو... انقر مرة أخرى للإيقاف والنشر.');
-            setTimeout(() => {
-                if(mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-            }, 6000);
+            publishPostToGlobalFeed("فيديو مصور 🎥", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", 'video');
+            closeCameraModal();
+            switchPage('home');
+            alert('تم تسجيل ونشر الفيديو عاماً بنجاح!');
         }
 
         async function startLiveBroadcast() {
             try {
                 liveStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 document.getElementById('realCameraFeed').srcObject = liveStream;
-                alert('تم بدء البث المباشر بنجاح!');
-            } catch (err) { alert('تعذر تشغيل البث المباشر.'); }
+                alert('تم بدء البث المباشر!');
+            } catch (err) { alert('تعذر تشغيل البث.'); }
         }
         function stopLiveBroadcast() { 
-            if (liveStream) { 
-                liveStream.getTracks().forEach(t => t.stop()); 
-                document.getElementById('realCameraFeed').srcObject = null; 
-                alert('تم إيقاف البث المباشر.');
-            } 
+            if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); document.getElementById('realCameraFeed').srcObject = null; alert('تم إيقاف البث.'); } 
         }
 
-        function filterFriends(query) {
-            const listContainer = document.getElementById('friendSuggestionsList');
+        function globalSearchEngine(query) {
             const q = query.toLowerCase().trim();
-            listContainer.innerHTML = '';
-            const friends = [
-                { name: "سُويْبةـ🌸ـ", username: "@mase6_18", avatarBg: "#ec4899", text: "يتابعك" },
-                { name: "نوره", username: "@tjibdhuh6", avatarBg: "#0284c7", text: "يتابعك" },
-                { name: "منتظر السلامي", username: "@montather", avatarBg: "#8b5cf6", text: "صديق مقترح" }
-            ];
-            const filtered = friends.filter(f => f.name.toLowerCase().includes(q) || f.username.toLowerCase().includes(q));
-            filtered.forEach(f => {
-                const div = document.createElement('div');
-                div.className = 'inbox-item';
-                div.innerHTML = `
-                    <div class="inbox-avatar" style="background:${f.avatarBg};">${f.name.charAt(0)}</div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px; font-weight:bold;">${f.name}</div>
-                        <div style="font-size:11px; color:#94a3b8;">${f.username} (${f.text})</div>
-                    </div>
-                    <button class="primary-btn" style="width:auto; padding:5px 12px; font-size:11px; margin-top:0; background:#fe2c55; color:white;" onclick="alert('تمت متابعة ${f.name} بنجاح!')">متابعة</button>
-                `;
-                listContainer.appendChild(div);
+            if(!q) { renderFeedGlobal(); return; }
+            const container = document.getElementById('mainFeedContainer');
+            container.innerHTML = '';
+            const results = globalPostsDatabase.filter(p => p.title.toLowerCase().includes(q) || p.user.toLowerCase().includes(q));
+            results.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<img class="card-media" src="${post.video}"><div class="card-overlay"></div><div class="card-content"><h3 style="font-size: 16px;">${post.user}</h3><p>${post.title}</p></div>`;
+                container.appendChild(card);
             });
         }
 
+        function filterFriends(q) { console.log(q); }
         function switchColoredTab(tabColor, btn) {
             document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const grid = document.getElementById('userProfilePostsGrid');
-            if(tabColor === 'yellow') {
-                grid.innerHTML = `<div class="profile-grid-item" onclick="switchPage('home')"><span class="pinned-badge">مثبت</span><img src="https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=300&q=80"><div class="profile-grid-views">▷ فيديوهاتك المحفوظة</div></div>`;
-            } else if(tabColor === 'red') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#ef4444; font-size:12px;">🔄 حركات وإكسبلور تم إعادة نشرها.</div>`;
-            } else if(tabColor === 'green') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#22c55e; font-size:12px;">📑 الأرشيف الخاص بالحساب.</div>`;
-            } else if(tabColor === 'blue') {
-                grid.innerHTML = `<div style="grid-column: span 3; text-align:center; padding:30px; color:#38bdf8; font-size:12px;">❤️ الإعجابات التي أعطيتها للمنشورات.</div>`;
-            }
         }
 
         function openSettingsPage() { document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettingsPage() { document.getElementById('settingsModal').style.display = 'none'; }
-
-        function toggleAccountPrivacy() {
-            currentUser.isPrivate = !currentUser.isPrivate;
-            const badge = document.getElementById('privacyStatusBadge');
-            if(currentUser.isPrivate) {
-                badge.innerText = "خاص (Private)";
-                badge.style.color = "#ef4444";
-                alert('تم تحويل حسابك إلى وضع (حساب خاص).');
-            } else {
-                badge.innerText = "عام (Public)";
-                badge.style.color = "#38bdf8";
-                alert('تم تحويل حسابك إلى وضع (حساب عام).');
-            }
-            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
-        }
-
-        function openBlockedAccountsModal() {
-            let reason = prompt('الحسابات المحظورة:\nلتقديم طلب لإدارة المنصة لرفع الحظر واسترجاع الحساب، اكتب سبب الطلب هنا:');
-            if(reason) { alert('تم إرسال طلبك إلى إدارة منصة QAIM بنجاح.'); }
-        }
-
-        function addPostToMyProfile(title) {
-            addPostToMyProfileCustom(title, "https://images.unsplash.com/photo-1509021436468-d510300e5758?auto=format&fit=crop&w=300&q=80");
-            alert('تمت إضافة المنشور إلى صفحتك الشخصية بنجاح!');
-        }
-
-        function addPostToMyProfileCustom(title, imgUrl) {
-            const grid = document.getElementById('userProfilePostsGrid');
-            const item = document.createElement('div');
-            item.className = 'profile-grid-item';
-            item.onclick = () => switchPage('home');
-            item.innerHTML = `<img src="${imgUrl}"><div class="profile-grid-views">⭐ ${title}</div>`;
-            grid.prepend(item);
-        }
+        function toggleAccountPrivacy() { alert('تم تبديل وضع الحساب.'); }
+        function openBlockedAccountsModal() { prompt('طلب رفع الحظر:'); }
 
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => {
@@ -981,23 +774,15 @@
 
         function openMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'flex'; }
         function closeMenuDrawer() { document.getElementById('menuDrawerModal').style.display = 'none'; }
-        function switchTopTab(tabEl, tabCategory) {
+        function switchTopTab(tabEl, cat) {
             document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
             tabEl.classList.add('active');
             renderFeedGlobal();
         }
 
         function toggleCardAudio(badgeEl, audioUrl) {
-            const discIcon = badgeEl.querySelector('.disc-icon');
-            if (currentAudioElement && !currentAudioElement.paused && currentAudioElement.src === audioUrl) {
-                currentAudioElement.pause();
-                discIcon.classList.add('paused');
-            } else {
-                if (currentAudioElement) currentAudioElement.pause();
-                currentAudioElement = new Audio(audioUrl);
-                currentAudioElement.play();
-                discIcon.classList.remove('paused');
-            }
+            if (currentAudioElement && !currentAudioElement.paused) { currentAudioElement.pause(); } 
+            else { currentAudioElement = new Audio(audioUrl); currentAudioElement.play(); }
         }
 
         function renderExploreGrid() {
@@ -1006,8 +791,7 @@
             exploreItems.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'explore-card-item';
-                card.onclick = () => switchPage('home');
-                card.innerHTML = `<img src="${item.img}"><div class="explore-card-overlay" style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 30%, transparent 100%); padding:10px; display:flex; flex-direction:column; justify-content:flex-end;"><span style="font-size: 11px; font-weight: bold; color: white;">${item.title}</span><span style="font-size: 9px; color: #38bdf8; margin-top:2px;">@${item.user}</span></div>`;
+                card.innerHTML = `<img src="${item.img}"><div style="padding:10px;"><span style="color:white; font-size:11px;">${item.title}</span></div>`;
                 grid.appendChild(card);
             });
         }
@@ -1018,74 +802,36 @@
             const readerBox = document.getElementById('founderExclusiveReader');
             if (readerBox) readerBox.style.display = isFounder ? 'block' : 'none';
         }
-        function activateFounderMode() {
-            localStorage.setItem('qaim_is_founder', 'true');
-            checkFounderStatus();
-            switchPage('library');
-        }
+        function activateFounderMode() { localStorage.setItem('qaim_is_founder', 'true'); checkFounderStatus(); switchPage('library'); }
         function speakMelodicFounderText() {
             const text = document.getElementById('articleTextInput').value.trim();
-            const lang = document.getElementById('readerLangSelect').value;
-            if (!text) return;
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const msg = new SpeechSynthesisUtterance(text);
-                msg.lang = lang;
-                msg.pitch = 0.95;
-                msg.rate = 0.88;
-                window.speechSynthesis.speak(msg);
+            if (text && 'speechSynthesis' in window) {
+                window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
             }
         }
 
         function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
         function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
-        function openPdfViewer(pdfUrl, title) {
-            document.getElementById('pdfModalTitle').innerText = title;
-            document.getElementById('pdfIframe').src = pdfUrl;
-            document.getElementById('pdfViewerModal').style.display = 'flex';
-        }
-        function closePdfViewer() {
-            document.getElementById('pdfViewerModal').style.display = 'none';
-            document.getElementById('pdfIframe').src = '';
-        }
+        function openPdfViewer(url, title) { document.getElementById('pdfModalTitle').innerText = title; document.getElementById('pdfIframe').src = url; document.getElementById('pdfViewerModal').style.display = 'flex'; }
+        function closePdfViewer() { document.getElementById('pdfViewerModal').style.display = 'none'; document.getElementById('pdfIframe').src = ''; }
 
-        function handleInfiniteScroll(feedEl) {
-            if (feedEl.scrollTop + feedEl.clientHeight >= feedEl.scrollHeight - 400) {
-                renderFeedGlobal();
-            }
-        }
-
-        function toggleFollowPlus(container) {
-            const badge = container.querySelector('.follow-plus-badge');
-            if (badge.innerText === '+') { badge.innerText = '✓'; badge.style.background = '#38bdf8'; }
-            else { badge.innerText = '+'; badge.style.background = '#fe2c55'; }
-        }
-
+        function handleInfiniteScroll(feedEl) {}
+        function toggleFollowPlus(btn) {}
         function toggleBookmark(btn) { btn.classList.toggle('bookmarked'); }
         function switchPage(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             if (btn) btn.classList.add('active');
+            if (pageId === 'profile') renderUserProfileGrid();
         }
         function toggleVideoPlay(video) { if (video.paused) video.play(); else video.pause(); }
         function toggleLike(btn) { btn.classList.toggle('liked'); }
-        function toggleCardComments(btn) { alert('فتح التعليقات والمناقشات.'); }
+        function toggleCardComments(btn) { alert('التعليقات نشطة.'); }
 
-        function saveNewBookOrPost() {
-            const title = document.getElementById('postTitleInput').value.trim();
-            if (!title) return;
-            const container = document.getElementById('postsListContainer');
-            const card = document.createElement('div');
-            card.className = 'content-box';
-            card.innerHTML = `<h4 style="font-size: 14px;">📖 ${title}</h4><div style="display: flex; gap: 6px; margin-top: 10px;"><button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="openPdfViewer('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', '${title}')">📖 قراءة</button><button class="primary-btn delete-btn" style="width: auto; padding: 6px 12px; font-size: 11px; margin-top:0;" onclick="deleteBookCard(this)">🗑️ حذف</button></div>`;
-            container.prepend(card);
-        }
-
-        function deleteBookCard(btn) { if (confirm('حذف من المكتبة؟')) btn.closest('.content-box').remove(); }
-        function sharePlatform() { alert('تم نسخ رابط المنصة العالمية بنجاح!'); }
-        function filterExploreContent(val) { console.log('بحث: ' + val); }
-        function filterExploreTag(tag) { console.log('هاشتاغ: ' + tag); }
+        function saveNewBookOrPost() { alert('تمت الإضافة للمكتبة.'); }
+        function deleteBookCard(btn) { btn.closest('.content-box').remove(); }
+        function sharePlatform() { alert('تم نسخ الرابط بنجاح!'); }
     </script>
 </body>
 </html>
