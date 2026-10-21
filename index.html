@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <!-- نافذة التعليقات المنزلقة (Bottom Sheet) مطابقة لتيك توك -->
+    <!-- نافذة التعليقات المنزلقة (Bottom Sheet) -->
     <div id="commentsSheet" class="comments-sheet">
         <div class="sheet-header">
             <span id="commentsCountTitle">💬 التعليقات (0)</span>
@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <!-- 5. البث المباشر (تيك توك ستايل مع الإشعارات والتسجيل والحفظ) -->
+    <!-- 5. البث المباشر (تيك توك ستايل) -->
     <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center;">
         <h2 style="color: #fe2c55;">🔴 غرفة البث المباشر</h2>
         <div id="liveSetupBox" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
@@ -190,7 +190,7 @@
         </div>
     </div>
 
-    <!-- 6. الملف الشخصي (قابل للتعديل والمسح مع عزلة الخصوصية) -->
+    <!-- 6. الملف الشخصي مع إدارة وحذف المنشورات الشخصية -->
     <div id="page-profile" class="page" style="padding: 20px; padding-top: 70px; text-align: center;">
         <div id="profAvatar" style="width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; color: #000; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">👤</div>
         <h3 id="profNameDisplay">ناشر المنصة</h3>
@@ -202,12 +202,20 @@
         </div>
 
         <div style="display: flex; justify-content: space-around; margin-top: 20px; background: #111; padding: 15px; border-radius: 12px;">
-            <div><h4>5637</h4><span style="font-size: 10px; color: #888;">الإعجابات</span></div>
+            <div><h4 id="myPostsCount">0</h4><span style="font-size: 10px; color: #888;">منشوراتي</span></div>
             <div><h4>142</h4><span style="font-size: 10px; color: #888;">المتابعون</span></div>
             <div><h4>85</h4><span style="font-size: 10px; color: #888;">أتابعهم</span></div>
         </div>
 
+        <!-- قائمة منشوراتي الخاصة مع زر حذف مباشر -->
         <div style="margin-top: 20px; text-align: right; background: #121624; padding: 15px; border-radius: 12px;">
+            <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 10px;">📋 منشوراتي المنشورة (إدارة وحذف)</h4>
+            <div id="myPersonalPostsContainer" style="font-size: 11px; color: #aaa; display: flex; flex-direction: column; gap: 8px;">
+                <p>لا توجد منشورات شخصية.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px; text-align: right; background: #121624; padding: 15px; border-radius: 12px;">
             <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 10px;">💾 المحفوظات والكتب المحفوظة</h4>
             <div id="savedContainer" style="font-size: 11px; color: #aaa;">لا توجد عناصر محفوظة حتى الآن.</div>
         </div>
@@ -236,8 +244,8 @@
             document.getElementById('profNameDisplay').innerText = currentUser.name;
             document.getElementById('profUsernameDisplay').innerText = currentUser.username;
             document.getElementById('profAvatar').innerText = currentUser.name.charAt(0);
+            renderMyPersonalPosts();
         }
-        updateProfileUI();
 
         // بيانات المنشورات
         let feedData = JSON.parse(localStorage.getItem('qaim_feed')) || [
@@ -260,11 +268,12 @@
             localStorage.setItem('qaim_lib', JSON.stringify(libraryItems));
         }
 
-        // تحميل الفييد الرئيسي
+        // تحميل الفييد الرئيسي مع إمكانية حذف المنشور للمالك
         function loadFeed() {
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
             feedData.forEach(item => {
+                const isMyPost = (item.username === currentUser.username || item.user === currentUser.name);
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.backgroundImage = `url('${item.bg}')`;
@@ -287,6 +296,11 @@
                             <button class="action-btn save-btn ${item.saved ? 'red' : ''}" onclick="toggleSave(${item.id})">🔖</button>
                             <span class="action-text">${item.saved ? 'محفوظ' : 'حفظ'}</span>
                         </div>
+                        ${isMyPost ? `
+                        <div class="action-item">
+                            <button class="action-btn" style="background:rgba(254,44,85,0.8);" onclick="deletePost(${item.id})">🗑️</button>
+                            <span class="action-text">مسح</span>
+                        </div>` : ''}
                     </div>
                     <div class="card-content">
                         <div class="username-text">@${item.user}</div>
@@ -301,6 +315,34 @@
                 container.appendChild(card);
             });
             updateSavedUI();
+            updateProfileUI();
+        }
+
+        // مسح منشور محدد
+        function deletePost(id) {
+            if (confirm('هل أنت متأكد من مسح هذا المنشور نهائياً؟')) {
+                feedData = feedData.filter(x => x.id !== id);
+                saveLocalStorage();
+                loadFeed();
+                alert('تم مسح المنشور بنجاح.');
+            }
+        }
+
+        // عرض وإدارة المنشورات الشخصية في الملف الشخصي
+        function renderMyPersonalPosts() {
+            const myPosts = feedData.filter(x => x.username === currentUser.username || x.user === currentUser.name);
+            document.getElementById('myPostsCount').innerText = myPosts.length;
+            const container = document.getElementById('myPersonalPostsContainer');
+            if (myPosts.length === 0) {
+                container.innerHTML = '<p>لا توجد منشورات شخصية لك حتى الآن.</p>';
+                return;
+            }
+            container.innerHTML = myPosts.map(p => `
+                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; margin-bottom:5px;">
+                    <div>🎬 <strong>${p.title}</strong></div>
+                    <button onclick="deletePost(${p.id})" style="background:#fe2c55; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:10px; cursor:pointer;">مسح 🗑️</button>
+                </div>
+            `).join('');
         }
 
         // تفاعلات الأزرار
@@ -324,7 +366,7 @@
             if (item) { item.saved = !item.saved; saveLocalStorage(); loadFeed(); }
         }
 
-        // نظام التعليقات المنزلقة (Bottom Sheet) مطابق لتيك توك
+        // نظام التعليقات المنزلقة (Bottom Sheet)
         function openCommentsSheet(id) {
             activeCardForComments = id;
             const item = feedData.find(x => x.id === id);
@@ -472,16 +514,17 @@
             if (username) currentUser.username = username;
             saveLocalStorage();
             updateProfileUI();
+            loadFeed();
             closeModal('editProfileModal');
         }
 
         function clearMyProfileContent() {
             if (confirm('هل أنت متأكد من مسح محتوى حسابك وإعادة ضبطه؟')) {
-                feedData = feedData.filter(x => x.username !== currentUser.username);
+                feedData = feedData.filter(x => x.username !== currentUser.username && x.user !== currentUser.name);
                 saveLocalStorage();
                 loadFeed();
                 updateSavedUI();
-                alert('تم مسح المحتوى بنجاح.');
+                alert('تم مسح محتوى الحساب بنجاح.');
             }
         }
 
@@ -522,6 +565,7 @@
             if (btn) btn.classList.add('active');
             closeCommentsSheet();
             if (pageId === 'library') loadLibrary();
+            if (pageId === 'profile') updateProfileUI();
         }
 
         function closeModal(id) {
