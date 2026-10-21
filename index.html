@@ -78,6 +78,10 @@
 
         /* بطاقات المكتبة والصوتيات */
         .lib-card { background: #121624; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        /* تأثيرات الهدايا في البث */
+        .gift-float { position: absolute; bottom: 100px; right: 20px; font-size: 28px; animation: floatUp 2s ease-out forwards; z-index: 50; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-150px) scale(1.2); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -115,6 +119,20 @@
             <input type="text" id="editNameInput" class="form-input" placeholder="الاسم الجديد...">
             <input type="text" id="editUsernameInput" class="form-input" placeholder="@اسم المستخدم...">
             <button class="primary-btn" onclick="saveProfileChanges()">حفظ التعديلات ✓</button>
+        </div>
+    </div>
+
+    <!-- نافذة البحث المتقدم والذكي -->
+    <div id="searchModal" class="modal-overlay">
+        <div class="modal-card" style="height: 80vh; max-width: 420px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: bold; color: #38bdf8;">🔍 البحث المتقدم في المنصة</span>
+                <button onclick="closeModal('searchModal')" style="background:none; border:none; color:#fe2c55; font-size:18px;">✕</button>
+            </div>
+            <input type="text" id="searchInputQuery" class="form-input" placeholder="ابحث عن عنوان منشور، مستخدم، أو قرآن..." oninput="performGlobalSearch(this.value)">
+            <div id="searchResultsContainer" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                <p style="font-size: 11px; color: #888; text-align: center; margin-top: 20px;">اكتب شيئاً للبحث الفوري...</p>
+            </div>
         </div>
     </div>
 
@@ -163,18 +181,26 @@
         </div>
     </div>
 
-    <!-- 4. صندوق الوارد والمراسلات -->
-    <div id="page-inbox" class="page" style="padding: 20px; padding-top: 70px;">
-        <h2>💬 صندوق الوارد والمراسلات</h2>
-        <div id="inboxList" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+    <!-- 4. مركز الإشعارات والتنبيهات المباشرة الجديد -->
+    <div id="page-notifications" class="page" style="padding: 20px; padding-top: 70px;">
+        <h2 style="color: #38bdf8; margin-bottom: 15px;">🔔 مركز الإشعارات والتنبيهات</h2>
+        <div id="notificationsContainer" style="display: flex; flex-direction: column; gap: 10px;">
             <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
-                <div><strong>الشيخ محمد</strong><p style="font-size:10px; color:#888;">آخر رسالة: تقبل الله أعمالكم...</p></div>
-                <button class="primary-btn" style="width:auto; padding:6px 12px; font-size:11px; background:#38bdf8; color:#000;" onclick="alert('فتح المحادثة')">فتح 💬</button>
+                <div><strong>❤️ إعجاب جديد</strong><p style="font-size:11px; color:#aaa;">قام أحد المتابعين بالإعجاب بمنشورك.</p></div>
+                <span style="font-size:10px; color:#888;">منذ دقيقة</span>
+            </div>
+            <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                <div><strong>👥 متابعة جديدة</strong><p style="font-size:11px; color:#aaa;">بدأ مستخدم جديد بمتابعتك.</p></div>
+                <span style="font-size:10px; color:#888;">منذ 10 دقائق</span>
+            </div>
+            <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                <div><strong>🔴 إشعار بث مباشر</strong><p style="font-size:11px; color:#aaa;">بدأ خادم القرآن بثاً مباشراً الآن.</p></div>
+                <span style="font-size:10px; color:#888;">الآن</span>
             </div>
         </div>
     </div>
 
-    <!-- 5. البث المباشر (تيك توك ستايل) -->
+    <!-- 5. البث المباشر (تيك توك ستايل مع الهدايا التفاعلية) -->
     <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center;">
         <h2 style="color: #fe2c55;">🔴 غرفة البث المباشر</h2>
         <div id="liveSetupBox" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
@@ -184,8 +210,14 @@
             <button class="primary-btn" style="background: #fe2c55;" onclick="startLiveCamera()">بدء البث بالكاميرا 🎥</button>
         </div>
         
-        <div id="liveActiveBox" style="display: none; margin-top: 15px;">
+        <div id="liveActiveBox" style="display: none; margin-top: 15px; position: relative; overflow: hidden;">
             <video id="liveCam" autoplay playsinline muted style="width: 100%; border-radius: 15px; height: 250px; object-fit: cover;"></video>
+            <div id="liveEffectsContainer" style="position: absolute; inset: 0; pointer-events: none;"></div>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
+                <button class="primary-btn" style="background: #38bdf8; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('🌹')">إرسال وردة 🌹</button>
+                <button class="primary-btn" style="background: #fe2c55; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('💖')">إرسال قلب 💖</button>
+                <button class="primary-btn" style="background: #eab308; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('⭐')">إرسال نجمة ⭐</button>
+            </div>
             <button class="primary-btn" style="background: #333; margin-top: 10px;" onclick="endAndSaveLive()">إنهاء وحفظ البث 💾</button>
         </div>
     </div>
@@ -221,12 +253,12 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- شريط التنقل السفلي المطور (يتضمن الإشعارات) -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('friends', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></button>
         <div class="tiktok-plus-btn" onclick="openDirectMediaPicker()">+</div>
-        <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>الوارد</span></button>
+        <button class="nav-item" onclick="switchPage('notifications', this)"><span class="nav-icon">🔔</span><span>الإشعارات</span></button>
         <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>حسابي</span></button>
     </nav>
 
@@ -458,6 +490,31 @@
             }
         }
 
+        // نظام البحث المتقدم والذكي
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = 'flex';
+        }
+
+        function performGlobalSearch(query) {
+            const container = document.getElementById('searchResultsContainer');
+            if (!query.trim()) {
+                container.innerHTML = '<p style="font-size: 11px; color: #888; text-align: center; margin-top: 20px;">اكتب شيئاً للبحث الفوري...</p>';
+                return;
+            }
+            const matchedFeeds = feedData.filter(f => f.title.includes(query) || f.user.includes(query) || f.desc.includes(query));
+            const matchedLibs = libraryItems.filter(l => l.title.includes(query) || l.reciter.includes(query));
+            
+            if (matchedFeeds.length === 0 && matchedLibs.length === 0) {
+                container.innerHTML = '<p style="font-size: 11px; color: #888; text-align: center; margin-top: 20px;">لا توجد نتائج مطابقة لبحثك.</p>';
+                return;
+            }
+
+            container.innerHTML = [
+                ...matchedFeeds.map(f => `<div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">🎬 <strong>${f.title}</strong><p style="font-size:10px; color:#aaa;">بواسطة: ${f.user}</p></div>`),
+                ...matchedLibs.map(l => `<div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; color:#38bdf8;">📖 <strong>${l.title}</strong><p style="font-size:10px; color:#aaa;">${l.reciter}</p></div>`)
+            ].join('');
+        }
+
         // رفع الوسائط كالتيك توك
         function openDirectMediaPicker() {
             document.getElementById('directMediaInput').click();
@@ -528,7 +585,7 @@
             }
         }
 
-        // البث المباشر (تيك توك ستايل)
+        // البث المباشر مع الهدايا التفاعلية
         function triggerLiveNotification() {
             const title = document.getElementById('liveTitleInput').value.trim() || 'بث مباشر جديد';
             alert(`🔔 تم إرسال إشعار البث (${title}) بنجاح إلى جميع متابعيك!`);
@@ -544,6 +601,15 @@
             } catch (e) {
                 alert('يرجى السماح بالوصول للكاميرا والميكروفون لبدء البث.');
             }
+        }
+
+        function sendLiveGift(emoji) {
+            const container = document.getElementById('liveEffectsContainer');
+            const gift = document.createElement('div');
+            gift.className = 'gift-float';
+            gift.innerText = emoji;
+            container.appendChild(gift);
+            setTimeout(() => gift.remove(), 2000);
         }
 
         function endAndSaveLive() {
@@ -570,10 +636,6 @@
 
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
-        }
-
-        function openSearchModal() {
-            alert('🔍 ميزة البحث الشامل مفعلة في المنصة.');
         }
 
         window.onload = () => {
