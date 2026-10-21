@@ -8,8 +8,13 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
         html, body { width: 100%; height: 100%; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
 
+        /* شاشة تسجيل الدخول (تيك توك ستايل) */
+        #authScreen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; }
+        .auth-card { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 15px; text-align: center; }
+        .auth-logo { font-size: 48px; font-weight: 900; color: #38bdf8; letter-spacing: 2px; margin-bottom: 10px; }
+
         /* شاشة البداية */
-        #splashScreen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
+        #splashScreen { position: fixed; inset: 0; background: #000; z-index: 8888; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
         .splash-logo { font-size: 42px; font-weight: 900; color: #38bdf8; letter-spacing: 2px; }
 
         .page { display: none; height: 100dvh; overflow-y: auto; padding-bottom: 75px; }
@@ -66,8 +71,8 @@
         /* النافذة العامة */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .modal-card { background: #121624; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
-        .form-input { width: 100%; padding: 10px; background: #000; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 13px; outline: none; }
-        .primary-btn { background: #fe2c55; color: #fff; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; }
+        .form-input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 14px; outline: none; }
+        .primary-btn { background: #fe2c55; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; }
 
         /* الشريط السفلي */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: calc(60px + env(safe-area-inset-bottom, 0px)); background: #000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; z-index: 100; direction: rtl; }
@@ -85,6 +90,18 @@
     </style>
 </head>
 <body>
+
+    <!-- شاشة تسجيل الدخول وإنشاء الحساب (تيك توك ستايل) -->
+    <div id="authScreen" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-logo">QAIM</div>
+            <p style="font-size: 13px; color: #aaa; margin-bottom: 10px;">تسجيل الدخول أو إنشاء حساب جديد للمنصة</p>
+            <input type="text" id="authUsername" class="form-input" placeholder="اسم المستخدم (مثال: qaim_user)...">
+            <input type="password" id="authPassword" class="form-input" placeholder="الرمز السري (كلمة المرور)...">
+            <button class="primary-btn" onclick="handleUserAuth()">متابعة ودخول 🚀</button>
+            <span style="font-size: 11px; color: #666; margin-top: 10px;">إذا كان الحساب جديداً سيتم إنشاؤه تلقائياً بخصوصية تامة.</span>
+        </div>
+    </div>
 
     <!-- شاشة البداية -->
     <div id="splashScreen">
@@ -181,7 +198,7 @@
         </div>
     </div>
 
-    <!-- 4. مركز الإشعارات والتنبيهات المباشرة الجديد -->
+    <!-- 4. مركز الإشعارات والتنبيهات المباشرة -->
     <div id="page-notifications" class="page" style="padding: 20px; padding-top: 70px;">
         <h2 style="color: #38bdf8; margin-bottom: 15px;">🔔 مركز الإشعارات والتنبيهات</h2>
         <div id="notificationsContainer" style="display: flex; flex-direction: column; gap: 10px;">
@@ -192,10 +209,6 @@
             <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div><strong>👥 متابعة جديدة</strong><p style="font-size:11px; color:#aaa;">بدأ مستخدم جديد بمتابعتك.</p></div>
                 <span style="font-size:10px; color:#888;">منذ 10 دقائق</span>
-            </div>
-            <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
-                <div><strong>🔴 إشعار بث مباشر</strong><p style="font-size:11px; color:#aaa;">بدأ خادم القرآن بثاً مباشراً الآن.</p></div>
-                <span style="font-size:10px; color:#888;">الآن</span>
             </div>
         </div>
     </div>
@@ -222,15 +235,16 @@
         </div>
     </div>
 
-    <!-- 6. الملف الشخصي مع إدارة وحذف المنشورات الشخصية -->
+    <!-- 6. الملف الشخصي مع إدارة المنشورات وتسجيل الخروج -->
     <div id="page-profile" class="page" style="padding: 20px; padding-top: 70px; text-align: center;">
         <div id="profAvatar" style="width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; color: #000; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">👤</div>
         <h3 id="profNameDisplay">ناشر المنصة</h3>
         <p id="profUsernameDisplay" style="font-size: 12px; color: #888; margin-top: 4px;">@qaim_admin</p>
         
-        <div style="margin-top: 15px; display: flex; gap: 8px; justify-content: center;">
-            <button class="primary-btn" style="width: auto; padding: 6px 15px; font-size: 11px; background: #38bdf8; color: #000;" onclick="openEditProfile()">تعديل الملف ⚙️</button>
-            <button class="primary-btn" style="width: auto; padding: 6px 15px; font-size: 11px; background: #333;" onclick="clearMyProfileContent()">مسح محتوى الحساب 🗑️</button>
+        <div style="margin-top: 15px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+            <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #38bdf8; color: #000;" onclick="openEditProfile()">تعديل الملف ⚙️</button>
+            <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #333;" onclick="clearMyProfileContent()">مسح محتوى الحساب 🗑️</button>
+            <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #fe2c55;" onclick="logoutUser()">تسجيل الخروج 🚪</button>
         </div>
 
         <div style="display: flex; justify-content: space-around; margin-top: 20px; background: #111; padding: 15px; border-radius: 12px;">
@@ -253,7 +267,7 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي المطور (يتضمن الإشعارات) -->
+    <!-- شريط التنقل السفلي المطور -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('friends', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></button>
@@ -263,16 +277,44 @@
     </nav>
 
     <script>
+        // التحقق من تسجيل الدخول
+        let currentUser = JSON.parse(localStorage.getItem('qaim_active_user'));
+        if (!currentUser) {
+            document.getElementById('authScreen').style.display = 'flex';
+        }
+
+        function handleUserAuth() {
+            const u = document.getElementById('authUsername').value.trim();
+            const p = document.getElementById('authPassword').value.trim();
+            if (!u || !p) {
+                alert('يرجى إدخال اسم المستخدم والرمز السري.');
+                return;
+            }
+            currentUser = { name: u, username: '@' + u.replace('@', ''), password: p };
+            localStorage.setItem('qaim_active_user', JSON.stringify(currentUser));
+            document.getElementById('authScreen').style.display = 'none';
+            updateProfileUI();
+            loadFeed();
+        }
+
+        function logoutUser() {
+            if (confirm('هل تريد تسجيل الخروج من الحساب؟')) {
+                localStorage.removeItem('qaim_active_user');
+                location.reload();
+            }
+        }
+
         // إخفاء شاشة البداية
         setTimeout(() => {
-            document.getElementById('splashScreen').style.opacity = '0';
-            setTimeout(() => document.getElementById('splashScreen').style.display = 'none', 500);
+            const splash = document.getElementById('splashScreen');
+            if(splash) {
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 500);
+            }
         }, 1200);
 
-        // بيانات المستخدم والخصوصية المعزولة محلياً
-        let currentUser = JSON.parse(localStorage.getItem('qaim_user')) || { name: 'ناشر المنصة', username: '@qaim_admin' };
-        
         function updateProfileUI() {
+            if (!currentUser) return;
             document.getElementById('profNameDisplay').innerText = currentUser.name;
             document.getElementById('profUsernameDisplay').innerText = currentUser.username;
             document.getElementById('profAvatar').innerText = currentUser.name.charAt(0);
@@ -295,7 +337,6 @@
         let selectedMediaUrl = null;
 
         function saveLocalStorage() {
-            localStorage.setItem('qaim_user', JSON.stringify(currentUser));
             localStorage.setItem('qaim_feed', JSON.stringify(feedData));
             localStorage.setItem('qaim_lib', JSON.stringify(libraryItems));
         }
@@ -305,7 +346,7 @@
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
             feedData.forEach(item => {
-                const isMyPost = (item.username === currentUser.username || item.user === currentUser.name);
+                const isMyPost = currentUser && (item.username === currentUser.username || item.user === currentUser.name);
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.backgroundImage = `url('${item.bg}')`;
@@ -347,7 +388,7 @@
                 container.appendChild(card);
             });
             updateSavedUI();
-            updateProfileUI();
+            if(currentUser) updateProfileUI();
         }
 
         // مسح منشور محدد
@@ -362,6 +403,7 @@
 
         // عرض وإدارة المنشورات الشخصية في الملف الشخصي
         function renderMyPersonalPosts() {
+            if (!currentUser) return;
             const myPosts = feedData.filter(x => x.username === currentUser.username || x.user === currentUser.name);
             document.getElementById('myPostsCount').innerText = myPosts.length;
             const container = document.getElementById('myPersonalPostsContainer');
@@ -431,7 +473,7 @@
 
         function submitComment() {
             const input = document.getElementById('commentInputText');
-            if (input.value.trim() && activeCardForComments) {
+            if (input.value.trim() && activeCardForComments && currentUser) {
                 const item = feedData.find(x => x.id === activeCardForComments);
                 item.comments.push({ user: currentUser.name, text: input.value.trim() });
                 input.value = '';
@@ -533,6 +575,7 @@
         }
 
         function confirmPublish() {
+            if (!currentUser) return;
             const title = document.getElementById('newPostTitle').value.trim() || 'منشور جديد';
             const desc = document.getElementById('newPostDesc').value.trim() || '#المنهج_القويم';
             feedData.unshift({
@@ -559,6 +602,7 @@
 
         // تعديل الملف الشخصي والخصوصية
         function openEditProfile() {
+            if (!currentUser) return;
             document.getElementById('editNameInput').value = currentUser.name;
             document.getElementById('editUsernameInput').value = currentUser.username;
             document.getElementById('editProfileModal').style.display = 'flex';
@@ -569,13 +613,14 @@
             const username = document.getElementById('editUsernameInput').value.trim();
             if (name) currentUser.name = name;
             if (username) currentUser.username = username;
-            saveLocalStorage();
+            localStorage.setItem('qaim_active_user', JSON.stringify(currentUser));
             updateProfileUI();
             loadFeed();
             closeModal('editProfileModal');
         }
 
         function clearMyProfileContent() {
+            if (!currentUser) return;
             if (confirm('هل أنت متأكد من مسح محتوى حسابك وإعادة ضبطه؟')) {
                 feedData = feedData.filter(x => x.username !== currentUser.username && x.user !== currentUser.name);
                 saveLocalStorage();
@@ -631,7 +676,7 @@
             if (btn) btn.classList.add('active');
             closeCommentsSheet();
             if (pageId === 'library') loadLibrary();
-            if (pageId === 'profile') updateProfileUI();
+            if (pageId === 'profile' && currentUser) updateProfileUI();
         }
 
         function closeModal(id) {
@@ -639,8 +684,10 @@
         }
 
         window.onload = () => {
-            loadFeed();
-            loadLibrary();
+            if (currentUser) {
+                loadFeed();
+                loadLibrary();
+            }
         };
     </script>
 </body>
