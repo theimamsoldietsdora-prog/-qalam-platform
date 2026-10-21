@@ -19,7 +19,8 @@
         /* الشريط العلوي */
         .top-bar { position: absolute; top: env(safe-area-inset-top, 10px); left: 0; right: 0; height: 50px; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
         .top-tabs { display: flex; gap: 15px; font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.6); }
-        .top-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+        .top-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; cursor: pointer; }
+        .top-tab { cursor: pointer; }
         .live-btn { background: #fe2c55; color: #fff; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 4px; border: none; cursor: pointer; }
 
         /* الشاشة الرئيسية - الفييد */
@@ -35,23 +36,22 @@
         .title-text { font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
         .desc-text { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.3; }
 
-        /* 📍 تثبيت الشريط الجانبي في الجاهة اليسرى (LEFT) كالتيك توك تماماً */
+        /* 📍 تثبيت الشريط الجانبي في الجهة اليسرى (LEFT) كالتيك توك تماماً */
         .side-actions { position: absolute; left: 15px; bottom: calc(100px + env(safe-area-inset-bottom, 15px)); display: flex; flex-direction: column; gap: 16px; z-index: 20; align-items: center; }
         .action-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .action-btn { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); border: none; width: 44px; height: 44px; border-radius: 50%; color: white; display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; transition: transform 0.1s; }
         .action-btn:active { transform: scale(0.85); }
         .action-text { font-size: 11px; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
-        .follow-avatar { position: relative; margin-bottom: 6px; }
+        .follow-avatar { position: relative; margin-bottom: 6px; cursor: pointer; }
         .avatar-img { width: 46px; height: 46px; border-radius: 50%; background: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; border: 2px solid #fff; font-size: 18px; }
-        .follow-plus { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); background: #fe2c55; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; border: 2px solid #000; cursor: pointer; }
+        .follow-plus { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); background: #fe2c55; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; border: 2px solid #000; }
         .follow-plus.followed { background: #38bdf8; }
 
-        /* حالة الألوان المطلوبة */
+        /* حالة ألوان زر الإعجاب والحفظ */
         .heart-btn.green { color: #22c55e; }
         .heart-btn.red { color: #fe2c55; }
         .heart-btn.blue { color: #38bdf8; }
-
         .save-btn.white { color: #ffffff; }
         .save-btn.red { color: #fe2c55; }
 
@@ -60,10 +60,11 @@
         .disc-icon { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #fe2c55); color: white; display: flex; justify-content: center; align-items: center; font-size: 8px; animation: spin 3s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* صندوق التعليقات TIKTOK */
-        .comments-modal { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(18, 22, 36, 0.98); backdrop-filter: blur(20px); border-radius: 20px 20px 0 0; padding: 15px; z-index: 2000; display: none; flex-direction: column; gap: 10px; max-height: 50vh; border-top: 1px solid rgba(255,255,255,0.1); }
-        .comments-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 250px; }
-        .comment-item { background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 10px; font-size: 12px; display: flex; justify-content: space-between; }
+        /* الشاشات والنوافذ التفاعلية (بدون رسائل alert منبثقة) */
+        .sheet-modal { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(18, 22, 36, 0.98); backdrop-filter: blur(20px); border-radius: 20px 20px 0 0; padding: 15px; z-index: 2000; display: none; flex-direction: column; gap: 10px; max-height: 75vh; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sheet-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        .sheet-title { font-size: 14px; font-weight: bold; color: #38bdf8; }
+        .close-btn { background: none; border: none; color: #fe2c55; font-size: 18px; cursor: pointer; }
 
         /* الشريط السفلي */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: calc(60px + env(safe-area-inset-bottom, 0px)); background: #000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; z-index: 100; direction: rtl; }
@@ -73,11 +74,14 @@
         
         .tiktok-plus-btn { width: 45px; height: 28px; background: linear-gradient(90deg, #25f4ee, #fe2c55); border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; font-size: 20px; cursor: pointer; }
 
-        /* النوافذ المودال */
+        /* العناصر والعصا العامة */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .modal-card { background: #121624; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 12px; }
         .form-input { width: 100%; padding: 10px; background: #000; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 13px; outline: none; }
-        .primary-btn { background: #fe2c55; color: #fff; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .primary-btn { background: #fe2c55; color: #fff; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; }
+
+        /* بطاقات الكتب */
+        .book-card { background: #121624; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -88,135 +92,185 @@
         <div style="font-size: 12px; color: #888; margin-top: 8px;">منصة المنهج القويم</div>
     </div>
 
-    <!-- نافذة النشر بالمرحلتين -->
-    <div id="uploadModal" class="modal-overlay">
+    <!-- مدخل اختياري مباشر لمكتبة الهاتف لرفع الوسائط كالتيك توك -->
+    <input type="file" id="directMediaInput" accept="image/*,video/*" style="display: none;" onchange="handleFileSelected(this)">
+
+    <!-- نافذة نشر وتعديل المعاينة بالمرحلتين -->
+    <div id="previewPublishModal" class="modal-overlay">
         <div class="modal-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="color:#fe2c55; font-size:15px;" id="uploadStepTitle">➕ نشر منشور جديد (المرحلة 1)</h3>
-                <button onclick="closeUploadModal()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✕</button>
+            <div class="sheet-header">
+                <span class="sheet-title">✨ معاينة وتعديل المنشور قبل النشر</span>
+                <button class="close-btn" onclick="closeModal('previewPublishModal')">✕</button>
             </div>
             
-            <div id="step1Box" style="display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="postTitle" class="form-input" placeholder="عنوان المنشور...">
-                <textarea id="postDesc" class="form-input" style="height:60px;" placeholder="الوصف والهاشتاغات..."></textarea>
-                <input type="file" id="postMedia" accept="image/*,video/*" class="form-input">
-                <button class="primary-btn" onclick="goToStep2()">التالي للمعاينة ➡️</button>
-            </div>
-
-            <div id="step2Box" style="display:none; flex-direction:column; gap:10px; text-align:center;">
-                <div style="background:#000; padding:10px; border-radius:10px;">
-                    <h4 id="prevTitle" style="color:#38bdf8;">-</h4>
-                    <p id="prevDesc" style="font-size:11px; color:#aaa;">-</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div id="mediaPreviewBox" style="width: 100%; height: 160px; background: #000; border-radius: 10px; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 1px dashed #444;">
+                    <span style="font-size: 11px; color: #888;">جاري تحميل الوسائط...</span>
                 </div>
-                <button class="primary-btn" style="background:#25f4ee; color:#000;" onclick="publishPostNow()">نشر الآن 🚀</button>
-                <button onclick="backToStep1()" style="background:none; border:none; color:#888; font-size:11px;">تعديل البيانات</button>
+                <input type="text" id="newPostTitle" class="form-input" placeholder="عنوان المنشور...">
+                <textarea id="newPostDesc" class="form-input" style="height: 60px;" placeholder="الوصف والهاشتاغات..."></textarea>
+                
+                <div style="display: flex; gap: 8px;">
+                    <button class="primary-btn" style="flex: 1; background: #25f4ee; color: #000;" onclick="confirmPublish()">نشر الآن 🚀</button>
+                    <button class="primary-btn" style="flex: 1; background: #333;" onclick="closeModal('previewPublishModal')">تراجع / إلغاء</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- نافذة التعليقات -->
-    <div id="commentsModal" class="comments-modal">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:8px;">
-            <span style="font-size:13px; font-weight:bold; color:#38bdf8;">التعليقات والمناقشات</span>
-            <button onclick="closeComments()" style="background:none; border:none; color:#fe2c55; font-size:16px; cursor:pointer;">✕</button>
+    <!-- نافذة واجهة المحادثة الخاصة المباشرة (بدون alert) -->
+    <div id="chatModal" class="sheet-modal" style="height: 80vh;">
+        <div class="sheet-header">
+            <span class="sheet-title" id="chatTargetUser">💬 المحادثة الخاصة</span>
+            <button class="close-btn" onclick="closeModal('chatModal')">✕</button>
         </div>
-        <div class="comments-list" id="commentsContainer">
-            <div class="comment-item">
-                <span><strong>كرار:</strong> منشور مبارك وفقكم الله.</span>
-                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">مسح</button>
-            </div>
+        <div id="chatMessagesBox" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 5px;">
+            <div style="align-self: flex-start; background: #1e293b; padding: 8px 12px; border-radius: 10px; font-size: 12px;">أهلاً بك! مرحباً بك في منصة القويم.</div>
         </div>
-        <div style="display:flex; gap:6px;">
+        <div style="display: flex; gap: 6px;">
+            <input type="text" id="chatInput" class="form-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+            <button class="primary-btn" style="width: auto; padding: 0 15px;" onclick="sendChatMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <!-- واجهة التعليقات المباشرة -->
+    <div id="commentsModal" class="sheet-modal">
+        <div class="sheet-header">
+            <span class="sheet-title">💬 المناقشات والتعليقات</span>
+            <button class="close-btn" onclick="closeModal('commentsModal')">✕</button>
+        </div>
+        <div id="commentsContainer" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 250px;"></div>
+        <div style="display: flex; gap: 6px;">
             <input type="text" id="commentInput" class="form-input" placeholder="اكتب تعليقاً..." onkeypress="if(event.key==='Enter') submitComment()">
-            <button class="primary-btn" style="width:auto; padding:0 15px;" onclick="submitComment()">إرسال</button>
+            <button class="primary-btn" style="width: auto; padding: 0 15px;" onclick="submitComment()">إرسال</button>
         </div>
     </div>
 
-    <!-- 1. الصفحة الرئيسية -->
+    <!-- واجهة البحث الشامل المباشرة (🔍) -->
+    <div id="searchModal" class="sheet-modal" style="height: 70vh;">
+        <div class="sheet-header">
+            <span class="sheet-title">🔍 البحث الشامل في المنصة</span>
+            <button class="close-btn" onclick="closeModal('searchModal')">✕</button>
+        </div>
+        <input type="text" id="searchInput" class="form-input" placeholder="ابحث عن متابعين، كتب، منشورات، صوتيات..." oninput="performSearch(this.value)">
+        <div id="searchResults" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 5px;">
+            <p style="font-size: 11px; color: #888; text-align: center;">اكتب كلمة البحث للبدء...</p>
+        </div>
+    </div>
+
+    <!-- 1. الصفحة الرئيسية (الفييد) -->
     <div id="page-home" class="page active">
         <div class="top-bar">
             <button class="live-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[0])">LIVE</button>
             <div class="top-tabs">
-                <span class="top-tab" onclick="switchTab(this, 'أتابعه')">أتابعه</span>
-                <span class="top-tab" onclick="switchTab(this, 'المجتمع')">المجتمع</span>
-                <span class="top-tab active" onclick="switchTab(this, 'لك')">لَكْ</span>
+                <span class="top-tab" onclick="switchTab(this)">أتابعه</span>
+                <span class="top-tab" onclick="switchTab(this)">المجتمع</span>
+                <span class="top-tab active" onclick="switchTab(this)">لَكْ</span>
+                <span class="top-tab" onclick="switchPage('books', null)" style="color: #38bdf8;">📚 الكتب</span>
             </div>
-            <button style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="openSearch()">🔍</button>
+            <button style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="openSearchModal()">🔍</button>
         </div>
 
         <div class="feed" id="mainFeedContainer"></div>
     </div>
 
-    <!-- 2. الأصدقاء -->
-    <div id="page-friends" class="page" style="padding:20px; padding-top:70px;">
-        <h2>👥 الأصدقاء والمتابعون</h2>
-        <div id="friendsList" style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
-            <p style="font-size:12px; color:#888;">منشورات وتحديثات الأصدقاء تظهر هنا تباعاً.</p>
-        </div>
-    </div>
-
-    <!-- 3. صندوق الوارد -->
-    <div id="page-inbox" class="page" style="padding:20px; padding-top:70px;">
-        <h2>💬 صندوق الوارد والمراسلات</h2>
-        <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
-            <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <strong style="font-size:13px; color:#fff;">@متابع_جديد</strong>
-                    <p style="font-size:10px; color:#888;">بدأ بمتابعتك الآن</p>
-                </div>
-                <button class="primary-btn" style="width:auto; padding:5px 10px; font-size:11px;" onclick="alert('فتح المراسلة الخاصة')">مراسلة 💬</button>
+    <!-- 2. قسم الكتب والمقالات الحصري -->
+    <div id="page-books" class="page" style="padding: 20px; padding-top: 70px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2>📚 المكتبة والمقالات</h2>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 10px; color: #888;">وضع الناشر (أدمن):</span>
+                <input type="checkbox" id="adminModeToggle" onchange="toggleAdminPublisherMode(this.checked)">
             </div>
         </div>
-    </div>
 
-    <!-- 4. البث المباشر -->
-    <div id="page-live" class="page" style="background:#000; padding:20px; padding-top:70px; text-align:center;">
-        <h2 style="color:#fe2c55;">🔴 غرفة البث المباشر</h2>
-        <p style="font-size:12px; color:#888; margin-top:10px;">قم بتهيئة العنوان وتفعيل الكاميرا للبدء الحي:</p>
-        <input type="text" id="liveTitle" class="form-input" style="margin-top:15px; text-align:center;" placeholder="عنوان البث المباشر...">
-        <button class="primary-btn" style="margin-top:15px;" onclick="startLiveCamera()">تفعيل الكاميرا والبدء 🎥</button>
-        <video id="liveCam" autoplay playsinline muted style="width:100%; border-radius:15px; margin-top:15px; display:none; height:200px; object-fit:cover;"></video>
-    </div>
-
-    <!-- 5. الملف الشخصي -->
-    <div id="page-profile" class="page" style="padding:20px; padding-top:70px; text-align:center;">
-        <div style="width:80px; height:80px; border-radius:50%; background:#38bdf8; color:#000; font-size:32px; font-weight:bold; display:flex; align-items:center; justify-content:center; margin:0 auto 10px;">👤</div>
-        <h3 id="profName">حيدر حميد محمد ال عگاب</h3>
-        <p style="font-size:12px; color:#888; margin-top:4px;">@haider_algab</p>
-        <p id="profBio" style="font-size:12px; color:#aaa; margin-top:6px;" onclick="editBio()">اضغط هنا لتعديل السيرة الذاتية (Bio)...</p>
-
-        <div style="display:flex; justify-content:space-around; margin-top:20px; background:#111; padding:15px; border-radius:12px;">
-            <div><h4>5637</h4><span style="font-size:10px; color:#888;">الإعجابات</span></div>
-            <div><h4>142</h4><span style="font-size:10px; color:#888;">المتابعون</span></div>
-            <div><h4>85</h4><span style="font-size:10px; color:#888;">أتابعهم</span></div>
+        <!-- صندوق نشر كتاب جديد (يظهر كخيار للنشر للناشر فقط) -->
+        <div id="adminBookPublishBox" style="display: none; background: #121624; border: 1px solid #38bdf8; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
+            <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 8px;">➕ إضافة كتاب/مقالة جديدة (خاص بالناشر)</h4>
+            <input type="text" id="bookTitle" class="form-input" placeholder="عنوان الكتاب أو المقالة..." style="margin-bottom: 6px;">
+            <textarea id="bookDesc" class="form-input" style="height: 50px; margin-bottom: 6px;" placeholder="نبذة مختصرة أو نص المقال..."></textarea>
+            <input type="file" id="bookMedia" accept="image/*,video/*,application/pdf" class="form-input" style="margin-bottom: 6px;">
+            <button class="primary-btn" onclick="publishNewBook()">نشر الكتاب للجميع 🚀</button>
         </div>
 
-        <div style="margin-top:20px; text-align:right; background:#121624; padding:15px; border-radius:12px;">
-            <h4 style="color:#38bdf8; font-size:13px; margin-bottom:10px;">💾 المحفوظات الخاصية</h4>
-            <div id="savedContainer" style="font-size:11px; color:#aaa;">لا توجد عناصر محفوظة حتى الآن.</div>
+        <div id="booksContainer"></div>
+    </div>
+
+    <!-- 3. الأصدقاء والمتابعون -->
+    <div id="page-friends" class="page" style="padding: 20px; padding-top: 70px;">
+        <h2>👥 الأصدقاء والمتابعون</h2>
+        <div id="friendsList" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
+
+    <!-- 4. صندوق الوارد والمراسلات المباشرة -->
+    <div id="page-inbox" class="page" style="padding: 20px; padding-top: 70px;">
+        <h2>💬 صندوق الوارد والمراسلات</h2>
+        <div id="inboxList" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
+
+    <!-- 5. البث المباشر -->
+    <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center;">
+        <h2 style="color: #fe2c55;">🔴 غرفة البث المباشر</h2>
+        <p style="font-size: 12px; color: #888; margin-top: 10px;">قم بتهيئة العنوان وتفعيل الكاميرا للبدء الحي:</p>
+        <input type="text" id="liveTitle" class="form-input" style="margin-top: 15px; text-align: center;" placeholder="عنوان البث المباشر...">
+        <button class="primary-btn" style="margin-top: 15px;" onclick="startLiveCamera()">تفعيل الكاميرا والبدء 🎥</button>
+        <video id="liveCam" autoplay playsinline muted style="width: 100%; border-radius: 15px; margin-top: 15px; display: none; height: 200px; object-fit: cover;"></video>
+    </div>
+
+    <!-- 6. الملف الشخصي -->
+    <div id="page-profile" class="page" style="padding: 20px; padding-top: 70px; text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; color: #000; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">👤</div>
+        <h3>ناشر المنصة</h3>
+        <p style="font-size: 12px; color: #888; margin-top: 4px;">@qaim_admin</p>
+        
+        <div style="display: flex; justify-content: space-around; margin-top: 20px; background: #111; padding: 15px; border-radius: 12px;">
+            <div><h4 id="profLikes">5637</h4><span style="font-size: 10px; color: #888;">الإعجابات</span></div>
+            <div><h4>142</h4><span style="font-size: 10px; color: #888;">المتابعون</span></div>
+            <div><h4>85</h4><span style="font-size: 10px; color: #888;">أتابعهم</span></div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: right; background: #121624; padding: 15px; border-radius: 12px;">
+            <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 10px;">💾 المحفوظات والكتب المحفوظة</h4>
+            <div id="savedContainer" style="font-size: 11px; color: #aaa;">لا توجد عناصر محفوظة حتى الآن.</div>
         </div>
     </div>
 
     <!-- شريط التنقل السفلي -->
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الصفحة الرئيسية</span></button>
+        <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('friends', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></button>
-        <div class="tiktok-plus-btn" onclick="openUploadModal()">+</div>
+        <!-- زر النشر المباشر الموصل بمكتبة صور الهاتف كالتيك توك -->
+        <div class="tiktok-plus-btn" onclick="openDirectMediaPicker()">+</div>
         <button class="nav-item" onclick="switchPage('inbox', this)"><span class="nav-icon">💬</span><span>صندوق الوارد</span></button>
         <button class="nav-item" onclick="switchPage('profile', this)"><span class="nav-icon">👤</span><span>الملف الشخصي</span></button>
     </nav>
 
     <script>
+        // إخفاء شاشة البداية
         setTimeout(() => {
             document.getElementById('splashScreen').style.opacity = '0';
             setTimeout(() => document.getElementById('splashScreen').style.display = 'none', 500);
-        }, 1500);
+        }, 1200);
 
+        // البيانات الرئيسية
         let feedData = [
-            { id: 1, user: 'حيدر حميد محمد ال عگab', title: 'البلاغ الأول لمنصة المنهج القويم', desc: 'منبر فكري وعلمي لنشر العلوم الحقة.', likes: 5637, heartState: 'green', followed: false, saved: false, shared: false, comments: 316, bg: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80', audio: 'صوت الفيديو الأصلي' },
-            { id: 2, user: 'خادم القرآن', title: 'تلاوة خاشعة - سورة الرحمن', desc: '«فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»', likes: 890, heartState: 'green', followed: true, saved: true, shared: false, comments: 45, bg: 'https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=800&q=80', audio: 'تلاوة سورة الفاتحة - الشيخ عبد الباسط' }
+            { id: 1, user: 'ناشر المنصة', title: 'البلاغ الأول لمنصة المنهج القويم', desc: 'منبر فكري وعلمي لنشر العلوم الحقة.', likes: 5637, heartState: 'green', followed: false, saved: false, shared: false, comments: [], bg: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80', audio: 'صوت الفيديو الأصلي' },
+            { id: 2, user: 'خادم القرآن', title: 'تلاوة خاشعة - سورة الرحمن', desc: '«فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»', likes: 890, heartState: 'green', followed: true, saved: true, shared: false, comments: [], bg: 'https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=800&q=80', audio: 'تلاوة الشيخ عبد الباسط' }
         ];
 
+        let booksData = [
+            { id: 101, title: 'كتاب رسالة التوحيد والمعرفة', desc: 'دراسة جامعة في الأصول والعلوم.', author: 'ناشر المنصة', file: 'رابط الملف المرفق', saved: false }
+        ];
+
+        let friendsData = [
+            { id: 1, name: 'أحمد علي', user: '@ahmed_a' },
+            { id: 2, name: 'حسين البصري', user: '@hussain_b' }
+        ];
+
+        let activeCardId = null;
+        let selectedMediaUrl = null;
+
+        // تحميل المنشورات في الصفحة الرئيسية
         function loadFeed() {
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
@@ -227,26 +281,26 @@
                 card.innerHTML = `
                     <div class="card-overlay"></div>
                     
-                    <!-- 📍 الشريط الجانبي مثبت بوضوح في الجاهة اليسرى (LEFT) -->
+                    <!-- 📍 الشريط الجانبي الأيسر كالتيك توك -->
                     <div class="side-actions">
                         <div class="follow-avatar" onclick="toggleFollow(${item.id})">
                             <div class="avatar-img">${item.user.charAt(0)}</div>
                             <div class="follow-plus ${item.followed ? 'followed' : ''}">${item.followed ? '✓' : '+'}</div>
                         </div>
                         <div class="action-item">
-                            <button class="action-btn heart-btn ${item.heartState}" onclick="toggleLike(${item.id}, this)">❤️</button>
+                            <button class="action-btn heart-btn ${item.heartState}" onclick="toggleLike(${item.id})">❤️</button>
                             <span class="action-text">${item.likes}</span>
                         </div>
                         <div class="action-item">
-                            <button class="action-btn" onclick="openComments()">💬</button>
-                            <span class="action-text">${item.comments}</span>
+                            <button class="action-btn" onclick="openCommentsModal(${item.id})">💬</button>
+                            <span class="action-text">${item.comments.length}</span>
                         </div>
                         <div class="action-item">
-                            <button class="action-btn save-btn ${item.saved ? 'red' : 'white'}" onclick="toggleSave(${item.id}, this)">🔖</button>
+                            <button class="action-btn save-btn ${item.saved ? 'red' : 'white'}" onclick="toggleSave(${item.id})">🔖</button>
                             <span class="action-text">${item.saved ? 'محفوظ' : 'حفظ'}</span>
                         </div>
                         <div class="action-item">
-                            <button class="action-btn" onclick="toggleShare(${item.id}, this)">↗️</button>
+                            <button class="action-btn" onclick="toggleShare(${item.id})">↗️</button>
                             <span class="action-text">${item.shared ? 'مشارَك' : 'مشاركة'}</span>
                         </div>
                     </div>
@@ -265,16 +319,13 @@
             });
         }
 
-        // تشغيل الوظائف التفاعلية للأزرار
+        // تفاعلات الأزرار المباشرة (بدون alert)
         function toggleFollow(id) {
             const item = feedData.find(x => x.id === id);
-            if (item) {
-                item.followed = !item.followed;
-                loadFeed();
-            }
+            if (item) { item.followed = !item.followed; loadFeed(); }
         }
 
-        function toggleLike(id, btn) {
+        function toggleLike(id) {
             const item = feedData.find(x => x.id === id);
             if (item) {
                 if (item.heartState === 'green') { item.heartState = 'red'; item.likes += 1; }
@@ -284,7 +335,7 @@
             }
         }
 
-        function toggleSave(id, btn) {
+        function toggleSave(id) {
             const item = feedData.find(x => x.id === id);
             if (item) {
                 item.saved = !item.saved;
@@ -293,58 +344,42 @@
             }
         }
 
-        function toggleShare(id, btn) {
+        function toggleShare(id) {
             const item = feedData.find(x => x.id === id);
             if (item) {
                 item.shared = !item.shared;
                 loadFeed();
-                alert(item.shared ? 'تمت مشاركة المنشور للعام بنجاح!' : 'تم التراجع عن المشاركة.');
             }
         }
 
-        // التعليقات
-        function openComments() { document.getElementById('commentsModal').style.display = 'flex'; }
-        function closeComments() { document.getElementById('commentsModal').style.display = 'none'; }
-        
-        function submitComment() {
-            const input = document.getElementById('commentInput');
-            if (input.value.trim() !== '') {
-                const container = document.getElementById('commentsContainer');
-                const div = document.createElement('div');
-                div.className = 'comment-item';
-                div.innerHTML = `<span><strong>أنت:</strong> ${input.value}</span><button onclick="this.parentElement.remove()" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">مسح</button>`;
-                container.appendChild(div);
-                input.value = '';
+        // فتح مكتبة وسائط الجهاز مباشرة بالنقر على (+)
+        function openDirectMediaPicker() {
+            document.getElementById('directMediaInput').click();
+        }
+
+        function handleFileSelected(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                selectedMediaUrl = URL.createObjectURL(file);
+                const mediaBox = document.getElementById('mediaPreviewBox');
+                
+                if (file.type.startsWith('video/')) {
+                    mediaBox.innerHTML = `<video src="${selectedMediaUrl}" autoplay loop muted style="width:100%; height:100%; object-fit:cover;"></video>`;
+                } else {
+                    mediaBox.innerHTML = `<img src="${selectedMediaUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
+                
+                document.getElementById('previewPublishModal').style.display = 'flex';
             }
         }
 
-        // رفع المنشورات
-        function openUploadModal() { document.getElementById('uploadModal').style.display = 'flex'; }
-        function closeUploadModal() { document.getElementById('uploadModal').style.display = 'none'; }
-        
-        function goToStep2() {
-            const title = document.getElementById('postTitle').value.trim();
-            const desc = document.getElementById('postDesc').value.trim();
-            if (!title) { alert('يرجى إدخال العنوان.'); return; }
-            document.getElementById('prevTitle').innerText = title;
-            document.getElementById('prevDesc').innerText = desc;
-            document.getElementById('step1Box').style.display = 'none';
-            document.getElementById('step2Box').style.display = 'flex';
-            document.getElementById('uploadStepTitle').innerText = '✨ معاينة المنشور قبل النشر';
-        }
+        function confirmPublish() {
+            const title = document.getElementById('newPostTitle').value.trim() || 'منشور جديد';
+            const desc = document.getElementById('newPostDesc').value.trim() || 'وصف المنشور...';
 
-        function backToStep1() {
-            document.getElementById('step1Box').style.display = 'flex';
-            document.getElementById('step2Box').style.display = 'none';
-            document.getElementById('uploadStepTitle').innerText = '➕ نشر منشور جديد (المرحلة 1)';
-        }
-
-        function publishPostNow() {
-            const title = document.getElementById('postTitle').value.trim();
-            const desc = document.getElementById('postDesc').value.trim();
             feedData.unshift({
                 id: Date.now(),
-                user: 'حيدر حميد محمد ال عگاب',
+                user: 'ناشر المنصة',
                 title: title,
                 desc: desc,
                 likes: 1,
@@ -352,16 +387,173 @@
                 followed: false,
                 saved: false,
                 shared: false,
-                comments: 0,
-                bg: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80',
-                audio: 'صوت الفيديو الأصلي'
+                comments: [],
+                bg: selectedMediaUrl || 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80',
+                audio: 'صوت مخصص'
             });
+
             loadFeed();
-            closeUploadModal();
-            backToStep1();
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postDesc').value = '';
-            alert('تم نشر المنشور فوراً!');
+            closeModal('previewPublishModal');
+            document.getElementById('newPostTitle').value = '';
+            document.getElementById('newPostDesc').value = '';
+            switchPage('home', document.querySelectorAll('.nav-item')[0]);
+        }
+
+        // إدارة التعليقات
+        function openCommentsModal(id) {
+            activeCardId = id;
+            const item = feedData.find(x => x.id === id);
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = '';
+            
+            if (item.comments.length === 0) {
+                container.innerHTML = `<p style="font-size:11px; color:#888; text-align:center;">لا توجد تعليقات بعد، كن أول المعلقين!</p>`;
+            } else {
+                item.comments.forEach((c, index) => {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:10px; font-size:12px; display:flex; justify-content:space-between; align-items:center;';
+                    div.innerHTML = `<span><strong>${c.user}:</strong> ${c.text}</span><button onclick="deleteComment(${index})" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer;">مسح</button>`;
+                    container.appendChild(div);
+                });
+            }
+            document.getElementById('commentsModal').style.display = 'flex';
+        }
+
+        function submitComment() {
+            const input = document.getElementById('commentInput');
+            if (input.value.trim() !== '' && activeCardId) {
+                const item = feedData.find(x => x.id === activeCardId);
+                if (item) {
+                    item.comments.push({ user: 'زائر', text: input.value.trim() });
+                    input.value = '';
+                    openCommentsModal(activeCardId);
+                    loadFeed();
+                }
+            }
+        }
+
+        function deleteComment(index) {
+            if (activeCardId) {
+                const item = feedData.find(x => x.id === activeCardId);
+                if (item) {
+                    item.comments.splice(index, 1);
+                    openCommentsModal(activeCardId);
+                    loadFeed();
+                }
+            }
+        }
+
+        // واجهة الكتب والمقالات
+        function loadBooks() {
+            const container = document.getElementById('booksContainer');
+            container.innerHTML = '';
+            booksData.forEach(book => {
+                const div = document.createElement('div');
+                div.className = 'book-card';
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h3 style="font-size:14px; color:#38bdf8;">📖 ${book.title}</h3>
+                        <button onclick="toggleSaveBook(${book.id})" style="background:none; border:none; color:${book.saved ? '#fe2c55' : '#888'}; cursor:pointer;">🔖</button>
+                    </div>
+                    <p style="font-size:12px; color:#ccc;">${book.desc}</p>
+                    <div style="font-size:10px; color:#888;">الناشر: ${book.author}</div>
+                    <div style="display:flex; gap:8px; margin-top:6px;">
+                        <button class="primary-btn" style="flex:1; padding:6px; font-size:11px;" onclick="openBookReader('${book.title}')">قراءة الآن 👁️</button>
+                        <button class="primary-btn" style="flex:1; padding:6px; font-size:11px; background:#333;" onclick="deleteBook(${book.id})">حذف / تراجع</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleAdminPublisherMode(isPublisher) {
+            document.getElementById('adminBookPublishBox').style.display = isPublisher ? 'block' : 'none';
+        }
+
+        function publishNewBook() {
+            const title = document.getElementById('bookTitle').value.trim();
+            const desc = document.getElementById('bookDesc').value.trim();
+            if (title) {
+                booksData.unshift({ id: Date.now(), title: title, desc: desc, author: 'ناشر المنصة', saved: false });
+                document.getElementById('bookTitle').value = '';
+                document.getElementById('bookDesc').value = '';
+                loadBooks();
+            }
+        }
+
+        function deleteBook(id) {
+            booksData = booksData.filter(x => x.id !== id);
+            loadBooks();
+        }
+
+        function toggleSaveBook(id) {
+            const b = booksData.find(x => x.id === id);
+            if (b) { b.saved = !b.saved; loadBooks(); updateSavedUI(); }
+        }
+
+        function openBookReader(title) {
+            openChatModal('قراءة كتاب: ' + title);
+        }
+
+        // واجهة المحادثة المباشرة والصندوق الوارد
+        function openChatModal(userName) {
+            document.getElementById('chatTargetUser').innerText = '💬 ' + userName;
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            if (input.value.trim() !== '') {
+                const box = document.getElementById('chatMessagesBox');
+                const div = document.createElement('div');
+                div.style.cssText = 'align-self: flex-end; background:#fe2c55; padding:8px 12px; border-radius:10px; font-size:12px; color:#fff;';
+                div.innerText = input.value.trim();
+                box.appendChild(div);
+                input.value = '';
+                box.scrollTop = box.scrollHeight;
+            }
+        }
+
+        function loadInboxAndFriends() {
+            const friendsBox = document.getElementById('friendsList');
+            friendsBox.innerHTML = friendsData.map(f => `
+                <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>${f.name}</strong><p style="font-size:10px; color:#888;">${f.user}</p></div>
+                    <button class="primary-btn" style="width:auto; padding:6px 12px; font-size:11px;" onclick="openChatModal('${f.name}')">مراسلة 💬</button>
+                </div>
+            `).join('');
+
+            const inboxBox = document.getElementById('inboxList');
+            inboxBox.innerHTML = friendsData.map(f => `
+                <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>${f.name}</strong><p style="font-size:10px; color:#888;">آخر رسالة: مرحباً بك...</p></div>
+                    <button class="primary-btn" style="width:auto; padding:6px 12px; font-size:11px; background:#38bdf8; color:#000;" onclick="openChatModal('${f.name}')">فتح المحادثة 💬</button>
+                </div>
+            `).join('');
+        }
+
+        // واجهة البحث الشامل (🔍)
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = 'flex';
+        }
+
+        function performSearch(query) {
+            const results = document.getElementById('searchResults');
+            results.innerHTML = '';
+            if (!query.trim()) return;
+
+            const matchedFeed = feedData.filter(x => x.title.includes(query) || x.desc.includes(query));
+            const matchedBooks = booksData.filter(x => x.title.includes(query));
+
+            matchedFeed.forEach(f => {
+                results.innerHTML += `<div style="background:#121624; padding:8px; border-radius:8px; font-size:11px;">🎬 منشور: ${f.title}</div>`;
+            });
+            matchedBooks.forEach(b => {
+                results.innerHTML += `<div style="background:#121624; padding:8px; border-radius:8px; font-size:11px; color:#38bdf8;">📚 كتاب: ${b.title}</div>`;
+            });
+            if (matchedFeed.length === 0 && matchedBooks.length === 0) {
+                results.innerHTML = `<p style="font-size:11px; color:#888; text-align:center;">لا توجد نتائج مطابقة.</p>`;
+            }
         }
 
         // البث المباشر
@@ -371,32 +563,28 @@
                 const video = document.getElementById('liveCam');
                 video.srcObject = stream;
                 video.style.display = 'block';
-                alert('🔴 بدأ البث المباشر الحي الان!');
-            } catch (e) { alert('يرجى إعطاء صلاحية الكاميرا.'); }
-        }
-
-        function editBio() {
-            const bio = prompt('أدخل السيرة الذاتية الجديدة:');
-            if (bio) document.getElementById('profBio').innerText = bio;
-        }
-
-        function updateSavedUI() {
-            const saved = feedData.filter(x => x.saved);
-            const container = document.getElementById('savedContainer');
-            if (saved.length === 0) container.innerText = 'لا توجد عناصر محفوظة حتى الآن.';
-            else {
-                container.innerHTML = saved.map(s => `<div style="padding:4px 0; border-bottom:1px solid #333;">📌 ${s.title}</div>`).join('');
+            } catch (e) {
+                openChatModal('ملاحظة الكاميرا: يرجى السماح بالوصول للكاميرا للبث.');
             }
         }
 
-        function switchTab(el, name) {
-            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
+        function updateSavedUI() {
+            const savedFeed = feedData.filter(x => x.saved);
+            const savedBooks = booksData.filter(x => x.saved);
+            const container = document.getElementById('savedContainer');
+            if (savedFeed.length === 0 && savedBooks.length === 0) {
+                container.innerText = 'لا توجد عناصر محفوظة حتى الآن.';
+            } else {
+                container.innerHTML = [
+                    ...savedFeed.map(s => `<div style="padding:4px 0; border-bottom:1px solid #333;">🎬 منشور: ${s.title}</div>`),
+                    ...savedBooks.map(b => `<div style="padding:4px 0; border-bottom:1px solid #333; color:#38bdf8;">📚 كتاب: ${b.title}</div>`)
+                ].join('');
+            }
         }
 
-        function openSearch() {
-            const q = prompt('🔍 ابحث عن أصدقاء، منشورات، أو صوتيات:');
-            if (q) alert('نتائج البحث عن: ' + q);
+        function switchTab(el) {
+            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
         }
 
         function switchPage(pageId, btn) {
@@ -404,9 +592,20 @@
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             if (btn) btn.classList.add('active');
+            closeModal('commentsModal');
+            closeModal('chatModal');
+            closeModal('searchModal');
         }
 
-        window.onload = loadFeed;
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        window.onload = () => {
+            loadFeed();
+            loadBooks();
+            loadInboxAndFriends();
+        };
     </script>
 </body>
 </html>
