@@ -1,0 +1,23 @@
+{
+  "short_name": "QAIM",
+  "name": "منصة المنهج القويم - QAIM",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=192&h=192&fit=crop",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=512&h=512&fit=crop",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar"
+}
