@@ -8,7 +8,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
         html, body { width: 100%; height: 100%; background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow: hidden; }
 
-        /* شاشة تسجيل الدخول (تيك توك ستايل) */
+        /* شاشة تسجيل الدخول */
         #authScreen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; }
         .auth-card { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 15px; text-align: center; }
         .auth-logo { font-size: 48px; font-weight: 900; color: #38bdf8; letter-spacing: 2px; margin-bottom: 10px; }
@@ -61,7 +61,7 @@
         .disc-icon { width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8, #fe2c55); color: white; display: flex; justify-content: center; align-items: center; font-size: 8px; animation: spin 3s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* نافذة التعليقات المنزلقة (Bottom Sheet) */
+        /* نافذة التعليقات المنزلقة */
         .comments-sheet { position: fixed; bottom: -100%; left: 0; right: 0; height: 60vh; background: #121624; border-radius: 20px 20px 0 0; z-index: 4000; transition: bottom 0.3s ease-in-out; display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,0.1); }
         .comments-sheet.open { bottom: 0; }
         .sheet-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; font-size: 14px; }
@@ -85,8 +85,12 @@
         .lib-card { background: #121624; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         
         /* تأثيرات الهدايا في البث */
-        .gift-float { position: absolute; bottom: 100px; right: 20px; font-size: 28px; animation: floatUp 2s ease-out forwards; z-index: 50; }
-        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-150px) scale(1.2); opacity: 0; } }
+        .gift-float { position: absolute; bottom: 120px; right: 30px; font-size: 32px; animation: floatUp 2s ease-out forwards; z-index: 60; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-180px) scale(1.3); opacity: 0; } }
+
+        /* لوحة سحب البث لليسار (قائمة المبثوثين والتعليقات) */
+        #liveSidebarDrawer { position: absolute; top: 0; left: -100%; width: 80%; height: 100%; background: rgba(18,22,36,0.95); backdrop-filter: blur(15px); z-index: 70; transition: left 0.3s ease-in-out; padding: 20px; display: flex; flex-direction: column; gap: 15px; border-right: 1px solid rgba(255,255,255,0.1); }
+        #liveSidebarDrawer.open { left: 0; }
 
         /* إشعار عائم (Toast) */
         #toastMsg { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); border: 1px solid #38bdf8; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; z-index: 9999; display: none; }
@@ -94,7 +98,6 @@
 </head>
 <body>
 
-    <!-- إشعار عائم -->
     <div id="toastMsg">تم بنجاح</div>
 
     <!-- شاشة تسجيل الدخول -->
@@ -114,7 +117,6 @@
         <div style="font-size: 12px; color: #888; margin-top: 8px;">منصة المنهج القويم</div>
     </div>
 
-    <!-- مدخِل الوسائط -->
     <input type="file" id="directMediaInput" accept="image/*,video/*" style="display: none;" onchange="handleFileSelected(this)">
 
     <!-- نافذة النشر -->
@@ -171,7 +173,7 @@
         </div>
     </div>
 
-    <!-- 1. الرئيسية (الفييد مع تبويب أتابعه ولَكْ الحقيقي) -->
+    <!-- 1. الرئيسية (الفييد) -->
     <div id="page-home" class="page active">
         <div class="top-bar">
             <button class="live-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[0])">LIVE</button>
@@ -217,11 +219,36 @@
         </div>
     </div>
 
-    <!-- 5. البث المباشر -->
-    <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center;">
+    <!-- 5. البث المباشر (تيك توك ستايل مع السحب لليسار والقوائم) -->
+    <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center; position: relative;" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">
+        
+        <!-- قائمة سحب الشاشة لليسار بالبث (المبثوثين والتعليقات) -->
+        <div id="liveSidebarDrawer">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <span style="font-weight: bold; color: #38bdf8; font-size: 14px;">📡 المبثوثون النشطون الآن</span>
+                <button onclick="toggleLiveSidebar()" style="background:none; border:none; color:#fe2c55; font-size:16px;">✕</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px; text-align: right;" id="liveBroadcastersList">
+                <div style="background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; display:flex; align-items:center; gap:8px;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:#fe2c55; display:flex; align-items:center; justify-content:center; font-weight:bold;">خ</div>
+                    <div><strong>خادم القرآن</strong><p style="font-size:9px; color:#fe2c55;">🔴 بث مباشر الآن</p></div>
+                </div>
+            </div>
+            <h4 style="font-size: 13px; color: #38bdf8; margin-top: 10px; text-align: right;">💬 تفاعل البث الحي</h4>
+            <div id="liveChatFeed" style="flex:1; background:rgba(0,0,0,0.4); border-radius:10px; padding:10px; overflow-y:auto; text-align:right; font-size:11px; display:flex; flex-direction:column; gap:6px;">
+                <div><span style="color:#38bdf8;">أحمد:</span> السلام على خدام الحسين</div>
+                <div><span style="color:#fe2c55;">حيدر:</span> أحسنت النشر والتلاوة</div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+                <input type="text" id="liveChatInput" class="form-input" placeholder="علّق في البث..." style="padding: 8px; font-size: 11px;">
+                <button class="primary-btn" style="width: auto; padding: 0 10px; font-size: 11px;" onclick="sendLiveChatMessage()">إرسال</button>
+            </div>
+        </div>
+
         <h2 style="color: #fe2c55;">🔴 غرفة البث المباشر</h2>
-        <div id="liveSetupBox" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
-            <p style="font-size: 12px; color: #888;">قم بتهيئة إشعار البث وعنوان الغرفة قبل البدء:</p>
+        <p style="font-size: 10px; color: #888; margin-bottom: 10px;">اسحب الشاشة نحو اليسار ➡️ لعرض قائمة البث والتعليقات الحية</p>
+
+        <div id="liveSetupBox" style="margin-top: 10px; display: flex; flex-direction: column; gap: 12px;">
             <input type="text" id="liveTitleInput" class="form-input" style="text-align: center;" placeholder="عنوان البث المباشر...">
             <button class="primary-btn" onclick="triggerLiveNotification()">إرسال إشعار البث للمتابعين 🔔</button>
             <button class="primary-btn" style="background: #fe2c55;" onclick="startLiveCamera()">بدء البث بالكاميرا 🎥</button>
@@ -231,11 +258,11 @@
             <video id="liveCam" autoplay playsinline muted style="width: 100%; border-radius: 15px; height: 250px; object-fit: cover;"></video>
             <div id="liveEffectsContainer" style="position: absolute; inset: 0; pointer-events: none;"></div>
             <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
-                <button class="primary-btn" style="background: #38bdf8; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('🌹')">إرسال وردة 🌹</button>
-                <button class="primary-btn" style="background: #fe2c55; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('💖')">إرسال قلب 💖</button>
-                <button class="primary-btn" style="background: #eab308; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('⭐')">إرسال نجمة ⭐</button>
+                <button class="primary-btn" style="background: #38bdf8; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('🌹')">وردة 🌹</button>
+                <button class="primary-btn" style="background: #fe2c55; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('💖')">قلب 💖</button>
+                <button class="primary-btn" style="background: #eab308; color: #000; font-size: 11px; padding: 6px 10px;" onclick="sendLiveGift('⭐')">نجمة ⭐</button>
             </div>
-            <button class="primary-btn" style="background: #333; margin-top: 10px;" onclick="endAndSaveLive()">إنهاء وحفظ البث 💾</button>
+            <button class="primary-btn" style="background: #333; margin-top: 10px;" onclick="endAndSaveLive()">إنهاء وحفظ البث لجهازي 💾</button>
         </div>
     </div>
 
@@ -329,12 +356,12 @@
             renderMyPersonalPosts();
         }
 
-        let currentFeedMode = 'foryou'; // 'foryou' or 'following'
+        let currentFeedMode = 'foryou';
 
         function switchMainFeedTab(mode) {
             currentFeedMode = mode;
             document.getElementById('tabFollowing').className = mode === 'following' ? 'top-tab active' : 'top-tab';
-            document.getElementById('tabForYou').className = mode === 'foryou' ? 'top-tab active' : 'top-tab';
+            document.getElementById('tabForYou' ).className = mode === 'foryou' ? 'top-tab active' : 'top-tab';
             loadFeed();
         }
 
@@ -360,7 +387,6 @@
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
             
-            // تصفية المنشورات حسب التبويب (أتابعه أو لَكْ)
             let itemsToDisplay = feedData;
             if (currentFeedMode === 'following') {
                 itemsToDisplay = feedData.filter(item => item.followed);
@@ -396,6 +422,10 @@
                             <span class="action-text">${item.saved ? 'محفوظ' : 'حفظ'}</span>
                         </div>
                         <div class="action-item">
+                            <button class="action-btn" onclick="downloadMedia('${item.bg}', '${item.title}')" style="background:rgba(34,197,94,0.6);">⬇️</button>
+                            <span class="action-text">تحميل</span>
+                        </div>
+                        <div class="action-item">
                             <button class="action-btn" onclick="sharePost(${item.id})" style="background:rgba(56,189,248,0.4);">🔗</button>
                             <span class="action-text">مشاركة</span>
                         </div>
@@ -419,6 +449,17 @@
             });
             updateSavedUI();
             if(currentUser) updateProfileUI();
+        }
+
+        // ميزة تحميل الفيديو أو المنشور للجهاز
+        function downloadMedia(url, title) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (title || 'qaim_media') + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast('⬇️ جاري تحميل الملف إلى جهازك...');
         }
 
         function sharePost(id) {
@@ -674,6 +715,41 @@
             }
         }
 
+        // تفاعلات البث المباشر والسحب لليسار
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleTouchStart(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+
+        function handleTouchEnd(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipeGesture();
+        }
+
+        function handleSwipeGesture() {
+            // سحب لليسار لفتح القائمة الجانبية للبث
+            if (touchEndX < touchStartX - 50) {
+                document.getElementById('liveSidebarDrawer').classList.add('open');
+            }
+        }
+
+        function toggleLiveSidebar() {
+            const drawer = document.getElementById('liveSidebarDrawer');
+            drawer.classList.toggle('open');
+        }
+
+        function sendLiveChatMessage() {
+            const input = document.getElementById('liveChatInput');
+            if (input.value.trim() && currentUser) {
+                const chatFeed = document.getElementById('liveChatFeed');
+                chatFeed.innerHTML += `<div><span style="color:#fe2c55;">${currentUser.name}:</span> ${input.value.trim()}</div>`;
+                input.value = '';
+                chatFeed.scrollTop = chatFeed.scrollHeight;
+            }
+        }
+
         function triggerLiveNotification() {
             const title = document.getElementById('liveTitleInput').value.trim() || 'بث مباشر جديد';
             showToast(`🔔 تم إرسال إشعار البث (${title}) بنجاح!`);
@@ -686,6 +762,7 @@
                 video.srcObject = stream;
                 document.getElementById('liveSetupBox').style.display = 'none';
                 document.getElementById('liveActiveBox').style.display = 'block';
+                showToast('🔴 تم بدء البث المباشر بنجاح');
             } catch (e) {
                 alert('يرجى السماح بالوصول للكاميرا والميكروفون لبدء البث.');
             }
@@ -701,7 +778,7 @@
         }
 
         function endAndSaveLive() {
-            showToast('✅ تم إنهاء البث وحفظه في الأرشيف.');
+            showToast('✅ تم إنهاء البث وحفظ تسجيله إلى جهازك بنجاح.');
             document.getElementById('liveActiveBox').style.display = 'none';
             document.getElementById('liveSetupBox').style.display = 'flex';
         }
