@@ -22,7 +22,7 @@
 
         /* الشريط العلوي */
         .top-bar { position: absolute; top: env(safe-area-inset-top, 10px); left: 0; right: 0; height: 50px; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
-        .top-tabs { display: flex; gap: 12px; font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.6); align-items: center; }
+        .top-tabs { display: flex; gap: 15px; font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.6); align-items: center; }
         .top-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; cursor: pointer; }
         .top-tab { cursor: pointer; }
         .live-btn { background: #fe2c55; color: #fff; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 4px; border: none; cursor: pointer; }
@@ -87,19 +87,24 @@
         /* تأثيرات الهدايا في البث */
         .gift-float { position: absolute; bottom: 100px; right: 20px; font-size: 28px; animation: floatUp 2s ease-out forwards; z-index: 50; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-150px) scale(1.2); opacity: 0; } }
+
+        /* إشعار عائم (Toast) */
+        #toastMsg { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); border: 1px solid #38bdf8; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; z-index: 9999; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة تسجيل الدخول وإنشاء الحساب (تيك توك ستايل) -->
+    <!-- إشعار عائم -->
+    <div id="toastMsg">تم بنجاح</div>
+
+    <!-- شاشة تسجيل الدخول -->
     <div id="authScreen" style="display: none;">
         <div class="auth-card">
             <div class="auth-logo">QAIM</div>
             <p style="font-size: 13px; color: #aaa; margin-bottom: 10px;">تسجيل الدخول أو إنشاء حساب جديد للمنصة</p>
-            <input type="text" id="authUsername" class="form-input" placeholder="اسم المستخدم (مثال: qaim_user)...">
-            <input type="password" id="authPassword" class="form-input" placeholder="الرمز السري (كلمة المرور)...">
+            <input type="text" id="authUsername" class="form-input" placeholder="اسم المستخدم...">
+            <input type="password" id="authPassword" class="form-input" placeholder="الرمز السري...">
             <button class="primary-btn" onclick="handleUserAuth()">متابعة ودخول 🚀</button>
-            <span style="font-size: 11px; color: #666; margin-top: 10px;">إذا كان الحساب جديداً سيتم إنشاؤه تلقائياً بخصوصية تامة.</span>
         </div>
     </div>
 
@@ -112,7 +117,7 @@
     <!-- مدخِل الوسائط -->
     <input type="file" id="directMediaInput" accept="image/*,video/*" style="display: none;" onchange="handleFileSelected(this)">
 
-    <!-- نافذة المعاينة والنشر -->
+    <!-- نافذة النشر -->
     <div id="previewPublishModal" class="modal-overlay">
         <div class="modal-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -126,7 +131,7 @@
         </div>
     </div>
 
-    <!-- نافذة تعديل الملف الشخصي -->
+    <!-- نافذة تعديل الملف -->
     <div id="editProfileModal" class="modal-overlay">
         <div class="modal-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -139,21 +144,21 @@
         </div>
     </div>
 
-    <!-- نافذة البحث المتقدم والذكي -->
+    <!-- نافذة البحث المتقدم -->
     <div id="searchModal" class="modal-overlay">
         <div class="modal-card" style="height: 80vh; max-width: 420px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-weight: bold; color: #38bdf8;">🔍 البحث المتقدم في المنصة</span>
                 <button onclick="closeModal('searchModal')" style="background:none; border:none; color:#fe2c55; font-size:18px;">✕</button>
             </div>
-            <input type="text" id="searchInputQuery" class="form-input" placeholder="ابحث عن عنوان منشور، مستخدم، أو قرآن..." oninput="performGlobalSearch(this.value)">
+            <input type="text" id="searchInputQuery" class="form-input" placeholder="ابحث عن عنوان، مستخدم، أو قرآن..." oninput="performGlobalSearch(this.value)">
             <div id="searchResultsContainer" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
                 <p style="font-size: 11px; color: #888; text-align: center; margin-top: 20px;">اكتب شيئاً للبحث الفوري...</p>
             </div>
         </div>
     </div>
 
-    <!-- نافذة التعليقات المنزلقة (Bottom Sheet) -->
+    <!-- نافذة التعليقات المنزلقة -->
     <div id="commentsSheet" class="comments-sheet">
         <div class="sheet-header">
             <span id="commentsCountTitle">💬 التعليقات (0)</span>
@@ -166,14 +171,13 @@
         </div>
     </div>
 
-    <!-- 1. الرئيسية (الفييد) -->
+    <!-- 1. الرئيسية (الفييد مع تبويب أتابعه ولَكْ الحقيقي) -->
     <div id="page-home" class="page active">
         <div class="top-bar">
             <button class="live-btn" onclick="switchPage('live', document.querySelectorAll('.nav-item')[0])">LIVE</button>
             <div class="top-tabs">
-                <span class="top-tab" onclick="switchTab(this)">أتابعه</span>
-                <span class="top-tab" onclick="switchTab(this)">المجتمع</span>
-                <span class="top-tab active" onclick="switchTab(this)">لَكْ</span>
+                <span class="top-tab" id="tabFollowing" onclick="switchMainFeedTab('following')">أتابعه</span>
+                <span class="top-tab active" id="tabForYou" onclick="switchMainFeedTab('foryou')">لَكْ</span>
                 <span class="top-tab" onclick="switchPage('library', null)" style="color: #38bdf8;">🎧 المكتبة</span>
             </div>
             <button style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;" onclick="openSearchModal()">🔍</button>
@@ -181,24 +185,24 @@
         <div class="feed" id="mainFeedContainer"></div>
     </div>
 
-    <!-- 2. مكتبة القرآن والأناشيد الحسينية -->
+    <!-- 2. المكتبة -->
     <div id="page-library" class="page" style="padding: 20px; padding-top: 70px;">
         <h2 style="margin-bottom: 15px; color: #38bdf8;">🎧 مكتبة القرآن والأناشيد الحسينية</h2>
         <div id="libraryContainer"></div>
     </div>
 
-    <!-- 3. الأصدقاء والمجتمع -->
+    <!-- 3. الأصدقاء -->
     <div id="page-friends" class="page" style="padding: 20px; padding-top: 70px;">
         <h2>👥 المجتمع والأصدقاء</h2>
         <div id="friendsList" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
             <div style="background:#121624; padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
                 <div><strong>أحمد علي</strong><p style="font-size:10px; color:#888;">@ahmed_a</p></div>
-                <button class="primary-btn" style="width:auto; padding:6px 12px; font-size:11px;" onclick="alert('فتح محادثة خاصة')">مراسلة 💬</button>
+                <button class="primary-btn" style="width:auto; padding:6px 12px; font-size:11px;" onclick="showToast('تم فتح المحادثة الخاصة')">مراسلة 💬</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. مركز الإشعارات والتنبيهات المباشرة -->
+    <!-- 4. الإشعارات -->
     <div id="page-notifications" class="page" style="padding: 20px; padding-top: 70px;">
         <h2 style="color: #38bdf8; margin-bottom: 15px;">🔔 مركز الإشعارات والتنبيهات</h2>
         <div id="notificationsContainer" style="display: flex; flex-direction: column; gap: 10px;">
@@ -213,7 +217,7 @@
         </div>
     </div>
 
-    <!-- 5. البث المباشر (تيك توك ستايل مع الهدايا التفاعلية) -->
+    <!-- 5. البث المباشر -->
     <div id="page-live" class="page" style="background: #000; padding: 20px; padding-top: 70px; text-align: center;">
         <h2 style="color: #fe2c55;">🔴 غرفة البث المباشر</h2>
         <div id="liveSetupBox" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
@@ -235,7 +239,7 @@
         </div>
     </div>
 
-    <!-- 6. الملف الشخصي مع إدارة المنشورات وتسجيل الخروج -->
+    <!-- 6. الملف الشخصي -->
     <div id="page-profile" class="page" style="padding: 20px; padding-top: 70px; text-align: center;">
         <div id="profAvatar" style="width: 80px; height: 80px; border-radius: 50%; background: #38bdf8; color: #000; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">👤</div>
         <h3 id="profNameDisplay">ناشر المنصة</h3>
@@ -243,7 +247,7 @@
         
         <div style="margin-top: 15px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
             <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #38bdf8; color: #000;" onclick="openEditProfile()">تعديل الملف ⚙️</button>
-            <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #333;" onclick="clearMyProfileContent()">مسح محتوى الحساب 🗑️</button>
+            <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #333;" onclick="clearMyProfileContent()">مسح المحتوى 🗑️</button>
             <button class="primary-btn" style="width: auto; padding: 6px 12px; font-size: 11px; background: #fe2c55;" onclick="logoutUser()">تسجيل الخروج 🚪</button>
         </div>
 
@@ -253,9 +257,8 @@
             <div><h4>85</h4><span style="font-size: 10px; color: #888;">أتابعهم</span></div>
         </div>
 
-        <!-- قائمة منشوراتي الخاصة مع زر حذف مباشر -->
         <div style="margin-top: 20px; text-align: right; background: #121624; padding: 15px; border-radius: 12px;">
-            <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 10px;">📋 منشوراتي المنشورة (إدارة وحذف)</h4>
+            <h4 style="color: #38bdf8; font-size: 13px; margin-bottom: 10px;">📋 منشوراتي المنشورة</h4>
             <div id="myPersonalPostsContainer" style="font-size: 11px; color: #aaa; display: flex; flex-direction: column; gap: 8px;">
                 <p>لا توجد منشورات شخصية.</p>
             </div>
@@ -267,7 +270,7 @@
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي المطور -->
+    <!-- الشريط السفلي -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="switchPage('home', this)"><span class="nav-icon">🏠</span><span>الرئيسية</span></button>
         <button class="nav-item" onclick="switchPage('friends', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></button>
@@ -277,7 +280,6 @@
     </nav>
 
     <script>
-        // التحقق من تسجيل الدخول
         let currentUser = JSON.parse(localStorage.getItem('qaim_active_user'));
         if (!currentUser) {
             document.getElementById('authScreen').style.display = 'flex';
@@ -304,7 +306,6 @@
             }
         }
 
-        // إخفاء شاشة البداية
         setTimeout(() => {
             const splash = document.getElementById('splashScreen');
             if(splash) {
@@ -312,6 +313,13 @@
                 setTimeout(() => splash.style.display = 'none', 500);
             }
         }, 1200);
+
+        function showToast(text) {
+            const t = document.getElementById('toastMsg');
+            t.innerText = text;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 2000);
+        }
 
         function updateProfileUI() {
             if (!currentUser) return;
@@ -321,13 +329,20 @@
             renderMyPersonalPosts();
         }
 
-        // بيانات المنشورات
+        let currentFeedMode = 'foryou'; // 'foryou' or 'following'
+
+        function switchMainFeedTab(mode) {
+            currentFeedMode = mode;
+            document.getElementById('tabFollowing').className = mode === 'following' ? 'top-tab active' : 'top-tab';
+            document.getElementById('tabForYou').className = mode === 'foryou' ? 'top-tab active' : 'top-tab';
+            loadFeed();
+        }
+
         let feedData = JSON.parse(localStorage.getItem('qaim_feed')) || [
             { id: 1, user: 'ناشر المنصة', username: '@qaim_admin', title: 'البلاغ الأول لمنصة المنهج القويم', desc: 'منبر فكري وعلمي لنشر العلوم الحقة.', likes: 5637, heartState: 'green', followed: false, saved: false, comments: [{user: 'أحمد', text: 'بارك الله في الجهود الطيبة'}], bg: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80', audio: 'صوت الفيديو الأصلي' },
             { id: 2, user: 'خادم القرآن', username: '@quran_servant', title: 'تلاوة خاشعة - سورة الرحمن', desc: '«فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ»', likes: 890, heartState: 'green', followed: true, saved: true, comments: [], bg: 'https://images.unsplash.com/photo-1542816417-0983cbe82752?auto=format&fit=crop&w=800&q=80', audio: 'تلاوة الشيخ عبد الباسط' }
         ];
 
-        // مكتبة القرآن والأناشيد الحسينية مع خيار الحفظ
         let libraryItems = JSON.parse(localStorage.getItem('qaim_lib')) || [
             { id: 101, title: 'تلاوة سورة البقرة كاملة', type: 'قرآن كريم', reciter: 'الشيخ عبد الباسط عبد الصمد', saved: false },
             { id: 102, title: 'لطمية حسينية - يا لثارات الحسين', type: 'أنشودة حسينية', reciter: 'الملا باسم الكربلائي', saved: false }
@@ -341,11 +356,22 @@
             localStorage.setItem('qaim_lib', JSON.stringify(libraryItems));
         }
 
-        // تحميل الفييد الرئيسي مع إمكانية حذف المنشور للمالك
         function loadFeed() {
             const container = document.getElementById('mainFeedContainer');
             container.innerHTML = '';
-            feedData.forEach(item => {
+            
+            // تصفية المنشورات حسب التبويب (أتابعه أو لَكْ)
+            let itemsToDisplay = feedData;
+            if (currentFeedMode === 'following') {
+                itemsToDisplay = feedData.filter(item => item.followed);
+            }
+
+            if (itemsToDisplay.length === 0) {
+                container.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100dvh; color:#888; font-size:13px;">لا توجد منشورات في قسم أتابعه حالياً.</div>`;
+                return;
+            }
+
+            itemsToDisplay.forEach(item => {
                 const isMyPost = currentUser && (item.username === currentUser.username || item.user === currentUser.name);
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -369,6 +395,10 @@
                             <button class="action-btn save-btn ${item.saved ? 'red' : ''}" onclick="toggleSave(${item.id})">🔖</button>
                             <span class="action-text">${item.saved ? 'محفوظ' : 'حفظ'}</span>
                         </div>
+                        <div class="action-item">
+                            <button class="action-btn" onclick="sharePost(${item.id})" style="background:rgba(56,189,248,0.4);">🔗</button>
+                            <span class="action-text">مشاركة</span>
+                        </div>
                         ${isMyPost ? `
                         <div class="action-item">
                             <button class="action-btn" style="background:rgba(254,44,85,0.8);" onclick="deletePost(${item.id})">🗑️</button>
@@ -391,17 +421,25 @@
             if(currentUser) updateProfileUI();
         }
 
-        // مسح منشور محدد
+        function sharePost(id) {
+            const shareUrl = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: 'منصة QAIM', text: 'شاهد هذا المنشور المميز على منصة المنهج القويم', url: shareUrl }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                showToast('تم نسخ رابط المنشور بنجاح 🔗');
+            }
+        }
+
         function deletePost(id) {
             if (confirm('هل أنت متأكد من مسح هذا المنشور نهائياً؟')) {
                 feedData = feedData.filter(x => x.id !== id);
                 saveLocalStorage();
                 loadFeed();
-                alert('تم مسح المنشور بنجاح.');
+                showToast('تم مسح المنشور بنجاح.');
             }
         }
 
-        // عرض وإدارة المنشورات الشخصية في الملف الشخصي
         function renderMyPersonalPosts() {
             if (!currentUser) return;
             const myPosts = feedData.filter(x => x.username === currentUser.username || x.user === currentUser.name);
@@ -419,10 +457,14 @@
             `).join('');
         }
 
-        // تفاعلات الأزرار
         function toggleFollow(id) {
             const item = feedData.find(x => x.id === id);
-            if (item) { item.followed = !item.followed; saveLocalStorage(); loadFeed(); }
+            if (item) { 
+                item.followed = !item.followed; 
+                saveLocalStorage(); 
+                loadFeed(); 
+                showToast(item.followed ? 'تمت المتابعة بنجاح' : 'تم إلغاء المتابعة');
+            }
         }
 
         function toggleLike(id) {
@@ -437,10 +479,14 @@
 
         function toggleSave(id) {
             const item = feedData.find(x => x.id === id);
-            if (item) { item.saved = !item.saved; saveLocalStorage(); loadFeed(); }
+            if (item) { 
+                item.saved = !item.saved; 
+                saveLocalStorage(); 
+                loadFeed(); 
+                showToast(item.saved ? 'تمت إضافة المنشور للمحفوظات' : 'تمت الإزالة من المحفوظات');
+            }
         }
 
-        // نظام التعليقات المنزلقة (Bottom Sheet)
         function openCommentsSheet(id) {
             activeCardForComments = id;
             const item = feedData.find(x => x.id === id);
@@ -493,7 +539,6 @@
             }
         }
 
-        // إدارة مكتبة القرآن والأناشيد
         function loadLibrary() {
             const container = document.getElementById('libraryContainer');
             container.innerHTML = '';
@@ -505,7 +550,7 @@
                             <span style="font-size:10px; color:#888;">${lib.type} - الشيخ/الملا: ${lib.reciter}</span>
                         </div>
                         <div style="display:flex; gap:8px;">
-                            <button class="primary-btn" style="padding:5px 10px; font-size:11px;" onclick="alert('جاري تشغيل الصوت...')">استماع 🎧</button>
+                            <button class="primary-btn" style="padding:5px 10px; font-size:11px;" onclick="showToast('جاري تشغيل الصوت...')">استماع 🎧</button>
                             <button class="primary-btn" style="padding:5px 10px; font-size:11px; background:${lib.saved ? '#fe2c55' : '#333'}" onclick="toggleSaveLibrary(${lib.id})">${lib.saved ? 'محفوظ ✓' : 'حفظ 🔖'}</button>
                         </div>
                     </div>
@@ -532,7 +577,6 @@
             }
         }
 
-        // نظام البحث المتقدم والذكي
         function openSearchModal() {
             document.getElementById('searchModal').style.display = 'flex';
         }
@@ -557,7 +601,6 @@
             ].join('');
         }
 
-        // رفع الوسائط كالتيك توك
         function openDirectMediaPicker() {
             document.getElementById('directMediaInput').click();
         }
@@ -598,9 +641,9 @@
             document.getElementById('newPostTitle').value = '';
             document.getElementById('newPostDesc').value = '';
             switchPage('home', document.querySelectorAll('.nav-item')[0]);
+            showToast('تم نشر الفيديو بنجاح 🚀');
         }
 
-        // تعديل الملف الشخصي والخصوصية
         function openEditProfile() {
             if (!currentUser) return;
             document.getElementById('editNameInput').value = currentUser.name;
@@ -617,6 +660,7 @@
             updateProfileUI();
             loadFeed();
             closeModal('editProfileModal');
+            showToast('تم حفظ التعديلات بنجاح ✓');
         }
 
         function clearMyProfileContent() {
@@ -626,14 +670,13 @@
                 saveLocalStorage();
                 loadFeed();
                 updateSavedUI();
-                alert('تم مسح محتوى الحساب بنجاح.');
+                showToast('تم مسح محتوى الحساب بنجاح.');
             }
         }
 
-        // البث المباشر مع الهدايا التفاعلية
         function triggerLiveNotification() {
             const title = document.getElementById('liveTitleInput').value.trim() || 'بث مباشر جديد';
-            alert(`🔔 تم إرسال إشعار البث (${title}) بنجاح إلى جميع متابعيك!`);
+            showToast(`🔔 تم إرسال إشعار البث (${title}) بنجاح!`);
         }
 
         async function startLiveCamera() {
@@ -658,15 +701,9 @@
         }
 
         function endAndSaveLive() {
-            alert('✅ تم إنهاء البث وحفظ نسخة منه في أرشيف الحساب بنجاح.');
+            showToast('✅ تم إنهاء البث وحفظه في الأرشيف.');
             document.getElementById('liveActiveBox').style.display = 'none';
             document.getElementById('liveSetupBox').style.display = 'flex';
-        }
-
-        // أدوات مساعدة عامة
-        function switchTab(el) {
-            document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
         }
 
         function switchPage(pageId, btn) {
